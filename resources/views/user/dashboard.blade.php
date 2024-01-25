@@ -12,9 +12,63 @@
 @section('content')
 
 @php
-    $currentDate = ["2024-01-24", "2024-01-25"];
-    $jam_mulai = "9";
+    $currentDate = $currDate;
+    $jam_mulai = $currJam;
+    $jam_selesai = ""
 @endphp
+
+<div class="panel-body panel-form">
+    <div class="form-group row mb-3">
+        <label class="col-lg-4 col-form-label">Mulai Tanggal</label>
+        <div class="col-lg-3">
+            <input type="date" class="form-control form-input text-small" name="tgl_mulai" id="tgl_mulai" onchange="checkDate()" />
+        </div>
+    </div>
+</div>
+
+<div class="panel-body panel-form">
+    <div class="form-group row mb-3">
+        <label class="col-lg-4 col-form-label">Mulai Jam</label>
+        <div class="col-lg-6">
+            <div class="btn-group">
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                    <label class="btn btn-white" id="{{ $jam_mulai && in_array("8", $jam_mulai) ? "result" : "8" }}">                        
+                        <input type="radio" name="jam_mulai" value="8"
+                            id="8" />08:00
+                    </label>
+                    <label class="btn btn-white" id="{{ $jam_mulai && in_array("9", $jam_mulai) ? "result" : "9" }}">
+                        <input type="radio" name="jam_mulai" value="9"
+                            id="9" />09:00
+                    </label>
+                    <label class="btn btn-white" id="{{ $jam_mulai && in_array("10", $jam_mulai) ? "result" : "10" }}">
+                        <input type="radio" name="jam_mulai" value="10"
+                            id="10" />10:00
+                    </label>
+                    <label class="btn btn-white" id="{{ $jam_mulai && in_array("11", $jam_mulai) ? "result" : "11" }}">
+                        <input type="radio" name="jam_mulai" value="11"
+                            id="11" />11:00
+                    </label>
+                    <label class="btn btn-white" id="{{ $jam_mulai && in_array("12", $jam_mulai) ? "result" : "12" }}">
+                        <input type="radio" name="jam_mulai" value="12"
+                            id="12" />12:00
+                    </label>
+                    <label class="btn btn-white" id="{{ $jam_mulai && in_array("13", $jam_mulai) ? "result" : "13" }}">
+                        <input type="radio" name="jam_mulai" value="13"
+                            id="13" />13:00
+                    </label>
+                    <label class="btn btn-white" id="{{ $jam_mulai && in_array("14", $jam_mulai) ? "result" : "14" }}">
+                        <input type="radio" name="jam_mulai" value="14"
+                            id="14" />14:00
+                    </label>
+                    <label class="btn btn-white" id="{{ $jam_mulai && in_array("15", $jam_mulai) ? "result" : "15" }}">
+                        <input type="radio" name="jam_mulai" value="15"
+                            id="15" />15:00
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="panel-body panel-form">
     <div class="form-group row mb-3">
@@ -27,40 +81,40 @@
 
 <div class="panel-body panel-form">
     <div class="form-group row mb-3">
-        <label class="col-lg-4 col-form-label">Mulai Jam</label>
+        <label class="col-lg-4 col-form-label">Selesai Jam</label>
         <div class="col-lg-6">
             <div class="btn-group">
                 <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                    <label class="btn btn-white" id="{{ $jam_mulai == "8" ? "result" : "8" }}">
-                        <input type="radio" name="jam_mulai" value="8"
+                    <label class="btn btn-white" id="{{ $jam_selesai && in_array("8", $jam_selesai) ? "result" : "8" }}">                        
+                        <input type="radio" name="jam_selesai" value="8"
                             id="8" />08:00
                     </label>
-                    <label class="btn btn-white" id="{{ $jam_mulai == "9" ? "result" : "9" }}">
-                        <input type="radio" name="jam_mulai" value="9"
+                    <label class="btn btn-white" id="{{ $jam_selesai && in_array("9", $jam_selesai) ? "result" : "9" }}">
+                        <input type="radio" name="jam_selesai" value="9"
                             id="9" />09:00
                     </label>
-                    <label class="btn btn-white" id="{{ $jam_mulai == "10" ? "result" : "10" }}">
-                        <input type="radio" name="jam_mulai" value="10"
+                    <label class="btn btn-white" id="{{ $jam_selesai && in_array("10", $jam_selesai) ? "result" : "10" }}">
+                        <input type="radio" name="jam_selesai" value="10"
                             id="10" />10:00
                     </label>
-                    <label class="btn btn-white" id="{{ $jam_mulai == "11" ? "result" : "11" }}">
-                        <input type="radio" name="jam_mulai" value="11"
+                    <label class="btn btn-white" id="{{ $jam_selesai && in_array("11", $jam_selesai) ? "result" : "11" }}">
+                        <input type="radio" name="jam_selesai" value="11"
                             id="11" />11:00
                     </label>
-                    <label class="btn btn-white" id="{{ $jam_mulai == "12" ? "result" : "12" }}">
-                        <input type="radio" name="jam_mulai" value="12"
+                    <label class="btn btn-white" id="{{ $jam_selesai && in_array("12", $jam_selesai) ? "result" : "12" }}">
+                        <input type="radio" name="jam_selesai" value="12"
                             id="12" />12:00
                     </label>
-                    <label class="btn btn-white" id="{{ $jam_mulai == "13" ? "result" : "13" }}">
-                        <input type="radio" name="jam_mulai" value="13"
+                    <label class="btn btn-white" id="{{ $jam_selesai && in_array("13", $jam_selesai) ? "result" : "13" }}">
+                        <input type="radio" name="jam_selesai" value="13"
                             id="13" />13:00
                     </label>
-                    <label class="btn btn-white" id="{{ $jam_mulai == "14" ? "result" : "14" }}">
-                        <input type="radio" name="jam_mulai" value="14"
+                    <label class="btn btn-white" id="{{ $jam_selesai && in_array("14", $jam_selesai) ? "result" : "14" }}">
+                        <input type="radio" name="jam_selesai" value="14"
                             id="14" />14:00
                     </label>
-                    <label class="btn btn-white" id="{{ $jam_mulai == "15" ? "result" : "15" }}">
-                        <input type="radio" name="jam_mulai" value="15"
+                    <label class="btn btn-white" id="{{ $jam_selesai && in_array("15", $jam_selesai) ? "result" : "15" }}">
+                        <input type="radio" name="jam_selesai" value="15"
                             id="15" />15:00
                     </label>
                 </div>
@@ -128,6 +182,17 @@
             } else {
                 document.getElementById("result").classList.remove('hidden');
             }
+
+            // const selectedDate = document.getElementById("tgl_selesai").value;
+
+            // const formattedDate = "{{ date('Y-m-d', strtotime($currentDate)) }}";
+
+            // if (selectedDate === formattedDate) {
+            // document.getElementById("result").classList.add('hidden');
+            // } else {
+            // document.getElementById("result").classList.remove('hidden');
+            // }
+
         }
     </script>
 @endpush

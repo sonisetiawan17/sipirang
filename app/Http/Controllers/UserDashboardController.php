@@ -21,9 +21,12 @@ class UserDashboardController extends Controller
     public function index()
     {
         $date = Carbon::now()->format('Y-m-d');
-        $jam = DB::table('jadwal')->select('jam_mulai')->get();
-        foreach ($jam as $j) {
-            $currJam = $j->jam_mulai;
+
+        $jam_mulai = DB::table('jadwal')->select('jam_mulai')->get();
+        $jam_mulai_arr = array();
+
+        foreach ($jam_mulai as $jam) {
+            $currJam[] = $jam->jam_mulai;
         }
 
         $tanggal_mulai = DB::table('jadwal')->select('tgl_mulai')->get();
@@ -33,8 +36,21 @@ class UserDashboardController extends Controller
             $currDate[] = $tanggal->tgl_mulai;
         }
 
+        $jam_selesai = DB::table('jadwal')->select('jam_selesai')->get();
+        $jam_selesai_arr = array();
 
-        return view('user.dashboard', compact('date', 'jam', 'currJam', 'currDate'));
+        foreach ($jam_selesai as $jam) {
+            $currJamSelesai[] = $jam->jam_selesai;
+        }
+
+        $tanggal_selesai = DB::table('jadwal')->select('tgl_selesai')->get();
+        $tanggal_selesai_arr = array();
+
+        foreach ($tanggal_selesai as $tanggal) {
+            $currDateSelesai[] = $tanggal->tgl_selesai;
+        }
+
+        return view('user.dashboard', compact('date', 'jam', 'currJam', 'currDate', 'currJamSelesai', 'currDateSelesai'));
     }
 
     public function buatPermohonan()
