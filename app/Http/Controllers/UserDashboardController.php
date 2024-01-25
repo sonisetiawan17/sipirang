@@ -9,7 +9,9 @@ use App\Models\Fasilitas;
 use App\Models\Instansi;
 use App\Models\Jadwal;
 use App\Models\Permohonan;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -18,7 +20,21 @@ class UserDashboardController extends Controller
 {
     public function index()
     {
-        return view('user.dashboard');
+        $date = Carbon::now()->format('Y-m-d');
+        $jam = DB::table('jadwal')->select('jam_mulai')->get();
+        foreach ($jam as $j) {
+            $currJam = $j->jam_mulai;
+        }
+
+        $tanggal_mulai = DB::table('jadwal')->select('tgl_mulai')->get();
+        $tanggal_mulai_arr = array();
+
+        foreach ($tanggal_mulai as $tanggal) {
+            $currDate[] = $tanggal->tgl_mulai;
+        }
+
+
+        return view('user.dashboard', compact('date', 'jam', 'currJam', 'currDate'));
     }
 
     public function buatPermohonan()
@@ -28,6 +44,8 @@ class UserDashboardController extends Controller
         $fasilitas = Fasilitas::get();
         $alat = AlatPendukung::get();
         $blok = BlokRuangan::get();
+
+        $date = Carbon::now()->format('m/d/Y');
 
         $jadwal = DB::table('jadwal')
             ->join('permohonan', 'permohonan.id_permohonan', '=', 'jadwal.permohonan_id')
@@ -60,6 +78,8 @@ class UserDashboardController extends Controller
 
     public function updatePermohonan(Request $request, $id_permohonan)
     {
+        $user_id = Auth::user()->id;
+
         $request->validate([
             'surat_permohonan' => 'required|mimes:doc,docx,xls,xlsx,pdf,jpg,jpeg,png,bmp',
             'rundown_acara' => 'required|mimes:doc,docx,xls,xlsx,pdf,jpg,jpeg,png,bmp',
@@ -89,6 +109,7 @@ class UserDashboardController extends Controller
                 $permohonan->skpd = $request->skpd;
                 $permohonan->bidang_id = $request->bidang_id;
                 $permohonan->instansi_id = $request->instansi_id;
+                $permohonan->user_id = $user_id;
                 $permohonan->status_instansi = $request->status_instansi;
                 $permohonan->bidang_instansi = $request->bidang_instansi;
                 $permohonan->nama_kegiatan = $request->nama_kegiatan;
@@ -113,7 +134,7 @@ class UserDashboardController extends Controller
                 }
 
                 $jadwal = Jadwal::find($cekData['permohonan_id']);
-                $jadwal->user_id = $request->user_id;
+                $jadwal->user_id = $user_id;
                 $jadwal->permohonan_id = $cekData['permohonan_id'];
                 $jadwal->tgl_mulai = $request->tgl_mulai;
                 $jadwal->jam_mulai = $request->jam_mulai;
