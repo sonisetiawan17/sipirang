@@ -24,6 +24,13 @@
         font-family: 'Inter', sans-serif;
     }
 
+    .tgl_info {
+        color: rgb(221, 26, 26);
+        font-size: 12px;
+        font-style: italic;
+        padding-top: 10px;
+    }
+
     .button-primary {
         padding: 8px 12px;
         background-color: #5465ff;

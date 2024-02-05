@@ -8,6 +8,7 @@ use App\Models\BlokRuangan;
 use App\Models\Fasilitas;
 use App\Models\Instansi;
 use App\Models\Jadwal;
+use App\Models\Jam;
 use App\Models\Permohonan;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -20,21 +21,69 @@ class UserDashboardController extends Controller
 {
     public function index()
     {
+        // $curr = "2024-01-24";
+        // $arr = [["2024-01-24", "10", "13"], ["2024-01-29", "09", "11"]];
+
+        // $filteredData = [];
+
+        // foreach ($arr as $data) {
+        //     if ($data[0] === $curr) {
+        //         $start = intval($data[1]);
+        //         $end = intval($data[2]);
+
+        //         $filteredData[] = array_map('strval', range($start, $end));
+        //     }
+        // }
+
+        // $filteredData = array_merge(...$filteredData);
+        // dd($filteredData);
+
+        // $jadwals = Jadwal::all();
+
+        // $jadwalArray = [];
+
+        // foreach ($jadwals as $jadwal) {
+        //     $jadwalArray[] = [
+        //         $jadwal->tgl_mulai,
+        //         $jadwal->jam_mulai,
+        //         $jadwal->jam_selesai,
+        //     ];
+        // }
+
+        // dd($jadwalArray);
+
         $date = Carbon::now()->format('Y-m-d');
 
-        $jam_mulai = DB::table('jadwal')->select('jam_mulai')->get();
-        $jam_mulai_arr = array();
+        $jam_mulai = DB::table('jadwal')->get();
+        $jadwalArray = [];
 
-        foreach ($jam_mulai as $jam) {
-            $currJam[] = $jam->jam_mulai;
+        if ($jam_mulai->count() > 0) {
+            foreach ($jam_mulai as $jam) {
+                $currJam[] = $jam->jam_mulai;
+            }
+            foreach ($jam_mulai as $jadwal) {
+                $jadwalArray[] = [
+                    $jadwal->tgl_mulai,
+                    $jadwal->jam_mulai,
+                    $jadwal->jam_selesai,
+                ];
+            }
+        } else {
+            $jadwalArray = []; 
         }
 
-        $tanggal_mulai = DB::table('jadwal')->select('tgl_mulai')->get();
-        $tanggal_mulai_arr = array();
+        dd($jadwalArray);
 
-        foreach ($tanggal_mulai as $tanggal) {
-            $currDate[] = $tanggal->tgl_mulai;
-        }
+        // $tanggal_mulai = DB::table('jadwal')->select('tgl_mulai')->get();
+        // $tanggal_mulai_arr = array();
+
+        // if ($tanggal_mulai->count() > 0) {
+        //     foreach ($tanggal_mulai as $tanggal) {
+        //         $currDate[] = $tanggal->tgl_mulai;
+        //     }
+        // } else {
+        //     $currDate = []; 
+        // }
 
         $jam_selesai = DB::table('jadwal')->select('jam_selesai')->get();
         $jam_selesai_arr = array();
@@ -50,7 +99,7 @@ class UserDashboardController extends Controller
             $currDateSelesai[] = $tanggal->tgl_selesai;
         }
 
-        return view('user.dashboard', compact('date', 'jam', 'currJam', 'currDate', 'currJamSelesai', 'currDateSelesai'));
+        return view('user.dashboard', compact('date', 'jadwalArray'));
     }
 
     public function buatPermohonan()
