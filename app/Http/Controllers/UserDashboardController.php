@@ -72,8 +72,6 @@ class UserDashboardController extends Controller
             $jadwalArray = []; 
         }
 
-        dd($jadwalArray);
-
         // $tanggal_mulai = DB::table('jadwal')->select('tgl_mulai')->get();
         // $tanggal_mulai_arr = array();
 
@@ -331,6 +329,26 @@ class UserDashboardController extends Controller
         $user = Auth::user()->name;
 
         return view('user.histori-permohonan', compact('permohonan'));
+    }
+
+    public function lihatJadwal() 
+    {
+        $data = DB::table('jadwal')
+                    ->whereDay('tgl_mulai', '02')
+                    ->whereMonth('tgl_mulai', '02')
+                    ->get();
+
+        return view('user.lihat-jadwal');
+    }
+
+    public function ambilJadwal($tanggal)
+    {
+        $data = DB::table('jadwal')
+                    ->whereDay('tgl_mulai', $tanggal)
+                    ->whereMonth('tgl_mulai', '02')
+                    ->get();
+
+        return view('user.lihat-jadwal', ['data' => $data]);
     }
 
     public function cekJadwal(Request $request)

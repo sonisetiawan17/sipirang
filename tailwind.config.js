@@ -20,7 +20,7 @@ module.exports = {
             colors: {
                 // primary: "#FFD500",
                 // primary: "#5465ff",
-                primary: "#e6cdaa",
+                primary: "#072ac8",
             },
         },
     },

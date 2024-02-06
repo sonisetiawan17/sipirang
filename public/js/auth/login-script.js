@@ -12,17 +12,17 @@ function checkAndChangeButtonColor(userEmail, userPassword) {
 
     if (isEmailValid && isPasswordValid) {
         button.removeAttribute("disabled");
-        button.style.backgroundColor = "#e6cdaa";
-        button.style.color = "#8b5a2b";
+        button.style.backgroundColor = "#072ac8";
+        button.style.color = "white";
         button.style.cursor = "pointer";
         button.style.transitionDuration = "300ms";
 
         button.addEventListener("mouseover", function () {
-            button.style.backgroundColor = "rgba(230, 205, 170, 0.7)";
+            button.style.backgroundColor = "#072ac8";
         });
 
         button.addEventListener("mouseout", function () {
-            button.style.backgroundColor = "#e6cdaa";
+            button.style.backgroundColor = "#072ac8";
         });
     } else {
         button.style.backgroundColor = "rgba(44, 62, 80, 0.1)";

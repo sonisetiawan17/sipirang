@@ -16,7 +16,7 @@
         $jadwal = $jadwalArray;
 
         $curr = '2024-01-24';
-        $arr = [['2024-02-01', '10', '13'], ['2024-02-02', '09', '11']];
+        $arr = [['2024-02-02', '10', '13'], ['2024-02-02', '9', '11']];
 
         $filteredData = [];
 
@@ -48,7 +48,7 @@
             <div class="col-lg-6">
                 <div class="btn-group">
                     <div class="btn-group btn-group-toggle" data-toggle="buttons" id="data-jam">
-                        <p class="tgl_info">*Silahkan pilih tanggal mulai terlebih dahulu.</p>
+                        <p class="tgl_info">*Silahkan pilih tanggal mulai terlebih dahulu, untuk melihat jam yang tersedia.</p>
                     </div>
                 </div>
             </div>
@@ -71,7 +71,7 @@
             <div class="col-lg-6">
                 <div class="btn-group">
                     <div class="btn-group btn-group-toggle" data-toggle="buttons" id="data-jam-dua">
-                        <p class="tgl_info">*Silahkan pilih tanggal selesai terlebih dahulu.</p>
+                        <p class="tgl_info">*Silahkan pilih tanggal selesai terlebih dahulu, untuk melihat jam yang tersedia.</p>
                     </div>
                 </div>
             </div>
@@ -196,7 +196,7 @@
             }
 
             for (let i = parseInt(emptyArr[0]); i <= parseInt(emptyArr[1]); i++) {
-                newArray.push(i.toString().padStart(2, '0'));
+                newArray.push(i.toString().padStart(1, '0'));
             }
 
             console.log(newArray);
@@ -244,7 +244,7 @@
             }
 
             for (let i = parseInt(emptyArr[0]); i <= parseInt(emptyArr[1]); i++) {
-                newArray.push(i.toString().padStart(2, '0'));
+                newArray.push(i.toString().padStart(1, '0'));
             }
 
             console.log(newArray);

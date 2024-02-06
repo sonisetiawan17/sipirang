@@ -19,6 +19,11 @@ return [
             'url' => '/user/dashboard',
         ],
         [
+            'icon' => 'fa fa-clock',
+            'title' => 'Jadwal',
+            'url' => '/user/jadwal',
+        ],
+        [
             'icon' => 'fa fa-folder',
             'title' => 'Permohonan',
             'url' => '#',

@@ -25,6 +25,8 @@ Route::middleware(['auth', 'role:user'])
     ->name('user.')
     ->group(function () {
         Route::get('/dashboard', [UserDashboardController::class, 'index'])->name('index');
+        Route::get('/jadwal', [UserDashboardController::class, 'lihatJadwal'])->name('jadwal');
+        Route::get('/jadwal/{tanggal}', [UserDashboardController::class, 'ambilJadwal'])->name('ambilJadwal');
         Route::get('/buatPermohonan', [UserDashboardController::class, 'buatPermohonan'])->name('buatPermohonan');
         Route::get('/editPermohonan/{id_permohonan}', [UserDashboardController::class, 'editPermohonan'])->name('editPermohonan');
         Route::post('/updatePermohonan/{id_permohonan}', [UserDashboardController::class, 'updatePermohonan'])->name('updatePermohonan');

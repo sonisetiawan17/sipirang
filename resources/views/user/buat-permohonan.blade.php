@@ -10,6 +10,27 @@
 @endpush
 
 @section('content')
+
+    @php
+        $data_jam = ['8', '9', '10', '11', '12', '13', '14', '15'];
+        // $jadwal = $jadwalArray;
+
+        $curr = '2024-01-24';
+        $arr = [['2024-02-02', '10', '13'], ['2024-02-02', '9', '11']];
+
+        $filteredData = [];
+
+        foreach ($arr as $data) {
+            if ($data[0] === $curr) {
+                $start = intval($data[1]);
+                $end = intval($data[2]);
+
+                $filteredData[] = array_map('strval', range($start, $end));
+            }
+        }
+
+        $filteredData = array_merge(...$filteredData);
+    @endphp
     <!-- begin breadcrumb -->
     <ol class="breadcrumb float-xl-right">
         <li class="breadcrumb-item"><a href="javascript:;">Beranda</a></li>
@@ -224,48 +245,20 @@
                                         <label class="col-lg-4 col-form-label">Mulai Tanggal</label>
                                         <div class="col-lg-3">
                                             <input type="date" class="form-control form-input text-small"
-                                                name="tgl_mulai" />
+                                                name="tgl_mulai" id="tgl_mulai" onchange="checkDate()" />
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="panel-body panel-form">
                                     <div class="form-group row mb-3">
                                         <label class="col-lg-4 col-form-label">Mulai Jam</label>
                                         <div class="col-lg-6">
                                             <div class="btn-group">
-                                                <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                                                    <label class="btn btn-white">
-                                                        <input type="radio" name="jam_mulai" value="8"
-                                                            id="8" />08:00
-                                                    </label>
-                                                    <label class="btn btn-white">
-                                                        <input type="radio" name="jam_mulai" value="9"
-                                                            id="9" />09:00
-                                                    </label>
-                                                    <label class="btn btn-white">
-                                                        <input type="radio" name="jam_mulai" value="10"
-                                                            id="10" />10:00
-                                                    </label>
-                                                    <label class="btn btn-white">
-                                                        <input type="radio" name="jam_mulai" value="11"
-                                                            id="11" />11:00
-                                                    </label>
-                                                    <label class="btn btn-white">
-                                                        <input type="radio" name="jam_mulai" value="12"
-                                                            id="12" />12:00
-                                                    </label>
-                                                    <label class="btn btn-white">
-                                                        <input type="radio" name="jam_mulai" value="13"
-                                                            id="13" />13:00
-                                                    </label>
-                                                    <label class="btn btn-white">
-                                                        <input type="radio" name="jam_mulai" value="14"
-                                                            id="14" />14:00
-                                                    </label>
-                                                    <label class="btn btn-white">
-                                                        <input type="radio" name="jam_mulai" value="15"
-                                                            id="15" />15:00
-                                                    </label>
+                                                <div class="btn-group btn-group-toggle" data-toggle="buttons"
+                                                    id="data-jam">
+                                                    <p class="tgl_info">*Silahkan pilih tanggal mulai terlebih dahulu,
+                                                        untuk melihat jam yang tersedia.</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -277,48 +270,20 @@
                                         <label class="col-lg-4 col-form-label">Selesai Tanggal</label>
                                         <div class="col-lg-3">
                                             <input type="date" class="form-control form-input text-small"
-                                                name="tgl_selesai" />
+                                                name="tgl_selesai" id="tgl_selesai" onchange="checkDateDua()" />
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="panel-body panel-form">
                                     <div class="form-group row mb-3">
                                         <label class="col-lg-4 col-form-label">Selesai Jam</label>
                                         <div class="col-lg-6">
                                             <div class="btn-group">
-                                                <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                                                    <label class="btn btn-white">
-                                                        <input type="radio" name="jam_selesai" value="8"
-                                                            id="8" />08:00
-                                                    </label>
-                                                    <label class="btn btn-white">
-                                                        <input type="radio" name="jam_selesai" value="9"
-                                                            id="9" />09:00
-                                                    </label>
-                                                    <label class="btn btn-white">
-                                                        <input type="radio" name="jam_selesai" value="10"
-                                                            id="10" />10:00
-                                                    </label>
-                                                    <label class="btn btn-white">
-                                                        <input type="radio" name="jam_selesai" value="11"
-                                                            id="11" />11:00
-                                                    </label>
-                                                    <label class="btn btn-white">
-                                                        <input type="radio" name="jam_selesai" value="12"
-                                                            id="12" />12:00
-                                                    </label>
-                                                    <label class="btn btn-white">
-                                                        <input type="radio" name="jam_selesai" value="13"
-                                                            id="13" />13:00
-                                                    </label>
-                                                    <label class="btn btn-white">
-                                                        <input type="radio" name="jam_selesai" value="14"
-                                                            id="14" />14:00
-                                                    </label>
-                                                    <label class="btn btn-white">
-                                                        <input type="radio" name="jam_selesai" value="15"
-                                                            id="15" />15:00
-                                                    </label>
+                                                <div class="btn-group btn-group-toggle" data-toggle="buttons"
+                                                    id="data-jam-dua">
+                                                    <p class="tgl_info">*Silahkan pilih tanggal selesai terlebih dahulu,
+                                                        untuk melihat jam yang tersedia.</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -489,5 +454,103 @@
 
             document.getElementById('valAlamat').value = inputValue;
         });
+    </script>
+
+    <script>
+        function checkDate() {
+            const selectedDate = document.getElementById("tgl_mulai").value
+            const currentDate = @json($arr);
+
+            const matchingDateItem = currentDate.find(item => item[0] === selectedDate);
+            const emptyArr = [];
+            const newArray = [];
+
+            if (matchingDateItem) {
+                const index1 = matchingDateItem[1];
+                const index2 = matchingDateItem[2];
+                emptyArr.push(index1, index2)
+            } else {
+                console.log("Tanggal tidak ditemukan dalam array.");
+            }
+
+            for (let i = parseInt(emptyArr[0]); i <= parseInt(emptyArr[1]); i++) {
+                newArray.push(i.toString().padStart(1, '0'));
+            }
+
+            console.log(newArray);
+
+            // ===================================================================
+
+            const jam = document.getElementById("data-jam");
+
+            const isDateInCurrentDate = currentDate.some(item => item[0] === selectedDate);
+
+            jam.innerHTML = '';
+
+            if (isDateInCurrentDate) {
+                for (let i = 8; i <= 15; i++) {
+                    const value = i.toString();
+
+                    if (!newArray.includes(value)) {
+                        jam.innerHTML +=
+                            `<label class="btn btn-white" id="result"><input type="radio" name="jam_mulai" value="${value}" id="${value}" />${value}:00</label>`;
+                    }
+                }
+            } else {
+                for (let i = 8; i <= 15; i++) {
+                    const value = i.toString();
+                    jam.innerHTML +=
+                        `<label class="btn btn-white" id="result"><input type="radio" name="jam_mulai" value="${value}" id="${value}" />${value}:00</label>`;
+                }
+            }
+        }
+
+        function checkDateDua() {
+            const selectedDate = document.getElementById("tgl_selesai").value
+            const currentDate = @json($arr);
+
+            const matchingDateItem = currentDate.find(item => item[0] === selectedDate);
+            const emptyArr = [];
+            const newArray = [];
+
+            if (matchingDateItem) {
+                const index1 = matchingDateItem[1];
+                const index2 = matchingDateItem[2];
+                emptyArr.push(index1, index2)
+            } else {
+                console.log("Tanggal tidak ditemukan dalam array.");
+            }
+
+            for (let i = parseInt(emptyArr[0]); i <= parseInt(emptyArr[1]); i++) {
+                newArray.push(i.toString().padStart(1, '0'));
+            }
+
+            console.log(newArray);
+
+            // ===================================================================
+
+            const jam = document.getElementById("data-jam-dua");
+
+            const isDateInCurrentDate = currentDate.some(item => item[0] === selectedDate);
+
+            jam.innerHTML = '';
+
+            if (isDateInCurrentDate) {
+                for (let i = 8; i <= 15; i++) {
+                    const value = i.toString();
+
+                    if (!newArray.includes(value)) {
+                        jam.innerHTML +=
+                            `<label class="btn btn-white" id="result"><input type="radio" name="jam_selesai" value="${value}" id="${value}" />${value}:00</label>`;
+                    }
+                }
+            } else {
+                for (let i = 8; i <= 15; i++) {
+                    const value = i.toString();
+                    jam.innerHTML +=
+                        `<label class="btn btn-white" id="result"><input type="radio" name="jam_selesai" value="${value}" id="${value}" />${value}:00</label>`;
+                }
+            }
+        }
     </script>
 @endpush
