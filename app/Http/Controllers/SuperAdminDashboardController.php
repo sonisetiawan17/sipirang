@@ -16,7 +16,12 @@ class SuperAdminDashboardController extends Controller
 {
     public function index()
     {
-        return view('super-admin.dashboard');
+        $data = [
+            'labels' => ['January', 'February', 'March', 'April', 'May'],
+            'data' => [65, 59, 80, 81, 56],
+        ];
+
+        return view('super-admin.dashboard', compact('data'));
     }
 
     public function buatPermohonan()
