@@ -6,7 +6,9 @@
 
 <!-- ================== BEGIN BASE CSS STYLE ================== -->
 {{-- <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,400;1,500;1,700&display=swap" rel="stylesheet"> --}}
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Mulish:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Poppins:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+<link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Mulish:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Poppins:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+    rel="stylesheet">
 
 <link href="/assets/css/default/app.min.css" rel="stylesheet" />
 <link href="{{ asset('css/app.css') }}" rel="stylesheet">
@@ -17,9 +19,7 @@
     integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
-    integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <style>
     body {
         font-size: 13px;
@@ -77,6 +77,30 @@
         font-size: 17px !important;
         font-weight: 500 !important;
         padding: 8px 0 !important;
+    }
+
+    .blue-gradient {
+        background: rgb(88, 184, 255);
+        background: linear-gradient(132deg, rgba(88, 184, 255, 1) 0%, rgba(0, 82, 255, 1) 100%);
+        box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    }
+
+    .yellow-gradient {
+        background: rgb(251, 188, 6);
+        background: linear-gradient(132deg, rgba(251, 188, 6, 1) 0%, rgba(233, 187, 0, 1) 100%);
+        box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    }
+
+    .red-gradient {
+        background: rgb(255, 115, 115);
+        background: linear-gradient(132deg, rgba(255, 115, 115, 1) 0%, rgba(255, 0, 0, 1) 100%);
+        box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    }
+
+    .green-gradient {
+        background: rgb(64, 210, 42);
+        background: linear-gradient(132deg, rgba(64, 210, 42, 1) 0%, rgba(33, 176, 31, 1) 100%);
+        box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
     }
 </style>
 @stack('css')

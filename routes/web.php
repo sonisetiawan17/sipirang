@@ -90,7 +90,9 @@ Route::middleware(['auth', 'role:super-admin'])
     ->name('superadmin.')
     ->group(function () {
         Route::get('/dashboard', [SuperAdminDashboardController::class, 'index'])->name('index');
+        Route::get('/dashboard/filter', [SuperAdminDashboardController::class, 'filter'])->name('dashboard.filter');
         Route::get('/jadwal', [CRUDController::class, 'index_jadwal'])->name('index_jadwal');
+        Route::get('/filter', [CRUDController::class, 'filter'])->name('filter');
 
         Route::get('/fasilitas', [CRUDController::class, 'index_fasilitas'])->name('index_fasilitas');
         Route::post('/ubahFasilitas', [CRUDController::class, 'ubah_fasilitas'])->name('ubah_fasilitas');

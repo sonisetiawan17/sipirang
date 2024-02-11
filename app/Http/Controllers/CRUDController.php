@@ -8,6 +8,7 @@ use App\Models\BlokRuangan;
 use App\Models\Fasilitas;
 use App\Models\Instansi;
 use App\Models\Permohonan;
+use App\Models\Student;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -20,7 +21,21 @@ class CRUDController extends Controller
 {
     public function index_jadwal()
     {
-        return view('super-admin.data-jadwal');
+        $students = Student::all();
+        
+        return view('super-admin.data-jadwal', compact('students'));
+    }
+
+    public function filter(Request $request)
+    {
+        $start_date = $request->start_date;
+        $end_date = $request->end_date;
+
+        $students = Student::whereDate('created_at', '>=', $start_date)
+                            ->whereDate('created_at', '<=', $end_date)
+                            ->get();
+        
+        return view('super-admin.data-jadwal', compact('students'));
     }
 
     // ============= FASILITAS =============

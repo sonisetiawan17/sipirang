@@ -9,19 +9,80 @@ use App\Models\Instansi;
 use App\Models\Jadwal;
 use App\Models\Permohonan;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 
 class SuperAdminDashboardController extends Controller
 {
     public function index()
     {
+        $current_month = Carbon::now()->format('F');
+        $current_month_short  = Carbon::now()->format('M');
+
         $data = [
             'labels' => ['January', 'February', 'March', 'April', 'May'],
             'data' => [65, 59, 80, 81, 56],
         ];
 
-        return view('super-admin.dashboard', compact('data'));
+        $permohonan = DB::table('permohonan')
+                        ->join('jadwal', 'jadwal.permohonan_id', '=', 'permohonan.id_permohonan')
+                        ->selectRaw('DATE_FORMAT(permohonan.created_at, "%b") as bulan, COUNT(*) as jumlah_permohonan')
+                        ->groupBy('bulan')
+                        ->get();
+        
+        foreach ($permohonan as $data) {
+            if ($data->bulan == $current_month_short) {
+                $stats = $data->jumlah_permohonan;
+            }
+        }
+
+        $status_diterima = DB::table('permohonan')
+                             ->join('jadwal', 'jadwal.permohonan_id', '=', 'permohonan.id_permohonan')
+                             ->where('status_permohonan', 'Diterima')
+                             ->count();
+        
+        $status_menunggu = DB::table('permohonan')
+                            ->join('jadwal', 'jadwal.permohonan_id', '=', 'permohonan.id_permohonan')
+                            ->where('status_permohonan', 'Menunggu')
+                            ->count();
+            
+        $status_ditolak = DB::table('permohonan')
+                            ->join('jadwal', 'jadwal.permohonan_id', '=', 'permohonan.id_permohonan')
+                            ->where('status_permohonan', 'Ditolak')
+                            ->count();
+        
+        return view('super-admin.dashboard', compact('data', 'status_diterima', 'status_menunggu', 'status_ditolak', 'current_month', 'stats'));
+    }
+
+    public function filter(Request $request)
+    {
+        $start_date = $request->start_date;
+        $end_date = $request->end_date;
+
+        $status_diterima = DB::table('permohonan')
+                             ->join('jadwal', 'jadwal.permohonan_id', '=', 'permohonan.id_permohonan')
+                             ->where('status_permohonan', 'Diterima')
+                             ->whereDate('permohonan.created_at', '>=', $start_date)
+                             ->whereDate('permohonan.created_at', '<=', $end_date)
+                             ->count();
+        
+        $status_menunggu = DB::table('permohonan')
+                             ->join('jadwal', 'jadwal.permohonan_id', '=', 'permohonan.id_permohonan')
+                             ->where('status_permohonan', 'Menunggu')
+                             ->whereDate('permohonan.created_at', '>=', $start_date)
+                             ->whereDate('permohonan.created_at', '<=', $end_date)
+                             ->count();
+
+        $status_ditolak = DB::table('permohonan')
+                             ->join('jadwal', 'jadwal.permohonan_id', '=', 'permohonan.id_permohonan')
+                             ->where('status_permohonan', 'Ditolak')
+                             ->whereDate('permohonan.created_at', '>=', $start_date)
+                             ->whereDate('permohonan.created_at', '<=', $end_date)
+                             ->count();
+
+        return view('super-admin.dashboard', compact('status_diterima', 'status_ditolak', 'status_menunggu'));
     }
 
     public function buatPermohonan()

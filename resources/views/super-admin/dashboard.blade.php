@@ -10,134 +10,134 @@
 @endpush
 
 @section('content')
-    {{-- <div class="grid grid-cols-2">
-		<div>
-			<canvas id="myChart" height="200px"></canvas>
-		</div>
-	</div> --}}
-
     <div>
-        <h1 class="font-semibold text-xl">Statistik Terbaru</h1>
-        <div class="grid grid-cols-4 gap-x-7 mt-3">
-            <div class="bg-white shadow-sm px-[20px] py-[20px] rounded-sm">
-                <p class="text-neutral-500">Data permohonan</p>
-                <div class="flex flex-row items-end gap-x-5 pt-3">
-                    <div class="px-[16px] py-[12px] rounded-full bg-blue-500">
-                        <i class="fa fa-check text-xl text-white"></i>
+        <div class="flex items-end justify-between">
+            <h1 class="font-semibold text-xl">Statistik Terbaru</h1>
+            <div>
+                <a href="#modal-dialog" data-toggle="modal">
+                    <button class="px-4 py-2 shadow-sm border border-neutral-400 focus:border-none">
+                        <i class="fa fa-filter mr-1"></i>Filter
+                    </button>
+                </a>
+                <select class="form-input text-sm ml-2" name="skpd">
+                    <option disabled selected>Semua Waktu</option>
+                    <option value="skpd">Hari Ini</option>
+                    <option value="non_skpd">7 Hari Terakhir</option>
+                    <option value="non_skpd">1 Bulan Terakhir</option>
+                    <option value="non_skpd">3 Bulan Terakhir</option>
+                    <option value="non_skpd">6 Bulan Terakhir</option>
+                    <option value="non_skpd">1 Tahun Terakhir</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="modal fade" id="modal-dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Filter Berdasarkan Range Waktu</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                     </div>
-                    <div class="flex flex-col items-center">
-                        <p class="font-semibold" style="font-size: 18px">1</p>
-                        <p style="font-size: 13px">Disetujui</p>
+                    <div class="modal-body">
+                        <form method="GET" action="{{ route('superadmin.dashboard.filter') }}">
+                            @csrf
+                            <div class="form-group row m-b-15">
+                                <label class="col-md-5 col-form-label">Dari Tanggal</label>
+                                <div class="col-md-7">
+                                    <input required name="start_date" type="date"
+                                        class="form-control form-input text-small" />
+                                </div>
+                                <label class="col-md-5 col-form-label mt-3">Sampai Tanggal</label>
+                                <div class="col-md-7 mt-3">
+                                    <input required name="end_date" type="date"
+                                        class="form-control form-input text-small" />
+                                </div>
+                            </div>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="javascript:;" class="button-ghost" data-dismiss="modal">Tutup</a>
+                        <button type="submit" class="button-primary">Cek Data</button>
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="grid grid-cols-4 gap-x-7 mt-3">
+            <div class="blue-gradient px-[20px] py-[20px] rounded-xl">
+                <p class="text-white">Data permohonan bulan ini</p>
+                <div class="flex flex-row items-end gap-x-5 pt-3">
+                    <div class="px-[19px] py-[12px] rounded-full bg-white">
+                        <i class="fa fa-clipboard-check text-xl text-blue-500"></i>
+                    </div>
+                    <div class="flex flex-col items-center text-white">
+                        <p class="font-semibold" style="font-size: 18px">{{ $stats }}</p>
+                        <p style="font-size: 13px">{{ $current_month }}</p>
                     </div>
                 </div>
             </div>
 
-            <div class="bg-white shadow-sm px-[20px] py-[20px] rounded-sm">
-                <p class="text-neutral-500">Data permohonan</p>
+            <div class="yellow-gradient px-[20px] py-[20px] rounded-xl">
+                <p class="text-white">Data permohonan</p>
                 <div class="flex flex-row items-end gap-x-5 pt-3">
-                    <div class="px-[16px] py-[12px] rounded-full bg-yellow-500">
-                        <i class="fa fa-spinner text-xl text-white"></i>
+                    <div class="px-[16px] py-[12px] rounded-full bg-white">
+                        <i class="fa fa-spinner text-xl text-yellow-500"></i>
                     </div>
-                    <div class="flex flex-col items-center">
-                        <p class="font-semibold" style="font-size: 18px">1</p>
+                    <div class="flex flex-col items-center text-white">
+                        <p class="font-semibold" style="font-size: 18px">{{ $status_menunggu }}</p>
                         <p style="font-size: 13px">Dalam Proses</p>
                     </div>
                 </div>
             </div>
 
-            <div class="bg-white shadow-sm px-[20px] py-[20px] rounded-sm">
-                <p class="text-neutral-500">Data permohonan</p>
+            <div class="red-gradient px-[20px] py-[20px] rounded-xl">
+                <p class="text-white">Data permohonan</p>
                 <div class="flex flex-row items-end gap-x-5 pt-3">
-                    <div class="px-[16px] py-[12px] rounded-full bg-red-500">
-                        <i class="fa fa-ban text-xl text-white"></i>
+                    <div class="px-[16px] py-[12px] rounded-full bg-white">
+                        <i class="fa fa-ban text-xl text-red-500"></i>
                     </div>
-                    <div class="flex flex-col items-center">
-                        <p class="font-semibold" style="font-size: 18px">1</p>
+                    <div class="flex flex-col items-center text-white">
+                        <p class="font-semibold" style="font-size: 18px">{{ $status_ditolak }}</p>
                         <p style="font-size: 13px">Ditolak</p>
                     </div>
                 </div>
             </div>
 
-            <div class="bg-white shadow-sm px-[20px] py-[20px] rounded-sm">
-                <p class="text-neutral-500">Data permohonan</p>
+            <div class="green-gradient px-[20px] py-[20px] rounded-xl">
+                <p class="text-white">Data permohonan</p>
                 <div class="flex flex-row items-end gap-x-5 pt-3">
-                    <div class="px-[19px] py-[12px] rounded-full bg-green-500">
-                        <i class="fa fa-clipboard-check text-xl text-white"></i>
+                    <div class="px-[16px] py-[12px] rounded-full bg-white">
+                        <i class="fa fa-check text-xl text-green-500"></i>
                     </div>
-                    <div class="flex flex-col items-center">
-                        <p class="font-semibold" style="font-size: 18px">1</p>
-                        <p style="font-size: 13px">Selesai</p>
+                    <div class="flex flex-col items-center text-white">
+                        <p class="font-semibold" style="font-size: 18px">{{ $status_diterima }}</p>
+                        <p style="font-size: 13px">Disetujui</p>
                     </div>
                 </div>
             </div>
+
         </div>
-    </div>
+    </div> 
 
-    <div>
-        <h1 class="font-semibold text-xl mt-5">Bidang Kegiatan Terbanyak</h1>
-        <div class="grid grid-cols-4 gap-x-7 mt-3">
-            <div class="bg-white shadow-sm px-[20px] py-[20px] rounded-sm">
-                <p class="text-neutral-500">Bidang Kegiatan</p>
-                <div class="flex flex-row items-end gap-x-5 pt-3">
-                    <div class="px-[14px] py-[12px] rounded-full bg-blue-500">
-                        <i class="fa fa-users text-xl text-white"></i>
-                    </div>
-                    <div class="flex flex-col items-center">
-                        <p class="font-semibold" style="font-size: 18px">1</p>
-                        <p style="font-size: 13px">Bappenda</p>
-                    </div>
-                </div>
+    <div class="mt-5">
+        <div class="mt-3 grid grid-cols-3 gap-5">
+            <div class="col-span-2 bg-white border border-neutral-500 rounded-lg p-7">
+                <h1 class="font-semibold text-xl mb-5">Chart Statistik Permohonan</h1>
+                <canvas id="barChart" height="150px"></canvas>
             </div>
-
-            <div class="bg-white shadow-sm px-[20px] py-[20px] rounded-sm">
-                <p class="text-neutral-500">Bidang Kegiatan</p>
-                <div class="flex flex-row items-end gap-x-5 pt-3">
-                    <div class="px-[14px] py-[12px] rounded-full bg-yellow-500">
-                        <i class="fa fa-users text-xl text-white"></i>
-                    </div>
-                    <div class="flex flex-col items-center">
-                        <p class="font-semibold" style="font-size: 18px">1</p>
-                        <p style="font-size: 13px">DPMPTSP</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-white shadow-sm px-[20px] py-[20px] rounded-sm">
-                <p class="text-neutral-500">Bidang Kegiatan</p>
-                <div class="flex flex-row items-end gap-x-5 pt-3">
-                    <div class="px-[14px] py-[12px] rounded-full bg-red-500">
-                        <i class="fa fa-users text-xl text-white"></i>
-                    </div>
-                    <div class="flex flex-col items-center">
-                        <p class="font-semibold" style="font-size: 18px">1</p>
-                        <p style="font-size: 13px">Disdukcapil</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-white shadow-sm px-[20px] py-[20px] rounded-sm">
-                <p class="text-neutral-500">Bidang Kegiatan</p>
-                <div class="flex flex-row items-end gap-x-5 pt-3">
-                    <div class="px-[14px] py-[12px] rounded-full bg-green-500">
-                        <i class="fa fa-users text-xl text-white"></i>
-                    </div>
-                    <div class="flex flex-col items-center">
-                        <p class="font-semibold" style="font-size: 18px">1</p>
-                        <p style="font-size: 13px">Diskominfo</p>
-                    </div>
-                </div>
+            <div class="col-span-1 bg-white border border-neutral-500 rounded-lg p-7">
+                <h1 class="font-semibold text-xl mb-5">Bidang Kegiatan Terbanyak</h1>
+                <canvas id="dougnutChart" height="150px"></canvas>
             </div>
         </div>
     </div>
 
     <div class="mt-5">
-        <h1 class="font-semibold text-xl">Chart Statistik Permohonan</h1>
-        <div class="mt-3 grid grid-cols-2 gap-5 bg-white p-7">
-            <div>
-                <canvas id="myChart" height="200px"></canvas>
-            </div>
-            <div>
-                <canvas id="myChart2" height="200px"></canvas>
+        <div class="mt-3">
+            <div class="bg-white border border-neutral-500 rounded-lg p-7">
+                <h1 class="font-semibold text-xl mb-5">Chart Statistik Permohonan</h1>
+                <canvas id="lineChart" height="100px"></canvas>
             </div>
         </div>
     </div>
@@ -158,47 +158,40 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script>
-        const ctx = document.getElementById('myChart');
+        const barctx = document.getElementById('barChart');
 
-        new Chart(ctx, {
+        new Chart(barctx, {
             type: 'bar',
             data: {
                 labels: [
-                    'Januari',
-                    'Februari',
-                    'Maret',
-                    'April',
+                    'Jan',
+                    'Feb',
+                    'Mar',
+                    'Apr',
                     'Mei',
-                    'Juni',
-                    'Juli',
-                    'Agustus',
-                    'September',
-                    'Oktober',
-                    'November',
-                    'Desember',
+                    'Jun',
+                    'Jul',
+                    'Agu',
+                    'Sep',
+                    'Okt',
+                    'Nov',
+                    'Des',
                 ],
                 datasets: [{
-                    label: 'My First Dataset',
+                    label: 'Aula',
                     data: [65, 59, 80, 81, 56, 55, 40, 30, 90, 75, 60, 85],
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(255, 159, 64, 0.2)',
-                        'rgba(255, 205, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(201, 203, 207, 0.2)'
-                    ],
-                    borderColor: [
-                        'rgb(255, 99, 132)',
-                        'rgb(255, 159, 64)',
-                        'rgb(255, 205, 86)',
-                        'rgb(75, 192, 192)',
-                        'rgb(54, 162, 235)',
-                        'rgb(153, 102, 255)',
-                        'rgb(201, 203, 207)'
-                    ],
-                    borderWidth: 1
+                    backgroundColor: 'rgba(60, 91, 214, 1)',
+                    borderColor: 'rgba(60, 91, 214, 1)',
+                    borderWidth: 1,
+                    borderRadius: 5,
+                },
+                {
+                    label: 'Multimedia',
+                    data: [65, 59, 80, 81, 56, 55, 40, 30, 90, 75, 60, 85],
+                    backgroundColor: 'rgba(170, 168, 236, 1)',
+                    borderColor: 'rgba(170, 168, 236, 1)',
+                    borderWidth: 1,
+                    borderRadius: 5,
                 }]
             },
             options: {
@@ -210,55 +203,66 @@
             },
         });
 
-        const ctx2 = document.getElementById('myChart2');
+        const dougnutctx = document.getElementById('dougnutChart');
 
-        new Chart(ctx2, {
+        new Chart(dougnutctx, {
+            type: 'doughnut',
+            data: {
+                labels: [
+                'Penanaman Modal',
+                'Perekonomian',
+                'Pembangunan'
+            ],
+            datasets: [{
+                label: 'My First Dataset',
+                data: [300, 50, 100],
+                backgroundColor: [
+                'rgb(0, 168, 232)',
+                'rgb(239, 35, 60)',
+                'rgb(128, 237, 153)'
+                ],
+                hoverOffset: 4,
+            }]
+            },
+            options: {
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top',
+                        labels: {
+                            usePointStyle: true,
+                        }
+                    }
+                }
+            },
+        });
+
+        const linectx = document.getElementById('lineChart');
+
+        new Chart(linectx, {
             type: 'line',
             data: {
                 labels: [
-                    'Januari',
-                    'Februari',
-                    'Maret',
-                    'April',
+                    'Jan',
+                    'Feb',
+                    'Mar',
+                    'Apr',
                     'Mei',
-                    'Juni',
-                    'Juli',
-                    'Agustus',
-                    'September',
-                    'Oktober',
-                    'November',
-                    'Desember',
+                    'Jun',
+                    'Jul',
+                    'Agu',
+                    'Sep',
+                    'Okt',
+                    'Nov',
+                    'Des',
                 ],
                 datasets: [{
-                    label: 'My First Dataset',
+                    label: 'Statistik 1 Tahun',
                     data: [65, 59, 80, 81, 56, 55, 40, 30, 90, 75, 60, 85],
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(255, 159, 64, 0.2)',
-                        'rgba(255, 205, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(201, 203, 207, 0.2)'
-                    ],
-                    borderColor: [
-                        'rgb(255, 99, 132)',
-                        'rgb(255, 159, 64)',
-                        'rgb(255, 205, 86)',
-                        'rgb(75, 192, 192)',
-                        'rgb(54, 162, 235)',
-                        'rgb(153, 102, 255)',
-                        'rgb(201, 203, 207)'
-                    ],
-                    borderWidth: 1
+                    fill: false,
+                    borderColor: 'rgba(238, 96, 85, 1)',
+                    tension: 0.1
                 }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
             },
         });
     </script>
