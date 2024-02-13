@@ -1,293 +1,168 @@
-@extends('layouts.user')
+<!DOCTYPE html>
+<html lang="{{ app()->getLocale() }}">
 
-@section('title', 'Dashboard V2')
+<head>
+    @include('includes.head')
+</head>
 
-@push('css')
-    <link href="/assets/plugins/jvectormap-next/jquery-jvectormap.css" rel="stylesheet" />
-    <link href="/assets/plugins/bootstrap-calendar/css/bootstrap_calendar.css" rel="stylesheet" />
-    <link href="/assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
-    <link href="/assets/plugins/nvd3/build/nv.d3.css" rel="stylesheet" />
-@endpush
+{{-- @push('css')
+    <link href="/assets/plugins/smartwizard/dist/css/smart_wizard.css" rel="stylesheet" />
+    <link href="/assets/plugins/bootstrap-datepicker/dist/css/bootstrap-datepicker.css" rel="stylesheet" />
+    <link href="/assets/plugins/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css" rel="stylesheet" />
+    <link href="/assets/plugins/lightbox2/dist/css/lightbox.css" rel="stylesheet" />
+@endpush --}}
 
-@section('content')
-
-    @php
-        $data_jam = ['8', '9', '10', '11', '12', '13', '14', '15'];
-        $jadwal = $jadwalArray;
-
-        $curr = '2024-01-24';
-        $arr = [['2024-02-02', '10', '13'], ['2024-02-02', '9', '11']];
-
-        $filteredData = [];
-
-        foreach ($arr as $data) {
-            if ($data[0] === $curr) {
-                $start = intval($data[1]);
-                $end = intval($data[2]);
-
-                $filteredData[] = array_map('strval', range($start, $end));
-            }
-        }
-
-        $filteredData = array_merge(...$filteredData);
-    @endphp
-
-    <div class="panel-body panel-form">
-        <div class="form-group row mb-3">
-            <label class="col-lg-4 col-form-label">Mulai Tanggal</label>
-            <div class="col-lg-3">
-                <input type="date" class="form-control form-input text-small" name="tgl_mulai" id="tgl_mulai"
-                    onchange="checkDate()" />
+<body>
+    <nav class="fixed bg-transparent z-10 w-full border-b border-neutral-200">
+        <div class="py-2 px-32">
+            <div class="flex flex-row items-center justify-between">
+                <div>
+                    <img src="{{ asset('/assets/img/auth/logo.png') }}" class="h-[60px]" />
+                </div>
+                <div class="flex items-center gap-x-7">
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <a :href="route('logout')" onclick="event.preventDefault(); this.closest('form').submit();"><p class="font-semibold cursor-pointer hover:text-[#0d34cd]">Log out</p></a>         
+                    </form>
+                    <button class="button-primary text-small rounded-lg px-4">Dashboard</button>
+                </div>
             </div>
         </div>
-    </div>
+    </nav>
+    <main class="bg-[#f7f7f8]">
+        <div class="pt-[77px] relative h-screen">
+            <div class="absolute z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[70%]">
+                <div>
+                    <h1 class="font-bold text-6xl text-center">Sistem Informasi Peminjaman <span
+                            class="block pt-3 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-transparent bg-clip-text h-[85px]">Media Platform</span></h1>
+                    <p class="pt-4 font-semibold text-lg text-center">87% Murid di Akademi berhasil melipatgandakan
+                        portofolionya <span class="block pt-2">dalam waktu 3 bulan menggunakan strategi kita.</span></p>
+                </div>
 
-    <div class="panel-body panel-form">
-        <div class="form-group row mb-3">
-            <label class="col-lg-4 col-form-label">Mulai Jam</label>
-            <div class="col-lg-6">
-                <div class="btn-group">
-                    <div class="btn-group btn-group-toggle" data-toggle="buttons" id="data-jam">
-                        <p class="tgl_info">*Silahkan pilih tanggal mulai terlebih dahulu, untuk melihat jam yang tersedia.</p>
+                <div class="mt-10 text-center">
+                    <button class="bg-gradient-to-t from-primary to-blue-500 text-small rounded-lg px-4 text-white" style="padding: 8px 12px; box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;">Lihat Ruangan</button>
+                </div>
+            </div>
+
+            <div class="absolute bottom-0 bg-center bg-cover w-full h-[70%] z-0" style="background: linear-gradient(transparent 0%, #eff3fb 100%);">
+                <!-- Your content goes here -->
+            </div>            
+        </div>
+
+        <div class="bg-[#eff3fb]">
+            {{-- <div class="flex flex-row items-center justify-between gap-3">
+                <div class="w-[40%] h-[2px] bg-neutral-400/20"></div>
+                <h1 class="text-xl uppercase font-medium tracking-widest bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-transparent bg-clip-text">Pilih Ruangan</h1>
+                <div class="w-[40%] h-[2px] bg-neutral-400/20"></div>
+            </div> --}}
+            <div class="w-full h-[2px] bg-gradient-to-r from-blue-500 via-indigo-500 to-blue-500 relative">
+                <div class="absolute left-0 transform -translate-y-1/2 w-[40%] h-[50px]" style="background: linear-gradient(270deg, transparent 0%, #eff3fb 75%);"></div>
+                <div class="absolute right-0 transform -translate-y-1/2 w-[40%] h-[50px]" style="background: linear-gradient(90deg, transparent 0%, #eff3fb 75%);"></div>
+            </div>
+
+            <div class="mt-5 text-center">
+                <h1 class="text-xl uppercase font-semibold tracking-widest bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-transparent bg-clip-text">Pilih Ruangan</h1>
+            </div>
+
+            <div class="mt-12 flex items-start justify-center gap-5">
+                @foreach ($fasilitas as $item)
+                <div class="bg-[#f2f5fa] border shadow-sm rounded-xl w-[35%] mt-3 cursor-pointer transition-all duration-300 hover:transform hover:-translate-y-4 hover:transition-all hover:duration-300" style="padding: 12px">
+                    <div class="card-content text-center">
+                        <div class="flex items-center justify-center gap-3">
+                            <img src="{{ asset('/assets/img/auth/room.png') }}" class="h-7" />
+                            <h3 class="font-bold text-[#0d34cd]" style="font-size: 19px">
+                                {{ $item->nama_fasilitas }}
+                            </h3>
+                        </div>
+                        <p class="mt-3 font-semibold" style="font-size: 19px">
+                            Helps you write and review essays 3x faster
+                        </p>
+                        <p class="mt-1 text-gray-600">
+                            Get essay feedback specific to your essays in seconds, anytime.
+                        </p>
+                        <button id="modal_show" type="button" data-toggle="modal" data-target="#isimodal" data-id_fasilitas="{{ $item->id_fasilitas }}" data-nama_fasilitas="{{ $item->nama_fasilitas }}" class="mt-2 py-2 px-3 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none w-full">
+                            Pilih Ruangan
+                        </button>
+                    </div>
+                    <img class="w-full h-auto rounded-xl border border-green-500 mt-4"
+                        src="https://images.unsplash.com/photo-1680868543815-b8666dba60f7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2532&q=80"
+                        alt="Image Description">
+                </div>
+                @endforeach
+            </div>
+
+            <div class="modal fade" id="isimodal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Pilih Jadwal Peminjaman</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        </div>
+                        <div class="modal-body mx-3" id="tampil_modal">
+                            <form method="get" action="{{ route('user.buatPermohonanForm') }}">
+                                @csrf
+                                <div class="form-group m-b-15">
+                                    <input type="hidden" class="form-control form-input text-small" name="id_fasilitas" id="id_fasilitas" />
+                                    <input type="hidden" class="form-control form-input text-small" name="nama_fasilitas" id="nama_fasilitas" />
+                                    <label class="col-form-label">Tanggal Mulai <sup class="text-red">*</sup></label>
+                                    <div class="block">
+                                        <input type="date" class="form-control form-input text-small" name="tgl_mulai" id="tgl_mulai" onchange="checkDate()" />
+                                    </div>
+        
+                                    <label class="col-form-label mt-3">Jam Mulai <sup class="text-red">*</sup></label>
+                                    <div class="block">
+                                        <div class="btn-group btn-group-toggle" data-toggle="buttons" id="data-jam">
+                                            <p class="tgl_info">*Silahkan pilih tanggal mulai terlebih dahulu.</p>
+                                        </div>
+                                    </div>
+        
+                                    <label class="col-form-label mt-3">Tanggal Selesai <sup class="text-red">*</sup></label>
+                                    <div class="block">
+                                        <input type="date" class="form-control form-input text-small" name="tgl_selesai" id="tgl_selesai" onchange="checkDateDua()" />
+                                    </div>
+        
+                                    <label class="col-form-label mt-3">Jam Selesai <sup class="text-red">*</sup></label>
+                                    <div class="block">
+                                        <div class="btn-group btn-group-toggle" data-toggle="buttons" id="data-jam-dua">
+                                            <p class="tgl_info">*Silahkan pilih tanggal selesai terlebih dahulu.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
+                        <div class="modal-footer font-semibold text-sm">
+                            <a href="javascript:;" class="button-ghost" data-dismiss="modal">Tutup</a>
+                            <button type="submit" class="button-primary">Lanjutkan</button>
+                        </div>
+                        </form>
                     </div>
                 </div>
             </div>
+
         </div>
-    </div>
+    </main>
 
-    <div class="panel-body panel-form">
-        <div class="form-group row mb-3">
-            <label class="col-lg-4 col-form-label">Selesai Tanggal</label>
-            <div class="col-lg-3">
-                <input type="date" class="form-control form-input text-small" name="tgl_selesai" id="tgl_selesai"
-                    onchange="checkDateDua()" />
-            </div>
-        </div>
-    </div>
+    
 
-    <div class="panel-body panel-form">
-        <div class="form-group row mb-3">
-            <label class="col-lg-4 col-form-label">Selesai Jam</label>
-            <div class="col-lg-6">
-                <div class="btn-group">
-                    <div class="btn-group btn-group-toggle" data-toggle="buttons" id="data-jam-dua">
-                        <p class="tgl_info">*Silahkan pilih tanggal selesai terlebih dahulu, untuk melihat jam yang tersedia.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    
+</body>
 
-    {{-- <div class="panel-body panel-form">
-    <div class="form-group row mb-3">
-        <label class="col-lg-4 col-form-label">Selesai Tanggal</label>
-        <div class="col-lg-3">
-            <input type="date" class="form-control form-input text-small" name="tgl_selesai" id="tgl_selesai" onchange="checkDate()" />
-        </div>
-    </div>
-</div>
+{{-- @push('scripts')
+        <script src="/assets/plugins/smartwizard/dist/js/jquery.smartWizard.js"></script>
+        <script src="/assets/js/demo/form-wizards.demo.js"></script>
+        <script src="/assets/plugins/bootstrap-datepicker/dist/js/bootstrap-datepicker.js"></script>
+        <script src="/assets/plugins/isotope-layout/dist/isotope.pkgd.min.js"></script>
+        <script src="/assets/plugins/lightbox2/dist/js/lightbox.min.js"></script>
+        <script src="/assets/js/demo/gallery.demo.js"></script>
 
-<div class="panel-body panel-form">
-    <div class="form-group row mb-3">
-        <label class="col-lg-4 col-form-label">Selesai Jam</label>
-        <div class="col-lg-6">
-            <div class="btn-group">
-                <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                    <label class="btn btn-white" id="{{ $jam_selesai && in_array("8", $jam_selesai) ? "result" : "8" }}">                        
-                        <input type="radio" name="jam_selesai" value="8"
-                            id="8" />08:00
-                    </label>
-                    <label class="btn btn-white" id="{{ $jam_selesai && in_array("9", $jam_selesai) ? "result" : "9" }}">
-                        <input type="radio" name="jam_selesai" value="9"
-                            id="9" />09:00
-                    </label>
-                    <label class="btn btn-white" id="{{ $jam_selesai && in_array("10", $jam_selesai) ? "result" : "10" }}">
-                        <input type="radio" name="jam_selesai" value="10"
-                            id="10" />10:00
-                    </label>
-                    <label class="btn btn-white" id="{{ $jam_selesai && in_array("11", $jam_selesai) ? "result" : "11" }}">
-                        <input type="radio" name="jam_selesai" value="11"
-                            id="11" />11:00
-                    </label>
-                    <label class="btn btn-white" id="{{ $jam_selesai && in_array("12", $jam_selesai) ? "result" : "12" }}">
-                        <input type="radio" name="jam_selesai" value="12"
-                            id="12" />12:00
-                    </label>
-                    <label class="btn btn-white" id="{{ $jam_selesai && in_array("13", $jam_selesai) ? "result" : "13" }}">
-                        <input type="radio" name="jam_selesai" value="13"
-                            id="13" />13:00
-                    </label>
-                    <label class="btn btn-white" id="{{ $jam_selesai && in_array("14", $jam_selesai) ? "result" : "14" }}">
-                        <input type="radio" name="jam_selesai" value="14"
-                            id="14" />14:00
-                    </label>
-                    <label class="btn btn-white" id="{{ $jam_selesai && in_array("15", $jam_selesai) ? "result" : "15" }}">
-                        <input type="radio" name="jam_selesai" value="15"
-                            id="15" />15:00
-                    </label>
-                </div>
-            </div>
-        </div>
-    </div>
-</div> --}}
+        <script type="text/javascript">
+            $(document).on("click", "#modal_show", function() {
+                var id_fasilitas = $(this).data('id_fasilitas');
+                var nama_fasilitas = $(this).data('nama_fasilitas');
 
-    {{-- <h1 id="result">False</h1> --}}
+                $("#tampil_modal #id_fasilitas").val(id_fasilitas);
+                $("#tampil_modal #nama_fasilitas").val(nama_fasilitas);
+            })
+        </script>
+    @endpush --}}
 
-@endsection
-
-@push('scripts')
-    <script src="/assets/plugins/d3/d3.min.js"></script>
-    <script src="/assets/plugins/nvd3/build/nv.d3.js"></script>
-    <script src="/assets/plugins/jvectormap-next/jquery-jvectormap.min.js"></script>
-    <script src="/assets/plugins/jvectormap-next/jquery-jvectormap-world-mill.js"></script>
-    <script src="/assets/plugins/bootstrap-calendar/js/bootstrap_calendar.min.js"></script>
-    <script src="/assets/plugins/gritter/js/jquery.gritter.js"></script>
-    <script src="/assets/js/demo/dashboard-v2.js"></script>
-
-    <script>
-        let tabs = document.querySelectorAll(".tab");
-        let indicator = document.querySelector(".indicator");
-        let panels = document.querySelectorAll(".tab-panel");
-
-        indicator.style.width = tabs[0].getBoundingClientRect().width + "px";
-        indicator.style.left =
-            tabs[0].getBoundingClientRect().left -
-            tabs[0].parentElement.getBoundingClientRect().left +
-            "px";
-
-        tabs.forEach((tab) => {
-            tab.addEventListener("click", () => {
-                let tabTarget = tab.getAttribute("aria-controls");
-
-                indicator.style.width = tab.getBoundingClientRect().width + "px";
-                indicator.style.left =
-                    tab.getBoundingClientRect().left -
-                    tab.parentElement.getBoundingClientRect().left +
-                    "px";
-
-                panels.forEach((panel) => {
-                    let panelId = panel.getAttribute("id");
-                    if (tabTarget === panelId) {
-                        panel.classList.remove("invisible", "opacity-0");
-                        panel.classList.add("visible", "opacity-100");
-                    } else {
-                        panel.classList.add("invisible", "opacity-0");
-                    }
-                });
-            });
-        });
-    </script>
-
-    <script>
-        function checkDate() {
-            const selectedDate = document.getElementById("tgl_mulai").value
-            const currentDate = @json($arr);
-
-            const matchingDateItem = currentDate.find(item => item[0] === selectedDate);
-            const emptyArr = [];
-            const newArray = [];
-
-            if (matchingDateItem) {
-                const index1 = matchingDateItem[1];
-                const index2 = matchingDateItem[2];
-                emptyArr.push(index1, index2)
-            } else {
-                console.log("Tanggal tidak ditemukan dalam array.");
-            }
-
-            for (let i = parseInt(emptyArr[0]); i <= parseInt(emptyArr[1]); i++) {
-                newArray.push(i.toString().padStart(1, '0'));
-            }
-
-            console.log(newArray);
-
-            // ===================================================================
-
-            const jam = document.getElementById("data-jam");
-
-            const isDateInCurrentDate = currentDate.some(item => item[0] === selectedDate);
-
-            jam.innerHTML = '';
-
-            if (isDateInCurrentDate) {
-                for (let i = 8; i <= 15; i++) {
-                    const value = i.toString();
-
-                    if (!newArray.includes(value)) {
-                        jam.innerHTML +=
-                            `<label class="btn btn-white" id="result"><input type="radio" name="jam_mulai" value="${value}" id="${value}" />${value}:00</label>`;
-                    }
-                }
-            } else {
-                for (let i = 8; i <= 15; i++) {
-                    const value = i.toString();
-                    jam.innerHTML +=
-                        `<label class="btn btn-white" id="result"><input type="radio" name="jam_mulai" value="${value}" id="${value}" />${value}:00</label>`;
-                }
-            }
-        }
-
-        function checkDateDua() {
-            const selectedDate = document.getElementById("tgl_selesai").value
-            const currentDate = @json($arr);
-
-            const matchingDateItem = currentDate.find(item => item[0] === selectedDate);
-            const emptyArr = [];
-            const newArray = [];
-
-            if (matchingDateItem) {
-                const index1 = matchingDateItem[1];
-                const index2 = matchingDateItem[2];
-                emptyArr.push(index1, index2)
-            } else {
-                console.log("Tanggal tidak ditemukan dalam array.");
-            }
-
-            for (let i = parseInt(emptyArr[0]); i <= parseInt(emptyArr[1]); i++) {
-                newArray.push(i.toString().padStart(1, '0'));
-            }
-
-            console.log(newArray);
-
-            // ===================================================================
-
-            const jam = document.getElementById("data-jam-dua");
-
-            const isDateInCurrentDate = currentDate.some(item => item[0] === selectedDate);
-
-            jam.innerHTML = '';
-
-            if (isDateInCurrentDate) {
-                for (let i = 8; i <= 15; i++) {
-                    const value = i.toString();
-
-                    if (!newArray.includes(value)) {
-                        jam.innerHTML +=
-                            `<label class="btn btn-white" id="result"><input type="radio" name="jam_selesai" value="${value}" id="${value}" />${value}:00</label>`;
-                    }
-                }
-            } else {
-                for (let i = 8; i <= 15; i++) {
-                    const value = i.toString();
-                    jam.innerHTML +=
-                        `<label class="btn btn-white" id="result"><input type="radio" name="jam_selesai" value="${value}" id="${value}" />${value}:00</label>`;
-                }
-            }
-        }
-    </script>
-
-    {{-- <script>
-        function checkDate() {
-            const selectedDate = document.getElementById("tgl_mulai").value
-            const currentDate = @json($currentDate); 
-
-            const isDateInCurrentDate = currentDate.includes(selectedDate);
-
-            if (isDateInCurrentDate) {
-                document.getElementById("result").classList.add('hidden');
-            } else {
-                document.getElementById("result").classList.remove('hidden');
-            }
-        }
-    </script> --}}
-@endpush
+</html>

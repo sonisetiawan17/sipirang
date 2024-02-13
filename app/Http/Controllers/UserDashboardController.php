@@ -21,6 +21,7 @@ class UserDashboardController extends Controller
 {
     public function index()
     {
+        $fasilitas = DB::table('fasilitas')->get();
         // $curr = "2024-01-24";
         // $arr = [["2024-01-24", "10", "13"], ["2024-01-29", "09", "11"]];
 
@@ -62,14 +63,10 @@ class UserDashboardController extends Controller
                 $currJam[] = $jam->jam_mulai;
             }
             foreach ($jam_mulai as $jadwal) {
-                $jadwalArray[] = [
-                    $jadwal->tgl_mulai,
-                    $jadwal->jam_mulai,
-                    $jadwal->jam_selesai,
-                ];
+                $jadwalArray[] = [$jadwal->tgl_mulai, $jadwal->jam_mulai, $jadwal->jam_selesai];
             }
         } else {
-            $jadwalArray = []; 
+            $jadwalArray = [];
         }
 
         // $tanggal_mulai = DB::table('jadwal')->select('tgl_mulai')->get();
@@ -80,28 +77,50 @@ class UserDashboardController extends Controller
         //         $currDate[] = $tanggal->tgl_mulai;
         //     }
         // } else {
-        //     $currDate = []; 
+        //     $currDate = [];
         // }
 
         $jam_selesai = DB::table('jadwal')->select('jam_selesai')->get();
-        $jam_selesai_arr = array();
+        $jam_selesai_arr = [];
 
         foreach ($jam_selesai as $jam) {
             $currJamSelesai[] = $jam->jam_selesai;
         }
 
         $tanggal_selesai = DB::table('jadwal')->select('tgl_selesai')->get();
-        $tanggal_selesai_arr = array();
+        $tanggal_selesai_arr = [];
 
         foreach ($tanggal_selesai as $tanggal) {
             $currDateSelesai[] = $tanggal->tgl_selesai;
         }
 
-        return view('user.dashboard', compact('date', 'jadwalArray'));
+        return view('user.dashboard', compact('date', 'jadwalArray', 'fasilitas'));
     }
 
     public function buatPermohonan()
     {
+        $bidang = BidangKegiatan::get();
+        $instansi = Instansi::get();
+        $fasilitas = DB::table('fasilitas')->get();
+        $alat = AlatPendukung::get();
+        $blok = BlokRuangan::get();
+
+        $date = Carbon::now()->format('m/d/Y');
+
+        $jadwal = DB::table('jadwal')->join('permohonan', 'permohonan.id_permohonan', '=', 'jadwal.permohonan_id')->select('tgl_mulai', 'tgl_selesai', 'jam_mulai', 'jam_selesai', 'id_fasilitas', 'id_alat')->get();
+
+        return view('user.buat-permohonan', compact('bidang', 'instansi', 'fasilitas', 'alat', 'jadwal', 'blok'));
+    }
+
+    public function buatPermohonanForm(Request $request)
+    {
+        $id_fasilitas = $request->id_fasilitas;
+        $nama_fasilitas = $request->nama_fasilitas;
+        $tgl_mulai = $request->tgl_mulai;
+        $tgl_selesai = $request->tgl_selesai;
+        $jam_mulai = $request->jam_mulai;
+        $jam_selesai = $request->jam_selesai;
+
         $bidang = BidangKegiatan::get();
         $instansi = Instansi::get();
         $fasilitas = Fasilitas::get();
@@ -110,12 +129,9 @@ class UserDashboardController extends Controller
 
         $date = Carbon::now()->format('m/d/Y');
 
-        $jadwal = DB::table('jadwal')
-            ->join('permohonan', 'permohonan.id_permohonan', '=', 'jadwal.permohonan_id')
-            ->select('tgl_mulai', 'tgl_selesai', 'jam_mulai', 'jam_selesai', 'id_fasilitas', 'id_alat')
-            ->get();
+        $jadwal = DB::table('jadwal')->join('permohonan', 'permohonan.id_permohonan', '=', 'jadwal.permohonan_id')->select('tgl_mulai', 'tgl_selesai', 'jam_mulai', 'jam_selesai', 'id_fasilitas', 'id_alat')->get();
 
-        return view('user.buat-permohonan', compact('bidang', 'instansi', 'fasilitas', 'alat', 'jadwal', 'blok'));
+        return view('user.buat-permohonan-form', compact('bidang', 'instansi', 'fasilitas', 'alat', 'jadwal', 'blok', 'id_fasilitas', 'nama_fasilitas', 'tgl_mulai', 'tgl_selesai', 'jam_mulai', 'jam_selesai'));
     }
 
     public function editPermohonan($id_permohonan)
@@ -125,16 +141,8 @@ class UserDashboardController extends Controller
         $user_id = Auth::user()->id;
 
         $data = Permohonan::find($id_permohonan);
-        
-        $permohonan = DB::table('permohonan')
-            ->join('users', 'users.id', '=', 'permohonan.user_id')
-            ->join('jadwal', 'jadwal.permohonan_id', '=', 'permohonan.id_permohonan')
-            ->join('instansi', 'instansi.id_instansi', '=', 'permohonan.instansi_id')
-            ->join('fasilitas', 'fasilitas.id_fasilitas', '=', 'permohonan.id_fasilitas')
-            ->join('alat_pendukung', 'alat_pendukung.id_alat_pendukung', '=', 'permohonan.id_alat')
-            ->where('users.id', '=', $user_id)
-            ->where('permohonan.id_permohonan', '=', $id_permohonan)
-            ->first();
+
+        $permohonan = DB::table('permohonan')->join('users', 'users.id', '=', 'permohonan.user_id')->join('jadwal', 'jadwal.permohonan_id', '=', 'permohonan.id_permohonan')->join('instansi', 'instansi.id_instansi', '=', 'permohonan.instansi_id')->join('fasilitas', 'fasilitas.id_fasilitas', '=', 'permohonan.id_fasilitas')->join('alat_pendukung', 'alat_pendukung.id_alat_pendukung', '=', 'permohonan.id_alat')->where('users.id', '=', $user_id)->where('permohonan.id_permohonan', '=', $id_permohonan)->first();
 
         return view('user.edit-permohonan', compact('permohonan', 'fasilitas', 'alat', 'data'));
     }
@@ -206,19 +214,13 @@ class UserDashboardController extends Controller
                 $jadwal->update();
 
                 //  return $data;
-                return redirect()
-                    ->back()
-                    ->with('sukses', 'Berhasil, file telah di upload');
+                return redirect()->back()->with('sukses', 'Berhasil, file telah di upload');
             }
             //  return $data;
-            return redirect()
-                ->back()
-                ->with('sukses', 'Error, file tidak dapat di upload');
+            return redirect()->back()->with('sukses', 'Error, file tidak dapat di upload');
         }
         //  return "Gagal";
-        return redirect()
-            ->back()
-            ->with('sukses', 'Error, tidak ada file ditemukan');
+        return redirect()->back()->with('sukses', 'Error, tidak ada file ditemukan');
     }
 
     public function simpanPermohonan(Request $request)
@@ -285,29 +287,19 @@ class UserDashboardController extends Controller
                 $jadwal->save();
 
                 //  return $data;
-                return redirect()
-                    ->back()
-                    ->with('sukses', 'Berhasil, file telah di upload');
+                return redirect()->back()->with('sukses', 'Berhasil, file telah di upload');
             }
             //  return $data;
-            return redirect()
-                ->back()
-                ->with('sukses', 'Error, file tidak dapat di upload');
+            return redirect()->back()->with('sukses', 'Error, file tidak dapat di upload');
         }
         //  return "Gagal";
-        return redirect()
-            ->back()
-            ->with('sukses', 'Error, tidak ada file ditemukan');
+        return redirect()->back()->with('sukses', 'Error, tidak ada file ditemukan');
     }
 
     public function lihatPermohonan($id_permohonan)
     {
         $permohonan = Permohonan::find($id_permohonan);
-        $data = DB::table('permohonan')
-            ->join('jadwal', 'jadwal.permohonan_id', '=', 'permohonan.id_permohonan')
-            ->join('alat_pendukung', 'alat_pendukung.id_alat_pendukung', '=', 'permohonan.id_alat')
-            ->where('permohonan.id_permohonan', '=', $id_permohonan)
-            ->first();
+        $data = DB::table('permohonan')->join('jadwal', 'jadwal.permohonan_id', '=', 'permohonan.id_permohonan')->join('alat_pendukung', 'alat_pendukung.id_alat_pendukung', '=', 'permohonan.id_alat')->where('permohonan.id_permohonan', '=', $id_permohonan)->first();
 
         return view('user.lihat-permohonan', compact('permohonan', 'data'));
     }
@@ -316,37 +308,39 @@ class UserDashboardController extends Controller
     {
         $user_id = Auth::user()->id;
 
-        $permohonan = DB::table('permohonan')
-            ->join('users', 'users.id', '=', 'permohonan.user_id')
-            ->join('bidang_kegiatan', 'bidang_kegiatan.id_bidang_kegiatan', '=', 'permohonan.bidang_id')
-            ->join('instansi', 'instansi.id_instansi', '=', 'permohonan.instansi_id')
-            ->join('jadwal', 'jadwal.permohonan_id', '=', 'permohonan.id_permohonan')
-            ->join('fasilitas', 'fasilitas.id_fasilitas', '=', 'permohonan.id_fasilitas')
-            ->join('alat_pendukung', 'alat_pendukung.id_alat_pendukung', '=', 'permohonan.id_alat')
-            ->where('users.id', '=', $user_id)
-            ->get();
+        $permohonan = DB::table('permohonan')->join('users', 'users.id', '=', 'permohonan.user_id')->join('bidang_kegiatan', 'bidang_kegiatan.id_bidang_kegiatan', '=', 'permohonan.bidang_id')->join('instansi', 'instansi.id_instansi', '=', 'permohonan.instansi_id')->join('jadwal', 'jadwal.permohonan_id', '=', 'permohonan.id_permohonan')->join('fasilitas', 'fasilitas.id_fasilitas', '=', 'permohonan.id_fasilitas')->join('alat_pendukung', 'alat_pendukung.id_alat_pendukung', '=', 'permohonan.id_alat')->where('users.id', '=', $user_id)->get();
 
         $user = Auth::user()->name;
 
         return view('user.histori-permohonan', compact('permohonan'));
     }
 
-    public function lihatJadwal() 
+    public function lihatJadwal()
     {
-        $data = DB::table('jadwal')
-                    ->whereDay('tgl_mulai', '02')
-                    ->whereMonth('tgl_mulai', '02')
-                    ->get();
+        $firstDate = '1';
+        $endDate = '29';
 
-        return view('user.lihat-jadwal');
+        $daysArray = [
+            'Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'
+        ];
+
+        $datesArray = range((int)$firstDate, (int)$endDate);
+
+        $dates = [];
+        foreach ($datesArray as $day) {
+            $dayOfWeek = $daysArray[$day % 7];
+            $dates[] = [
+                'hari' => $dayOfWeek,
+                'tanggal' => str_pad($day, 2, '0', STR_PAD_LEFT)
+            ];
+        }
+
+        return view('user.lihat-jadwal', compact('dates'));
     }
 
     public function ambilJadwal($tanggal)
     {
-        $data = DB::table('jadwal')
-                    ->whereDay('tgl_mulai', $tanggal)
-                    ->whereMonth('tgl_mulai', '02')
-                    ->get();
+        $data = DB::table('jadwal')->whereDay('tgl_mulai', $tanggal)->whereMonth('tgl_mulai', '02')->get();
 
         return view('user.lihat-jadwal', ['data' => $data]);
     }

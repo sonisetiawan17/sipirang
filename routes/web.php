@@ -28,6 +28,7 @@ Route::middleware(['auth', 'role:user'])
         Route::get('/jadwal', [UserDashboardController::class, 'lihatJadwal'])->name('jadwal');
         Route::get('/jadwal/{tanggal}', [UserDashboardController::class, 'ambilJadwal'])->name('ambilJadwal');
         Route::get('/buatPermohonan', [UserDashboardController::class, 'buatPermohonan'])->name('buatPermohonan');
+        Route::get('/buatPermohonan/form', [UserDashboardController::class, 'buatPermohonanForm'])->name('buatPermohonanForm');
         Route::get('/editPermohonan/{id_permohonan}', [UserDashboardController::class, 'editPermohonan'])->name('editPermohonan');
         Route::post('/updatePermohonan/{id_permohonan}', [UserDashboardController::class, 'updatePermohonan'])->name('updatePermohonan');
         Route::post('/simpanPermohonan', [UserDashboardController::class, 'simpanPermohonan'])->name('simpanPermohonan');

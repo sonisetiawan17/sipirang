@@ -28,6 +28,19 @@
         font-family: 'Poppins', sans-serif;
     }
 
+    .head {
+        padding: 15px;
+    }
+
+    .card-content {
+        padding: 20px;
+    }
+
+    .bg-gradient {
+        background: rgb(215,222,255);
+        background: radial-gradient(circle, rgba(215,222,255,1) 42%, rgba(246,250,253,1) 100%);
+    }
+
     .tgl_info {
         color: rgb(221, 26, 26);
         font-size: 12px;
