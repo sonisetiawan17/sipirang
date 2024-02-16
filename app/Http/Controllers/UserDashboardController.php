@@ -354,4 +354,9 @@ class UserDashboardController extends Controller
 
         dd($tgl_mulai, $jam_mulai, $tgl_selesai, $jam_selesai);
     }
+
+    public function test() 
+    {
+        return view('user.test');
+    }
 }

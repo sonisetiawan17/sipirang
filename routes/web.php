@@ -36,6 +36,8 @@ Route::middleware(['auth', 'role:user'])
         Route::get('/lihatPermohonan/{id_permohonan}', [UserDashboardController::class, 'lihatPermohonan'])->name('lihatPermohonan');
         Route::delete('/destroy/{id_permohonan}', [UserDashboardController::class, 'destroy'])->name('hapusPermohonan');
 
+        Route::get('/test', [UserDashboardController::class, 'test'])->name('test');
+
         Route::post('/cekJadwal', [UserDashboardController::class, 'cekJadwal'])->name('cekJadwal');
     });
 

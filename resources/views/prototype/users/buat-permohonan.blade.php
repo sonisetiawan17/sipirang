@@ -13,10 +13,9 @@
 
     @php
         $data_jam = ['8', '9', '10', '11', '12', '13', '14', '15'];
-        // $jadwal = $jadwalArray;
 
         $curr = '2024-01-24';
-        $arr = [['2024-02-02', '10', '13'], ['2024-02-02', '9', '11']];
+        $arr = [['2024-02-01', '10', '13'], ['2024-02-02', '9', '11']];
 
         $filteredData = [];
 
@@ -31,397 +30,81 @@
 
         $filteredData = array_merge(...$filteredData);
     @endphp
-    <!-- begin breadcrumb -->
-    <ol class="breadcrumb float-xl-right">
-        <li class="breadcrumb-item"><a href="javascript:;">Beranda</a></li>
-        <li class="breadcrumb-item active">Data Permohonan</li>
-    </ol>
-    <!-- end breadcrumb -->
-    <!-- begin page-header -->
-    <h1 class="page-header">Buat Data Permohonan</h1>
-    <!-- end page-header -->
-    <!-- begin wizard-form -->
 
-    @if (session('sukses'))
-        <div class="alert alert-success fade show">
-            <span class="close" data-dismiss="alert">×</span>
-
-            {{ session('sukses') }}
+    <div>
+        <div>
+            <h1 class="text-lg font-semibold">Pilih Ruangan</h1>
         </div>
-    @endif
-    <form action="{{ route('user.simpanPermohonan') }}" method="POST" enctype="multipart/form-data"
-        class="form-control-with-bg">
-        @csrf
-        <!-- begin wizard -->
-        <div id="wizard">
-            <!-- begin wizard-step -->
-            <ul>
-                <li>
-                    <a href="#step-1">
-                        <span class="number">1</span>
-                        <span class="info">
-                            Data Pemohon
-                            <!-- <small>Name, Address, IC No and DOB</small> -->
-                        </span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#step-2">
-                        <span class="number">2</span>
-                        <span class="info">
-                            Data Instansi / Pribadi
-                        </span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#step-3">
-                        <span class="number">3</span>
-                        <span class="info">
-                            Informasi Acara / Kegiatan
-                        </span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#step-4">
-                        <span class="number">4</span>
-                        <span class="info">
-                            Ruang dan Alat
-                        </span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#step-5">
-                        <span class="number">5</span>
-                        <span class="info">
-                            Selesai
-                        </span>
-                    </a>
-                </li>
-            </ul>
-            <!-- end wizard-step -->
-            <!-- begin wizard-content -->
-            <div>
-                <!-- begin step-1 -->
-                <div id="step-1">
-                    <!-- begin fieldset -->
-                    <fieldset>
-                        <!-- begin row -->
-                        <div class="row">
-                            <!-- begin col-12 -->
-                            <div class="col-xl-12">
-                                <div class="panel-body panel-form">
-                                    <form class="form-horizontal form-bordered">
-                                        <div class="form-group row mb-0">
-                                            <label class="col-lg-4 col-form-label">SKPD/Non SKPD <sup
-                                                    class="text-red">*</sup></label>
-                                            <div class="col-lg-8">
-                                                <select class="form-input w-full text-small" name="skpd">
-                                                    <option disabled selected>-- Pilih Bidang SKPD --</option>
-                                                    <option value="skpd">SKPD</option>
-                                                    <option value="non_skpd">NON SKPD</option>
-                                                </select>
-                                                <div class="bg-primary/20 px-7 py-2 my-2 rounded-md">
-                                                    <small><b>Catatan :</b><br>
-                                                        <b>SKPD</b> (acara pemerintah)<br>
-                                                        <b>NON SKPD</b> (acara diluar pemerintah)</small>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row mb-3">
-                                            <label class="col-lg-4 col-form-label">Bidang Kegiatan <sup
-                                                    class="text-red">*</sup></label>
-                                            <div class="col-lg-8">
-                                                <select class="form-input w-full text-small" name="bidang_id">
-                                                    <option disabled selected>-- Pilih Bidang Kegiatan --</option>
-                                                    @foreach ($bidang as $b)
-                                                        <option value="{{ $b->id_bidang_kegiatan }}">{{ $b->nama_bidang }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row mb-3">
-                                            <label class="col-lg-4 col-form-label">No KTP <sup
-                                                    class="text-red">*</sup></label>
-                                            <div class="col-lg-8">
-                                                <input type="text" class="form-control form-input text-small"
-                                                    name="nik" value="{{ Auth::user()->nik }}" disabled />
-                                            </div>
-                                        </div>
-                                        <div class="form-group row mb-3">
-                                            <label class="col-lg-4 col-form-label">Nama Pemohon <sup
-                                                    class="text-red">*</sup></label>
-                                            <div class="col-lg-8">
-                                                <input type="hidden" class="form-control form-input text-small"
-                                                    value="{{ Auth::user()->id }}" name="user_id" />
-                                                <input type="hidden" class="form-control form-input text-small"
-                                                    value="" name="permohonan_id" />
-                                                <input type="text" class="form-control form-input text-small"
-                                                    value="{{ Auth::user()->name }}" name="name" disabled />
-                                            </div>
-                                        </div>
-                                        <div class="form-group row mb-3">
-                                            <label class="col-lg-4 col-form-label">No Telepon <sup
-                                                    class="text-red">*</sup></label>
-                                            <div class="col-lg-8">
-                                                <input type="text" class="form-control form-input text-small"
-                                                    name="no_telp" value="{{ Auth::user()->no_telp }}" disabled />
-                                            </div>
-                                        </div>
-                                        <div class="form-group row mb-3">
-                                            <label class="col-lg-4 col-form-label">Alamat Lengkap <sup
-                                                    class="text-red">*</sup></label>
-                                            <div class="col-lg-8">
-                                                <input type="text" class="form-control form-input text-small"
-                                                    name="alamat" value="{{ Auth::user()->alamat }}" disabled />
-                                            </div>
-                                        </div>
-                                </div>
-                            </div>
-                            <!-- end col-8 -->
-                        </div>
-                        <!-- end row -->
-                    </fieldset>
 
-                    <!-- end fieldset -->
-                </div>
-
-                <div id="step-2">
-                    <!-- begin fieldset -->
-                    <fieldset>
-                        <!-- begin row -->
-                        <div class="row">
-                            <!-- begin col-12 -->
-                            <div class="col-xl-12">
-                                <div class="panel-body panel-form">
-                                    <div class="form-group row mb-3">
-                                        <label class="col-lg-4 col-form-label">Nama Instansi / Pribadi</label>
-                                        <div class="col-lg-8">
-                                            <select class="form-input w-full text-small" name="instansi_id"
-                                                id="instansiSelect">
-                                                <option disabled selected>-- Pilih Instansi --</option>
-                                                @foreach ($instansi as $i)
-                                                    <option value="{{ $i->id_instansi }}">{{ $i->nama_instansi }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row mb-3">
-                                        <label class="col-lg-4 col-form-label">Status dalam instansi / Pribadi</label>
-                                        <div class="col-lg-8">
-                                            <input type="text" class="form-control form-input text-small"
-                                                name="status_instansi" />
-                                        </div>
-                                    </div>
-                                    <div class="form-group row mb-3">
-                                        <label class="col-lg-4 col-form-label">Bidang Instansi / Pribadi</label>
-                                        <div class="col-lg-8">
-                                            <input type="text" class="form-control form-input text-small"
-                                                name="bidang_instansi" />
-                                        </div>
-                                    </div>
-                                    <div class="form-group row mb-3">
-                                        <label class="col-lg-4 col-form-label">Alamat Instansi / Pribadi</label>
-                                        <div class="col-lg-8">
-                                            <input type="text" class="form-control form-input text-small"
-                                                name="alamat_instansi" id="valAlamat" />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- end col-12 -->
-                        </div>
-                        <!-- end row -->
-                    </fieldset>
-                    <!-- end fieldset -->
-                </div>
-
-                <div id="step-3">
-                    <fieldset>
-                        <div class="row">
-                            <div class="col-xl-12">
-                                <div class="panel-body panel-form">
-                                    <div class="form-group row mb-3">
-                                        <label class="col-lg-4 col-form-label">Mulai Tanggal</label>
-                                        <div class="col-lg-3">
-                                            <input type="date" class="form-control form-input text-small"
-                                                name="tgl_mulai" id="tgl_mulai" onchange="checkDate()" />
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="panel-body panel-form">
-                                    <div class="form-group row mb-3">
-                                        <label class="col-lg-4 col-form-label">Mulai Jam</label>
-                                        <div class="col-lg-6">
-                                            <div class="btn-group">
-                                                <div class="btn-group btn-group-toggle" data-toggle="buttons"
-                                                    id="data-jam">
-                                                    <p class="tgl_info">*Silahkan pilih tanggal mulai terlebih dahulu,
-                                                        untuk melihat jam yang tersedia.</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="panel-body panel-form">
-                                    <div class="form-group row mb-3">
-                                        <label class="col-lg-4 col-form-label">Selesai Tanggal</label>
-                                        <div class="col-lg-3">
-                                            <input type="date" class="form-control form-input text-small"
-                                                name="tgl_selesai" id="tgl_selesai" onchange="checkDateDua()" />
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="panel-body panel-form">
-                                    <div class="form-group row mb-3">
-                                        <label class="col-lg-4 col-form-label">Selesai Jam</label>
-                                        <div class="col-lg-6">
-                                            <div class="btn-group">
-                                                <div class="btn-group btn-group-toggle" data-toggle="buttons"
-                                                    id="data-jam-dua">
-                                                    <p class="tgl_info">*Silahkan pilih tanggal selesai terlebih dahulu,
-                                                        untuk melihat jam yang tersedia.</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group row mb-3">
-                                    <label class="col-lg-4 col-form-label">Nama Acara / Kegiatan</label>
-                                    <div class="col-lg-8">
-                                        <input type="text" class="form-control form-input text-small"
-                                            name="nama_kegiatan" />
-                                    </div>
-                                </div>
-                                <div class="form-group row mb-3">
-                                    <label class="col-lg-4 col-form-label">Jumlah Peserta</label>
-                                    <div class="col-lg-8">
-                                        <input type="text" class="form-control form-input text-small"
-                                            name="jumlah_peserta" />
-                                    </div>
-                                </div>
-                                <div class="form-group row mb-3">
-                                    <label class="col-lg-4 col-form-label">Narasumber</label>
-                                    <div class="col-lg-8">
-                                        <input type="text" class="form-control form-input text-small"
-                                            name="narasumber" />
-                                    </div>
-                                </div>
-                                <div class="form-group row mb-3">
-                                    <label class="col-lg-4 col-form-label">Ringkasan</label>
-                                    <div class="col-lg-8">
-                                        <textarea
-                                            class="border-gray-200 border-2 focus:border-primary focus:ring-primary focus:ring-opacity-50 rounded-md w-full"
-                                            name="ringkasan" style="font-size: 13px" /></textarea>
-                                    </div>
-                                </div>
-                                <div class="form-group row mb-3">
-                                    <label class="col-lg-4 col-form-label mt-3">Surat Permohonan <sup
-                                            class="text-red">*</sup></label>
-                                    <div class="col-lg-8 mt-3">
-                                        <input type="file" name="surat_permohonan" id="surat_permohonan"
-                                            class="block w-full border border-gray-200 text-small focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none file:bg-gray-50 file:border-0 file:me-4 file:py-2 file:px-4">
-                                    </div>
-                                </div>
-                                <div class="form-group row mb-3">
-
-                                    <label class="col-lg-4 col-form-label mt-3">Surat Permohonan <sup
-                                            class="text-red">*</sup></label>
-                                    <div class="col-lg-8 mt-3">
-                                        <input type="file" name="rundown_acara" id="rundown_acara"
-                                            class="block w-full border border-gray-200 text-small focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none file:bg-gray-50 file:border-0 file:me-4 file:py-2 file:px-4">
-                                    </div>
-                                </div>
-                                <div class="form-group row mb-3">
-                                    <label class="col-lg-4 col-form-label">Output</label>
-                                    <div class="col-lg-8">
-                                        <input type="text" class="form-control form-input text-small"
-                                            name="output" />
-                                    </div>
-                                </div>
-                                <div class="form-group row mb-3">
-                                    <label class="col-lg-4 col-form-label">Outcome</label>
-                                    <div class="col-lg-8">
-                                        <input type="text" class="form-control form-input text-small"
-                                            name="outcome" />
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                        <!-- end row -->
-                    </fieldset>
-                    <!-- end fieldset -->
-                </div>
-
-                <div id="step-4">
-                    <h5 class="mb-3">Fasilitas Tersedia </h5>
-                    <div class="gallery">
-                        <div class="row">
-                            @foreach ($fasilitas as $f)
-                                <div class="image gallery-group-1 relative" style="float:left">
-                                    <div class="image-inner">
-                                        <a href="/foto_fasilitas/{{ $f->file }}" data-lightbox="gallery-group-1">
-                                            <div class="img"
-                                                style="background-image: url(/foto_fasilitas/{{ $f->file }})"></div>
-                                        </a>
-                                        <p class="absolute top-0 lef-0 px-4 py-1 text-white"
-                                            style="background-color: rgba(84, 101, 255, 0.8); border-radius: 0 0 8px 0;">
-                                            {{ $f->nama_fasilitas }}
-                                        </p>
-                                    </div>
-                                    <div class="image-info  bg-light">
-                                        <h5 class="title">{{ $f->nama_fasilitas }}</h5>
-                                        <div class="checkbox checkbox-css">
-                                            <input type="checkbox" name="id_fasilitas[]" value="{{ $f->id_fasilitas }}"
-                                                id="{{ $f->id_fasilitas }}">
-                                            <label for="{{ $f->id_fasilitas }}">Pilih Fasilitas</label>
-                                        </div>
-                                    </div>
-                                </div>
-                            @endforeach
-                        </div>
-                        <!-- end image -->
-                        <hr>
-                        <h5 class="mt-5">Alat Pendukung Kegiatan </h5>
-                        <div class="alert alert-light">
-                            <div class="row">
-                                @foreach ($alat as $a)
-                                    <div class="btn-group mr-3">
-                                        <div class="checkbox">
-                                            <input name="id_alat[]" type="checkbox" value="{{ $a->id_alat_pendukung }}"
-                                                id="{{ $a->id_alat }}">
-                                            <label class="text-dark">{{ $a->nama_alat }}</label>
-                                        </div>
-                                    </div>
-                                @endforeach
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-
-                <div id="step-5">
-
-                    <div class="jumbotron m-b-0 text-center">
-                        <h5 class="display-4">Form Permohonan telah diisi!</h5>
-                        <p class="lead mb-4">
-                            Klik tombol kirim permohonan apabila Kamu sudah yakin.<br>
-                            Pemohonan akan diproses selama 1x24 jam.
-                        </p>
-                        <p><button type="submit" class="btn btn-primary btn-lg">Kirim Permohonan</button></p>
-                    </div>
+        <div class="flex items-start gap-3">
+            @foreach ($fasilitas as $item)
+            <div class="flex flex-col bg-white border shadow-sm rounded-xl w-[25%] mt-3">
+                <img class="w-full h-auto rounded-t-xl"
+                    src="https://images.unsplash.com/photo-1680868543815-b8666dba60f7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2532&q=80"
+                    alt="Image Description">
+                <div class="card-content">
+                    <h3 class="text-lg font-bold text-gray-800">
+                        {{ $item->nama_fasilitas }}
+                    </h3>
+                    <p class="mt-1 text-gray-500">
+                        Some quick example text to build on the card title and make up the bulk of the card's content.
+                    </p>
+                    <button id="modal_show" type="button" data-toggle="modal" data-target="#isimodal" data-id_fasilitas="{{ $item->id_fasilitas }}" data-nama_fasilitas="{{ $item->nama_fasilitas }}" class="mt-2 py-2 px-3 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none w-full">
+                        Pilih Ruangan
+                    </button>
                 </div>
             </div>
-            <!-- end wizard-content -->
+            @endforeach
         </div>
-        <!-- end wizard -->
-    </form>
-    <!-- end wizard-form -->
+
+        <div class="modal fade" id="isimodal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Pilih Jadwal Peminjaman</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    </div>
+                    <div class="modal-body mx-3" id="tampil_modal">
+                        <form method="get" action="{{ route('user.buatPermohonanForm') }}">
+                            @csrf
+                            <div class="form-group m-b-15">
+                                <input type="hidden" class="form-control form-input text-small" name="id_fasilitas" id="id_fasilitas" />
+                                <input type="hidden" class="form-control form-input text-small" name="nama_fasilitas" id="nama_fasilitas" />
+                                <label class="col-form-label">Tanggal Mulai <sup class="text-red">*</sup></label>
+                                <div class="block">
+                                    <input type="date" class="form-control form-input text-small" name="tgl_mulai" id="tgl_mulai" onchange="checkDate()" />
+                                </div>
+    
+                                <label class="col-form-label mt-3">Jam Mulai <sup class="text-red">*</sup></label>
+                                <div class="block">
+                                    <div class="btn-group btn-group-toggle" data-toggle="buttons" id="data-jam">
+                                        <p class="tgl_info">*Silahkan pilih tanggal mulai terlebih dahulu.</p>
+                                    </div>
+                                </div>
+    
+                                <label class="col-form-label mt-3">Tanggal Selesai <sup class="text-red">*</sup></label>
+                                <div class="block">
+                                    <input type="date" class="form-control form-input text-small" name="tgl_selesai" id="tgl_selesai" onchange="checkDateDua()" />
+                                </div>
+    
+                                <label class="col-form-label mt-3">Jam Selesai <sup class="text-red">*</sup></label>
+                                <div class="block">
+                                    <div class="btn-group btn-group-toggle" data-toggle="buttons" id="data-jam-dua">
+                                        <p class="tgl_info">*Silahkan pilih tanggal selesai terlebih dahulu.</p>
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+                    <div class="modal-footer font-semibold text-sm">
+                        <a href="javascript:;" class="button-ghost" data-dismiss="modal">Tutup</a>
+                        <button type="submit" class="button-primary">Lanjutkan</button>
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
 @endsection
 
 @push('scripts')
@@ -432,28 +115,14 @@
     <script src="/assets/plugins/lightbox2/dist/js/lightbox.min.js"></script>
     <script src="/assets/js/demo/gallery.demo.js"></script>
 
-    <script>
-        document.getElementById('instansiSelect').addEventListener('change', function() {
-            var selectedValue = this.value;
+    <script type="text/javascript">
+        $(document).on("click", "#modal_show", function() {
+            var id_fasilitas = $(this).data('id_fasilitas');
+            var nama_fasilitas = $(this).data('nama_fasilitas');
 
-            var inputValue = '';
-
-            switch (selectedValue) {
-                case '1':
-                    inputValue = 'Cimahi Utara';
-                    break;
-                case '2':
-                    inputValue = 'Cimahi Tengah';
-                    break;
-                case '3':
-                    inputValue = 'Cimahi Selatan';
-                    break;
-                default:
-                    inputValue = '';
-            }
-
-            document.getElementById('valAlamat').value = inputValue;
-        });
+            $("#tampil_modal #id_fasilitas").val(id_fasilitas);
+            $("#tampil_modal #nama_fasilitas").val(nama_fasilitas);
+        })
     </script>
 
     <script>
@@ -490,11 +159,13 @@
             if (isDateInCurrentDate) {
                 for (let i = 8; i <= 15; i++) {
                     const value = i.toString();
+                    const isUsed = newArray.includes(value);
 
-                    if (!newArray.includes(value)) {
-                        jam.innerHTML +=
-                            `<label class="btn btn-white" id="result"><input type="radio" name="jam_mulai" value="${value}" id="${value}" />${value}:00</label>`;
-                    }
+                    jam.innerHTML +=
+                        `<label class="btn ${isUsed ? 'bg-red-500/20 disabled cursor-not-allowed' : 'btn-white'}" id="result">
+                            <input type="radio" name="jam_mulai" value="${value}" id="${value}" />
+                            ${value}:00
+                        </label>`;
                 }
             } else {
                 for (let i = 8; i <= 15; i++) {
@@ -538,11 +209,13 @@
             if (isDateInCurrentDate) {
                 for (let i = 8; i <= 15; i++) {
                     const value = i.toString();
+                    const isUsed = newArray.includes(value);
 
-                    if (!newArray.includes(value)) {
-                        jam.innerHTML +=
-                            `<label class="btn btn-white" id="result"><input type="radio" name="jam_selesai" value="${value}" id="${value}" />${value}:00</label>`;
-                    }
+                    jam.innerHTML +=
+                        `<label class="btn ${isUsed ? 'bg-red-500/20 disabled cursor-not-allowed' : 'btn-white'}" id="result">
+                            <input type="radio" name="jam_selesai" value="${value}" id="${value}" />
+                            ${value}:00
+                        </label>`;
                 }
             } else {
                 for (let i = 8; i <= 15; i++) {

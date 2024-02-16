@@ -1,448 +1,344 @@
-@extends('layouts.user')
+@extends('layouts.landing')
 
 @section('title', 'Buat Permohonan')
 
-@push('css')
-    <link href="/assets/plugins/smartwizard/dist/css/smart_wizard.css" rel="stylesheet" />
-    <link href="/assets/plugins/bootstrap-datepicker/dist/css/bootstrap-datepicker.css" rel="stylesheet" />
-    <link href="/assets/plugins/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css" rel="stylesheet" />
-    <link href="/assets/plugins/lightbox2/dist/css/lightbox.css" rel="stylesheet" />
-@endpush
-
 @section('content')
 
-    @php
-        $data_jam = ['8', '9', '10', '11', '12', '13', '14', '15'];
-        // $jadwal = $jadwalArray;
+<main class="pt-[77px] mx-[140px]">
+    <ul class="relative flex flex-row gap-x-2 pt-6 w-[60%]">
+        <li class="flex items-center gap-x-2 shrink basis-0 flex-1 group">
+            <div class="min-w-4 min-h-7 inline-flex justify-center items-center text-xs align-middle">
+                <span class="step0 size-7 flex justify-center items-center flex-shrink-0 bg-gray-100 font-medium text-gray-800 rounded-full border-2 border-neutral-300">
+                1
+                </span>
+                <span class="ms-2 block text-sm font-medium text-gray-500">
+                Detail Permohonan
+                </span>
+            </div>
+            <div class="divider0 w-full h-px flex-1 bg-gray-200 group-last:hidden"></div>
+        </li>
+    
+        <li class="flex items-center gap-x-2 shrink basis-0 flex-1 group">
+            <div class="min-w-4 min-h-7 inline-flex justify-center items-center text-xs align-middle">
+                <span class="step1 size-7 flex justify-center items-center flex-shrink-0 bg-gray-100 font-medium text-gray-800 rounded-full border-2 border-neutral-300">
+                2
+                </span>
+                <span class="ms-2 block text-sm font-medium text-gray-500">
+                Data Instansi / Pribadi
+                </span>
+            </div>
+            <div class="divider1 w-full h-px flex-1 bg-gray-200 group-last:hidden"></div>
+        </li>
+    
+        <li class="flex items-center gap-x-2 shrink basis-0 flex-1 group">
+            <div class="min-w-4 min-h-7 inline-flex justify-center items-center text-xs align-middle">
+                <span class="step2 size-7 flex justify-center items-center flex-shrink-0 bg-gray-100 font-medium text-gray-800 rounded-full border-2 border-neutral-300">
+                3
+                </span>
+                <span class="ms-2 block text-sm font-medium text-gray-500">
+                Informasi Acara / Kegiatan
+                </span>
+            </div>
+            <div class="divider2 w-full h-px flex-1 bg-gray-200 group-last:hidden"></div>
+        </li>
+    </ul>
 
-        $curr = '2024-01-24';
-        $arr = [['2024-02-02', '10', '13'], ['2024-02-02', '9', '11']];
-
-        $filteredData = [];
-
-        foreach ($arr as $data) {
-            if ($data[0] === $curr) {
-                $start = intval($data[1]);
-                $end = intval($data[2]);
-
-                $filteredData[] = array_map('strval', range($start, $end));
-            }
-        }
-
-        $filteredData = array_merge(...$filteredData);
-    @endphp
-    <!-- begin breadcrumb -->
-    <ol class="breadcrumb float-xl-right">
-        <li class="breadcrumb-item"><a href="javascript:;">Beranda</a></li>
-        <li class="breadcrumb-item active">Data Permohonan</li>
-    </ol>
-    <!-- end breadcrumb -->
-    <!-- begin page-header -->
-    <h1 class="page-header">Buat Data Permohonan</h1>
-    <!-- end page-header -->
-    <!-- begin wizard-form -->
-
-    @if (session('sukses'))
-        <div class="alert alert-success fade show">
-            <span class="close" data-dismiss="alert">×</span>
-
-            {{ session('sukses') }}
-        </div>
-    @endif
-    <form action="{{ route('user.simpanPermohonan') }}" method="POST" enctype="multipart/form-data"
-        class="form-control-with-bg">
-        @csrf
-        <!-- begin wizard -->
-        <div id="wizard">
-            <!-- begin wizard-step -->
-            <ul>
-                <li>
-                    <a href="#step-1">
-                        <span class="number">1</span>
-                        <span class="info">
-                            Data Pemohon
-                            <!-- <small>Name, Address, IC No and DOB</small> -->
-                        </span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#step-2">
-                        <span class="number">2</span>
-                        <span class="info">
-                            Data Instansi / Pribadi
-                        </span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#step-3">
-                        <span class="number">3</span>
-                        <span class="info">
-                            Informasi Acara / Kegiatan
-                        </span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#step-4">
-                        <span class="number">4</span>
-                        <span class="info">
-                            Ruang dan Alat
-                        </span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#step-5">
-                        <span class="number">5</span>
-                        <span class="info">
-                            Selesai
-                        </span>
-                    </a>
-                </li>
-            </ul>
-            <!-- end wizard-step -->
-            <!-- begin wizard-content -->
-            <div>
-                <!-- begin step-1 -->
-                <div id="step-1">
-                    <!-- begin fieldset -->
-                    <fieldset>
-                        <!-- begin row -->
-                        <div class="row">
-                            <!-- begin col-12 -->
-                            <div class="col-xl-12">
-                                <div class="panel-body panel-form">
-                                    <form class="form-horizontal form-bordered">
-                                        <div class="form-group row mb-0">
-                                            <label class="col-lg-4 col-form-label">SKPD/Non SKPD <sup
-                                                    class="text-red">*</sup></label>
-                                            <div class="col-lg-8">
-                                                <select class="form-input w-full text-small" name="skpd">
-                                                    <option disabled selected>-- Pilih Bidang SKPD --</option>
-                                                    <option value="skpd">SKPD</option>
-                                                    <option value="non_skpd">NON SKPD</option>
-                                                </select>
-                                                <div class="bg-primary/20 px-7 py-2 my-2 rounded-md">
-                                                    <small><b>Catatan :</b><br>
-                                                        <b>SKPD</b> (acara pemerintah)<br>
-                                                        <b>NON SKPD</b> (acara diluar pemerintah)</small>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row mb-3">
-                                            <label class="col-lg-4 col-form-label">Bidang Kegiatan <sup
-                                                    class="text-red">*</sup></label>
-                                            <div class="col-lg-8">
-                                                <select class="form-input w-full text-small" name="bidang_id">
-                                                    <option disabled selected>-- Pilih Bidang Kegiatan --</option>
-                                                    @foreach ($bidang as $b)
-                                                        <option value="{{ $b->id_bidang_kegiatan }}">{{ $b->nama_bidang }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row mb-3">
-                                            <label class="col-lg-4 col-form-label">No KTP <sup
-                                                    class="text-red">*</sup></label>
-                                            <div class="col-lg-8">
-                                                <input type="text" class="form-control form-input text-small"
-                                                    name="nik" value="{{ Auth::user()->nik }}" disabled />
-                                            </div>
-                                        </div>
-                                        <div class="form-group row mb-3">
-                                            <label class="col-lg-4 col-form-label">Nama Pemohon <sup
-                                                    class="text-red">*</sup></label>
-                                            <div class="col-lg-8">
-                                                <input type="hidden" class="form-control form-input text-small"
-                                                    value="{{ Auth::user()->id }}" name="user_id" />
-                                                <input type="hidden" class="form-control form-input text-small"
-                                                    value="" name="permohonan_id" />
-                                                <input type="text" class="form-control form-input text-small"
-                                                    value="{{ Auth::user()->name }}" name="name" disabled />
-                                            </div>
-                                        </div>
-                                        <div class="form-group row mb-3">
-                                            <label class="col-lg-4 col-form-label">No Telepon <sup
-                                                    class="text-red">*</sup></label>
-                                            <div class="col-lg-8">
-                                                <input type="text" class="form-control form-input text-small"
-                                                    name="no_telp" value="{{ Auth::user()->no_telp }}" disabled />
-                                            </div>
-                                        </div>
-                                        <div class="form-group row mb-3">
-                                            <label class="col-lg-4 col-form-label">Alamat Lengkap <sup
-                                                    class="text-red">*</sup></label>
-                                            <div class="col-lg-8">
-                                                <input type="text" class="form-control form-input text-small"
-                                                    name="alamat" value="{{ Auth::user()->alamat }}" disabled />
-                                            </div>
-                                        </div>
-                                </div>
-                            </div>
-                            <!-- end col-8 -->
-                        </div>
-                        <!-- end row -->
-                    </fieldset>
-
-                    <!-- end fieldset -->
-                </div>
-
-                <div id="step-2">
-                    <!-- begin fieldset -->
-                    <fieldset>
-                        <!-- begin row -->
-                        <div class="row">
-                            <!-- begin col-12 -->
-                            <div class="col-xl-12">
-                                <div class="panel-body panel-form">
-                                    <div class="form-group row mb-3">
-                                        <label class="col-lg-4 col-form-label">Nama Instansi / Pribadi</label>
-                                        <div class="col-lg-8">
-                                            <select class="form-input w-full text-small" name="instansi_id"
-                                                id="instansiSelect">
-                                                <option disabled selected>-- Pilih Instansi --</option>
-                                                @foreach ($instansi as $i)
-                                                    <option value="{{ $i->id_instansi }}">{{ $i->nama_instansi }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row mb-3">
-                                        <label class="col-lg-4 col-form-label">Status dalam instansi / Pribadi</label>
-                                        <div class="col-lg-8">
-                                            <input type="text" class="form-control form-input text-small"
-                                                name="status_instansi" />
-                                        </div>
-                                    </div>
-                                    <div class="form-group row mb-3">
-                                        <label class="col-lg-4 col-form-label">Bidang Instansi / Pribadi</label>
-                                        <div class="col-lg-8">
-                                            <input type="text" class="form-control form-input text-small"
-                                                name="bidang_instansi" />
-                                        </div>
-                                    </div>
-                                    <div class="form-group row mb-3">
-                                        <label class="col-lg-4 col-form-label">Alamat Instansi / Pribadi</label>
-                                        <div class="col-lg-8">
-                                            <input type="text" class="form-control form-input text-small"
-                                                name="alamat_instansi" id="valAlamat" />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- end col-12 -->
-                        </div>
-                        <!-- end row -->
-                    </fieldset>
-                    <!-- end fieldset -->
-                </div>
-
-                <div id="step-3">
-                    <fieldset>
-                        <div class="row">
-                            <div class="col-xl-12">
-                                <div class="panel-body panel-form">
-                                    <div class="form-group row mb-3">
-                                        <label class="col-lg-4 col-form-label">Mulai Tanggal</label>
-                                        <div class="col-lg-3">
-                                            <input type="text" class="form-control form-input text-small"
-                                                name="tgl_mulai" id="tgl_mulai" value="{{ $tgl_mulai }}" />
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="panel-body panel-form">
-                                    <div class="form-group row mb-3">
-                                        <label class="col-lg-4 col-form-label">Jam Mulai</label>
-                                        <div class="col-lg-3">
-                                            <input type="text" class="form-control form-input text-small"
-                                                name="jam_mulai" id="jam_mulai" value="{{ $jam_mulai }}" />
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="panel-body panel-form">
-                                    <div class="form-group row mb-3">
-                                        <label class="col-lg-4 col-form-label">Selesai Tanggal</label>
-                                        <div class="col-lg-3">
-                                            <input type="text" class="form-control form-input text-small"
-                                                name="tgl_selesai" id="tgl_selesai" value="{{ $tgl_selesai }}" />
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="panel-body panel-form">
-                                    <div class="form-group row mb-3">
-                                        <label class="col-lg-4 col-form-label">Jam Selesai</label>
-                                        <div class="col-lg-3">
-                                            <input type="text" class="form-control form-input text-small"
-                                                name="jam_selesai" id="jam_selesai" value="{{ $jam_selesai }}" />
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group row mb-3">
-                                    <label class="col-lg-4 col-form-label">Nama Acara / Kegiatan</label>
-                                    <div class="col-lg-8">
-                                        <input type="text" class="form-control form-input text-small"
-                                            name="nama_kegiatan" />
-                                    </div>
-                                </div>
-                                <div class="form-group row mb-3">
-                                    <label class="col-lg-4 col-form-label">Jumlah Peserta</label>
-                                    <div class="col-lg-8">
-                                        <input type="text" class="form-control form-input text-small"
-                                            name="jumlah_peserta" />
-                                    </div>
-                                </div>
-                                <div class="form-group row mb-3">
-                                    <label class="col-lg-4 col-form-label">Narasumber</label>
-                                    <div class="col-lg-8">
-                                        <input type="text" class="form-control form-input text-small"
-                                            name="narasumber" />
-                                    </div>
-                                </div>
-                                <div class="form-group row mb-3">
-                                    <label class="col-lg-4 col-form-label">Ringkasan</label>
-                                    <div class="col-lg-8">
-                                        <textarea
-                                            class="border-gray-200 border-2 focus:border-primary focus:ring-primary focus:ring-opacity-50 rounded-md w-full"
-                                            name="ringkasan" style="font-size: 13px" /></textarea>
-                                    </div>
-                                </div>
-                                <div class="form-group row mb-3">
-                                    <label class="col-lg-4 col-form-label mt-3">Surat Permohonan <sup
-                                            class="text-red">*</sup></label>
-                                    <div class="col-lg-8 mt-3">
-                                        <input type="file" name="surat_permohonan" id="surat_permohonan"
-                                            class="block w-full border border-gray-200 text-small focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none file:bg-gray-50 file:border-0 file:me-4 file:py-2 file:px-4">
-                                    </div>
-                                </div>
-                                <div class="form-group row mb-3">
-
-                                    <label class="col-lg-4 col-form-label mt-3">Surat Permohonan <sup
-                                            class="text-red">*</sup></label>
-                                    <div class="col-lg-8 mt-3">
-                                        <input type="file" name="rundown_acara" id="rundown_acara"
-                                            class="block w-full border border-gray-200 text-small focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none file:bg-gray-50 file:border-0 file:me-4 file:py-2 file:px-4">
-                                    </div>
-                                </div>
-                                <div class="form-group row mb-3">
-                                    <label class="col-lg-4 col-form-label">Output</label>
-                                    <div class="col-lg-8">
-                                        <input type="text" class="form-control form-input text-small"
-                                            name="output" />
-                                    </div>
-                                </div>
-                                <div class="form-group row mb-3">
-                                    <label class="col-lg-4 col-form-label">Outcome</label>
-                                    <div class="col-lg-8">
-                                        <input type="text" class="form-control form-input text-small"
-                                            name="outcome" />
-                                    </div>
-                                </div>
-
+    <h1 class="pt-12 font-semibold text-xl">Detail Pemohon</h1>
+    <div class="grid grid-cols-[65%,1fr] mt-4 mb-24">
+        <form class="permohonan-form">
+            @csrf 
+            <div class="form-section">
+                <div class="bg-white rounded-xl p-4" style="box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;">
+                    <div class="grid grid-cols-2 gap-x-4">
+                        <div class="w-full">
+                            <label class="col-form-label font-medium">SKPD / Non SKPD <sup class="text-red-500">*</sup></label>
+                            <div class="block">
+                                <select class="w-full text-xs rounded-sm border border-gray-300" name="skpd">
+                                    <option disabled selected>-- Pilih Bidang SKPD --</option>
+                                    <option value="skpd">SKPD</option>
+                                    <option value="non_skpd">NON SKPD</option>
+                                </select>
                             </div>
                         </div>
-                        <!-- end row -->
-                    </fieldset>
-                    <!-- end fieldset -->
-                </div>
-
-                <div id="step-4">
-                    <h5 class="mb-3">Fasilitas Tersedia </h5>
-                    <div class="gallery">
-                        <div class="row">
-                            @foreach ($fasilitas as $f)
-                                <div class="image gallery-group-1 relative" style="float:left">
-                                    <div class="image-inner">
-                                        <a href="/foto_fasilitas/{{ $f->file }}" data-lightbox="gallery-group-1">
-                                            <div class="img"
-                                                style="background-image: url(/foto_fasilitas/{{ $f->file }})"></div>
-                                        </a>
-                                        <p class="absolute top-0 lef-0 px-4 py-1 text-white"
-                                            style="background-color: rgba(84, 101, 255, 0.8); border-radius: 0 0 8px 0;">
-                                            {{ $f->nama_fasilitas }}
-                                        </p>
-                                    </div>
-                                    <div class="image-info  bg-light">
-                                        <h5 class="title">{{ $f->nama_fasilitas }}</h5>
-                                        <div class="checkbox checkbox-css">
-                                            <input type="checkbox" name="id_fasilitas[]" value="{{ $f->id_fasilitas }}"
-                                                id="{{ $f->id_fasilitas }}">
-                                            <label for="{{ $f->id_fasilitas }}">Pilih Fasilitas</label>
-                                        </div>
-                                    </div>
-                                </div>
-                            @endforeach
-                        </div>
-                        <!-- end image -->
-                        <hr>
-                        <h5 class="mt-5">Alat Pendukung Kegiatan </h5>
-                        <div class="alert alert-light">
-                            <div class="row">
-                                @foreach ($alat as $a)
-                                    <div class="btn-group mr-3">
-                                        <div class="checkbox">
-                                            <input name="id_alat[]" type="checkbox" value="{{ $a->id_alat_pendukung }}"
-                                                id="{{ $a->id_alat }}">
-                                            <label class="text-dark">{{ $a->nama_alat }}</label>
-                                        </div>
-                                    </div>
-                                @endforeach
+                        <div class="w-full">
+                            <label class="col-form-label font-medium">Bidang Kegiatan<sup class="text-red-500">*</sup></label>
+                            <div class="block">
+                                <select class="w-full text-xs rounded-sm border border-gray-300" name="bidang_id">
+                                    <option disabled selected>-- Pilih Bidang Kegiatan --</option>
+                                    @foreach ($bidang as $b)
+                                            <option value="{{ $b->id_bidang_kegiatan }}">{{ $b->nama_bidang }}
+                                            </option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
-
+                    </div>
+                    <div class="bg-primary/20 px-7 py-2 my-2 rounded-md">
+                        <small><b>Catatan :</b><br>
+                            <b>SKPD</b> (acara pemerintah)<br>
+                            <b>NON SKPD</b> (acara diluar pemerintah)
+                        </small>
                     </div>
                 </div>
-
-                <div id="step-5">
-
-                    <div class="jumbotron m-b-0 text-center">
-                        <h5 class="display-4">Form Permohonan telah diisi!</h5>
-                        <p class="lead mb-4">
-                            Klik tombol kirim permohonan apabila Kamu sudah yakin.<br>
-                            Pemohonan akan diproses selama 1x24 jam.
-                        </p>
-                        <p><button type="submit" class="btn btn-primary btn-lg">Kirim Permohonan</button></p>
+                <div class="bg-white rounded-xl p-4 mt-3" style="box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;">
+                    <div class="grid grid-cols-2 gap-x-4">
+                        <div class="w-full">
+                            <label class="col-form-label font-medium">NIK <sup class="text-red-500">*</sup></label>
+                            <div class="block">
+                                <input type="text" class="form-control form-input text-small" name="nik" id="nik" value="{{ Auth::user()->nik }}" disabled />
+                            </div>
+                        </div>
+                        <div class="w-full">
+                            <label class="col-form-label font-medium">Nama Pemohon<sup class="text-red-500">*</sup></label>
+                            <div class="block">
+                                <input type="hidden" class="form-control form-input text-small" value="{{ Auth::user()->id }}" name="user_id" />
+                                <input type="hidden" class="form-control form-input text-small" value="" name="permohonan_id" />
+                                <input type="text" class="form-control form-input text-small" name="name" id="name" value="{{ Auth::user()->name }}" disabled />
+                            </div>
+                        </div>
+                        <div class="w-full mt-3">
+                            <label class="col-form-label font-medium">No Telepon<sup class="text-red-500">*</sup></label>
+                            <div class="block">
+                                <input type="text" class="form-control form-input text-small" name="no_telp" id="no_telp" value="{{ Auth::user()->no_telp }}" disabled />
+                            </div>
+                        </div>
+                        <div class="w-full mt-3">
+                            <label class="col-form-label font-medium">Alamat Lengkap<sup class="text-red-500">*</sup></label>
+                            <div class="block">
+                                <input type="text" class="form-control form-input text-small" name="alamat" id="alamat" value="{{ Auth::user()->alamat }}" disabled />
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <!-- end wizard-content -->
+
+            <div class="form-section">
+                <div class="bg-white rounded-xl p-4" style="box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;">
+                    <div class="grid grid-cols-2 gap-x-4">
+                        <div class="w-full">
+                            <label class="col-form-label font-medium">Nama Instansi / Pribadi <sup class="text-red-500">*</sup></label>
+                            <div class="block">
+                                <select class="w-full text-xs rounded-sm border border-gray-300" name="instansi_id">
+                                    <option disabled selected>-- Pilih Instansi --</option>
+                                    @foreach ($instansi as $i)
+                                            <option value="{{ $i->id_instansi }}">{{ $i->nama_instansi }}
+                                            </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="w-full">
+                            <label class="col-form-label font-medium">Status dalam Instansi / Pribadi<sup class="text-red-500">*</sup></label>
+                            <div class="block">
+                                <input type="text" class="form-control form-input text-small" name="status_instansi" id="status_instansi" />
+                            </div>
+                        </div>
+                        <div class="w-full mt-3">
+                            <label class="col-form-label font-medium">Bidang Instansi / Pribadi<sup class="text-red-500">*</sup></label>
+                            <div class="block">
+                                <input type="text" class="form-control form-input text-small" name="bidang_instansi" id="bidang_instansi" />
+                            </div>
+                        </div>
+                        <div class="w-full mt-3">
+                            <label class="col-form-label font-medium">Alamat Instansi / Pribadi<sup class="text-red-500">*</sup></label>
+                            <div class="block">
+                                <input type="text" class="form-control form-input text-small" name="alamat_instansi" id="alamat_instansi" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <div class="bg-white rounded-xl p-4" style="box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;">
+                    <div class="grid grid-cols-2 gap-x-4">
+                        <div class="w-full hidden">
+                            <label class="col-form-label font-medium">Tanggal Mulai<sup class="text-red-500">*</sup></label>
+                            <div class="block">
+                                <input type="hidden" class="form-control form-input text-small" name="tgl_mulai" id="tgl_mulai" value="{{ $tgl_mulai }}" />
+                            </div>
+                        </div>
+                        <div class="w-full hidden">
+                            <label class="col-form-label font-medium">Jam Mulai<sup class="text-red-500">*</sup></label>
+                            <div class="block">
+                                <input type="hidden" class="form-control form-input text-small" name="jam_mulai" id="jam_mulai" value="{{ $jam_mulai }}" />
+                            </div>
+                        </div>
+                        <div class="w-full hidden">
+                            <label class="col-form-label font-medium">Tanggal Selesai<sup class="text-red-500">*</sup></label>
+                            <div class="block">
+                                <input type="hidden" class="form-control form-input text-small" name="tgl_selesai" id="tgl_selesai" value="{{ $tgl_selesai }}" />
+                            </div>
+                        </div>
+                        <div class="w-full hidden">
+                            <label class="col-form-label font-medium">Jam Selesai<sup class="text-red-500">*</sup></label>
+                            <div class="block">
+                                <input type="hidden" class="form-control form-input text-small" name="jam_selesai" id="jam_selesai" value="{{ $jam_selesai }}" />
+                            </div>
+                        </div>
+                        <div class="w-full">
+                            <label class="col-form-label font-medium">Nama Acara / Kegiatan<sup class="text-red-500">*</sup></label>
+                            <div class="block">
+                                <input type="text" class="form-control form-input text-small" name="nama_kegiatan" id="nama_kegiatan" />
+                            </div>
+                        </div>
+                        <div class="w-full">
+                            <label class="col-form-label font-medium">Jumlah Peserta<sup class="text-red-500">*</sup></label>
+                            <div class="block">
+                                <input type="text" class="form-control form-input text-small" name="jumlah_peserta" id="jumlah_peserta" />
+                            </div>
+                        </div>
+                        <div class="w-full mt-3">
+                            <label class="col-form-label font-medium">Narasumber<sup class="text-red-500">*</sup></label>
+                            <div class="block">
+                                <input type="text" class="form-control form-input text-small" name="narasumber" id="narasumber" />
+                            </div>
+                        </div>
+                        <div class="w-full mt-3">
+                            <label class="col-form-label font-medium">Surat Permohonan<sup class="text-red-500">*</sup></label>
+                            <div class="block">
+                                <input type="file" class="block w-full border border-gray-200 text-small focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none file:bg-gray-50 file:border-0 file:me-4 file:py-2 file:px-4" name="surat_permohonan" id="surat_permohonan" style="font-size: 11.5px" />
+                            </div>
+                        </div>
+                        <div class="w-full mt-3">
+                            <label class="col-form-label font-medium">Rundown Acara<sup class="text-red-500">*</sup></label>
+                            <div class="block">
+                                <input type="file" class="block w-full border border-gray-200 text-small focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none file:bg-gray-50 file:border-0 file:me-4 file:py-2 file:px-4" name="rundown_acara" id="rundown_acara" style="font-size: 11.5px" />
+                            </div>
+                        </div>
+                        <div class="w-full mt-3">
+                            <label class="col-form-label font-medium">Output</label>
+                            <div class="block">
+                                <input type="text" class="form-control form-input text-small" name="output" id="output" />
+                            </div>
+                        </div>
+                        <div class="w-full mt-3">
+                            <label class="col-form-label font-medium">Outcome</label>
+                            <div class="block">
+                                <input type="text" class="form-control form-input text-small" name="outcome" id="outcome" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl p-4 mt-3" style="box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;">
+                    <div class="w-full">
+                        <label class="col-form-label font-medium">Ringkasan Acara / Kegiatan<sup class="text-red-500">*</sup></label>
+                        <div class="block">
+                            <textarea class="border-gray-200 border-2 focus:border-primary focus:ring-primary focus:ring-opacity-50 rounded-md w-full" name="ringkasan" style="font-size: 13px"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-navigation flex justify-end mt-5 gap-x-3">
+                <button type="button" class="button-ghost text-small rounded-lg px-4 previous">Kembali</button>
+                <button type="button" class="button-primary text-small rounded-lg px-4 next">Lanjutkan</button>
+                <button type="submit" class="button-primary text-small rounded-lg px-4">Submit</button>
+            </div>
+        </form>
+        <div class="bg-white rounded-xl mx-4 h-fit" style="box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;">
+            <div class="h-44 w-full bg-cover bg-center rounded-t-xl" style="background-image: url('{{ asset('/assets/img/auth/multimedia.png') }}');"></div>
+            <div class="p-4">
+                <h1 class="font-semibold text-lg border-b border-neutral-300 pb-4">Multimedia</h1>
+                <div class="pt-4 pb-2 text-neutral-500 font-medium">
+                    <div class="flex flex-row items-center gap-x-2">
+                        <img src="{{ asset('/assets/img/auth/kalendar.png') }}" class="h-4" />
+                        <p>Kam, 15 Feb 2024 - Kam, 15 Feb 2024</p>
+                    </div>
+                    <div class="flex flex-row items-center gap-x-2 pt-2">
+                        <img src="{{ asset('/assets/img/auth/jam.png') }}" class="h-4" />
+                        <p>{{ $jam_mulai }}:00 - {{ $jam_selesai }}.00</p>
+                    </div>
+                </div>
+            </div>
         </div>
-        <!-- end wizard -->
-    </form>
-    <!-- end wizard-form -->
+    </div>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/parsley.js/2.9.2/parsley.min.js" integrity="sha512-eyHL1atYNycXNXZMDndxrDhNAegH2BDWt1TmkXJPoGf1WLlNYt08CSjkqF5lnCRmdm3IrkHid8s2jOUY4NIZVQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+    $(function() {
+        var $sections=$('.form-section');
+
+        function navigateTo(index) {
+            $sections.removeClass('current').eq(index).addClass('current');
+
+            $('.form-navigation .previous').toggle(index > 0);
+            var atTheEnd = index >= $sections.length - 1;
+            $('.form-navigation .next').toggle(!atTheEnd);
+            $('.form-navigation [Type=submit]').toggle(atTheEnd);
+
+            const stepOne = document.querySelector('.step0');
+            const stepTwo = document.querySelector('.step1');
+            const stepThree = document.querySelector('.step2');
+
+            const dividerOne = document.querySelector('.divider0');
+            const dividerTwo = document.querySelector('.divider1');
+            const dividerThree = document.querySelector('.divider2');
+
+            if (index === 0) {
+                stepOne.style.backgroundColor = '#072ac8';
+                stepOne.style.color = 'white';
+
+                stepTwo.style.backgroundColor = '';
+                stepTwo.style.color = '';
+
+                stepThree.style.backgroundColor = '';
+                stepThree.style.color = '';
+
+                dividerOne.style.backgroundColor = '';
+            } else if (index === 1) {
+                stepOne.style.backgroundColor = '#072ac8';
+                stepOne.style.color = 'white';
+
+                stepTwo.style.backgroundColor = '#072ac8';
+                stepTwo.style.color = 'white';
+
+                stepThree.style.backgroundColor = '';
+                stepThree.style.color = '';
+
+                dividerOne.style.backgroundColor = '#072ac8';
+                dividerTwo.style.backgroundColor = '';
+            } else if (index === 2) {
+                stepOne.style.backgroundColor = '#072ac8';
+                stepOne.style.color = 'white';
+
+                stepTwo.style.backgroundColor = '#072ac8';
+                stepTwo.style.color = 'white';
+
+                stepThree.style.backgroundColor = '#072ac8';
+                stepThree.style.color = 'white';
+
+                dividerTwo.style.backgroundColor = '#072ac8';
+            }
+        }
+        
+        function curIndex() {
+            return $sections.index($sections.filter('.current'));
+        }
+
+        $('.form-navigation .previous').click(function() {
+            navigateTo(curIndex() - 1);
+        });
+
+        $('.form-navigation .next').click(function() {
+            $('.permohonan-form').parsley().whenValidate({
+                group:'block-'+curIndex()
+            }).done(function() {
+                navigateTo(curIndex() + 1);
+            })
+        });
+
+        $sections.each(function(index, section) {
+            $(section).find(':input').attr('data-parsley-group', 'block-',+index);
+        });
+
+        navigateTo(0);
+    })
+</script>
+
 @endsection
 
-@push('scripts')
-    <script src="/assets/plugins/smartwizard/dist/js/jquery.smartWizard.js"></script>
-    <script src="/assets/js/demo/form-wizards.demo.js"></script>
-    <script src="/assets/plugins/bootstrap-datepicker/dist/js/bootstrap-datepicker.js"></script>
-    <script src="/assets/plugins/isotope-layout/dist/isotope.pkgd.min.js"></script>
-    <script src="/assets/plugins/lightbox2/dist/js/lightbox.min.js"></script>
-    <script src="/assets/js/demo/gallery.demo.js"></script>
-
-    <script>
-        document.getElementById('instansiSelect').addEventListener('change', function() {
-            var selectedValue = this.value;
-
-            var inputValue = '';
-
-            switch (selectedValue) {
-                case '1':
-                    inputValue = 'Cimahi Utara';
-                    break;
-                case '2':
-                    inputValue = 'Cimahi Tengah';
-                    break;
-                case '3':
-                    inputValue = 'Cimahi Selatan';
-                    break;
-                default:
-                    inputValue = '';
-            }
-
-            document.getElementById('valAlamat').value = inputValue;
-        });
-    </script>
-@endpush
