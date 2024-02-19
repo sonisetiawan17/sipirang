@@ -72,7 +72,7 @@
                         <i class="fa fa-clipboard-check text-xl text-blue-500"></i>
                     </div>
                     <div class="flex flex-col items-center text-white">
-                        <p class="font-semibold" style="font-size: 18px">{{ $stats }}</p>
+                        <p class="font-semibold" style="font-size: 18px">0</p>
                         <p style="font-size: 13px">{{ $current_month }}</p>
                     </div>
                 </div>

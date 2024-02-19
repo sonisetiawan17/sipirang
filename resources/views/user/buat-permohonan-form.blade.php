@@ -45,7 +45,7 @@
 
     <h1 class="pt-12 font-semibold text-xl">Detail Pemohon</h1>
     <div class="grid grid-cols-[65%,1fr] mt-4 mb-24">
-        <form class="permohonan-form">
+        <form action="{{ route('user.simpanPermohonan') }}" method="POST" enctype="multipart/form-data" class="permohonan-form">
             @csrf 
             <div class="form-section">
                 <div class="bg-white rounded-xl p-4" style="box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;">
@@ -225,6 +225,22 @@
                         <label class="col-form-label font-medium">Ringkasan Acara / Kegiatan<sup class="text-red-500">*</sup></label>
                         <div class="block">
                             <textarea class="border-gray-200 border-2 focus:border-primary focus:ring-primary focus:ring-opacity-50 rounded-md w-full" name="ringkasan" style="font-size: 13px"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl p-4 mt-3" style="box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;">
+                    <div class="w-full">
+                        <label class="col-form-label font-medium">Alat Pendukung<sup class="text-red-500">*</sup></label>
+                        <div class="block mt-2">
+                            <div class="flex gap-x-6">
+                                @foreach ($alat as $item)
+                                <div class="flex">
+                                  <input type="checkbox" class="shrink-0 mt-0.5 border-gray-200 rounded text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none" name="id_alat[]" value="{{ $item->id_alat_pendukung }}"
+                                  id="{{ $item->id_alat }}">
+                                  <label for="hs-checkbox-group-1" class="text-sm text-gray-500 ms-3">{{ $item->nama_alat }}</label>
+                                </div>
+                                @endforeach
+                            </div>
                         </div>
                     </div>
                 </div>

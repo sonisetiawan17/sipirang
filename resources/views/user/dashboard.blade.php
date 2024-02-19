@@ -113,7 +113,7 @@
                     </div>
                     <div class="modal-footer font-semibold text-sm">
                         <a href="javascript:;" class="button-ghost" data-dismiss="modal">Tutup</a>
-                        <button type="submit" class="bg-slate-900/10 py-2 px-4 text-black/50 cursor-not-allowed" disabled>Lanjutkan</button>
+                        <button type="submit" id="button" class="bg-slate-900/10 py-2 px-4 text-black/50 cursor-not-allowed" disabled>Lanjutkan</button>
                     </div>
                     </form>
                 </div>
@@ -175,7 +175,7 @@
 
                 jam.innerHTML +=
                     `<label class="${labelClass}" id="${value}-jam_mulai">
-                        <input type="radio" name="jam_mulai" value="${value}" id="${value}" onclick="getValue()" ${isUsed ? 'disabled' : ''} />
+                        <input type="radio" name="jam_mulai" value="${value}" id="${value}" onclick="getValue()" ${isUsed ? 'disabled' : ''} required />
                         ${value}:00
                     </label>`;
             }
@@ -184,7 +184,7 @@
                 const value = i.toString();
                 jam.innerHTML +=
                     `<label class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-teal-100 text-teal-800 cursor-pointer mr-1" id="${value}-jam_mulai">
-                        <input type="radio" name="jam_mulai" value="${value}" id="${value}" onclick="getValue()" />
+                        <input type="radio" name="jam_mulai" value="${value}" id="${value}" onclick="getValue()" required />
                         ${value}:00
                     </label>`;
             }
@@ -248,7 +248,7 @@
 
                 jam.innerHTML +=
                     `<label class="${labelClass}" id="${value}-jam_selesai">
-                        <input type="radio" name="jam_selesai" value="${value}" id="${value}" onclick="getValueTwo()" ${isUsed ? 'disabled' : ''} />
+                        <input type="radio" name="jam_selesai" value="${value}" id="${value}" onclick="getValueTwo()" ${isUsed ? 'disabled' : ''} required />
                         ${value}:00
                     </label>`;
             }
@@ -257,7 +257,7 @@
                 const value = i.toString();
                 jam.innerHTML +=
                     `<label class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-teal-100 text-teal-800 cursor-pointer mr-1" id="${value}-jam_selesai">
-                        <input type="radio" name="jam_selesai" value="${value}" id="${value}" onclick="getValueTwo()" />
+                        <input type="radio" name="jam_selesai" value="${value}" id="${value}" onclick="getValueTwo()" required />
                         ${value}:00
                     </label>`;
             }
@@ -280,7 +280,55 @@
         }
     }
 
-    
+    const tgl_mulai = document.getElementById('tgl_mulai');
+    const tgl_selesai = document.getElementById('tgl_selesai');
+    const jam_mulai = document.getElementsByName('jam_mulai');
+    const jam_selesai = document.getElementsByName('jam_selesai');
+    const button = document.getElementById('button');
+
+    function checkAndChangeButtonColor(tglMulai, tglSelesai) {
+        const isTglMulaiValid = tglMulai.length > 0
+        const isTglSelesaiValid = tglSelesai.length > 0;
+
+        if (isTglMulaiValid && isTglSelesaiValid) {
+            button.removeAttribute("disabled");
+            button.style.backgroundColor = "#072ac8";
+            button.style.color = "white";
+            button.style.cursor = "pointer";
+            button.style.transitionDuration = "300ms";
+
+            button.addEventListener("mouseover", function () {
+                button.style.backgroundColor = "#072ac8";
+            });
+
+            button.addEventListener("mouseout", function () {
+                button.style.backgroundColor = "#072ac8";
+            });
+        } else {
+            button.style.backgroundColor = "rgba(44, 62, 80, 0.1)";
+            button.style.color = "rgba(0, 0, 0, 0.5)";
+            button.style.cursor = "not-allowed";
+
+            button.addEventListener("mouseover", function () {
+                button.style.backgroundColor = "rgba(44, 62, 80, 0.1)";
+            });
+
+            button.addEventListener("mouseout", function () {
+                button.style.backgroundColor = "rgba(44, 62, 80, 0.1)";
+            });
+        }
+    }
+
+    tgl_mulai.addEventListener("input", function (event) {
+        const tglMulaiValue = event.target.value;
+        checkAndChangeButtonColor(tglMulaiValue, tgl_selesai.value);
+    });
+
+    tgl_selesai.addEventListener("input", function (event) {
+        const tglSelesaiValue = event.target.value;
+        checkAndChangeButtonColor(tgl_mulai.value, tglSelesaiValue);
+    });
+
 </script>
 
 @endsection

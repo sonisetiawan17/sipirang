@@ -26,6 +26,7 @@ Route::middleware(['auth', 'role:user'])
     ->group(function () {
         Route::get('/dashboard', [UserDashboardController::class, 'index'])->name('index');
         Route::get('/jadwal', [UserDashboardController::class, 'lihatJadwal'])->name('jadwal');
+        Route::get('/jadwals', [UserDashboardController::class, 'lihatJadwals'])->name('jadwals');
         Route::get('/jadwal/{tanggal}', [UserDashboardController::class, 'ambilJadwal'])->name('ambilJadwal');
         Route::get('/buatPermohonan', [UserDashboardController::class, 'buatPermohonan'])->name('buatPermohonan');
         Route::get('/buatPermohonan/form', [UserDashboardController::class, 'buatPermohonanForm'])->name('buatPermohonanForm');

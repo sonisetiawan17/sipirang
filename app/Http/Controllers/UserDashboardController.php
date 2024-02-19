@@ -401,4 +401,26 @@ class UserDashboardController extends Controller
     {
         return view('user.test');
     }
+
+    public function lihatJadwals()
+    {
+        $currentDate = Carbon::now()->format('Y-m-d');
+        $currentMonth = Carbon::now()->format('M');
+        $currentMonthNum = Carbon::now()->format('m');
+        $currentYear = Carbon::now()->format('Y');
+
+        $jadwal = DB::table('permohonan')
+                    ->join('jadwal', 'jadwal.permohonan_id', '=', 'permohonan.id_permohonan')
+                    ->join('users', 'users.id', '=', 'permohonan.user_id')
+                    ->join('fasilitas', 'fasilitas.id_fasilitas', '=', 'permohonan.id_fasilitas')
+                    ->whereDate('tgl_mulai', '>=', $currentDate)
+                    ->get();
+
+        $startDate = Carbon::now()->format('d');
+        $endDate = Carbon::now()->endOfMonth()->format('d');
+
+        $day = array_map('strval', range($startDate, $endDate));
+
+        return view('user.jadwals', compact('jadwal', 'day', 'currentMonth', 'currentMonthNum', 'currentYear'));
+    }
 }

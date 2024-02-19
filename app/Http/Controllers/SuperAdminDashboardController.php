@@ -34,8 +34,9 @@ class SuperAdminDashboardController extends Controller
         
         foreach ($permohonan as $data) {
             if ($data->bulan == $current_month_short) {
-                $stats = $data->jumlah_permohonan;
-            }
+                // $stats = $data->jumlah_permohonan;
+                $stats = 0;
+            } 
         }
 
         $status_diterima = DB::table('permohonan')
@@ -53,7 +54,7 @@ class SuperAdminDashboardController extends Controller
                             ->where('status_permohonan', 'Ditolak')
                             ->count();
         
-        return view('super-admin.dashboard', compact('data', 'status_diterima', 'status_menunggu', 'status_ditolak', 'current_month', 'stats'));
+        return view('super-admin.dashboard', compact('data', 'status_diterima', 'status_menunggu', 'status_ditolak', 'current_month'));
     }
 
     public function filter(Request $request)

@@ -1242,6 +1242,9 @@ select {
 .gap-5 {
   gap: 1.25rem;
 }
+.gap-10 {
+  gap: 2.5rem;
+}
 .gap-x-1 {
   -moz-column-gap: 0.25rem;
        column-gap: 0.25rem;
@@ -1269,6 +1272,10 @@ select {
 .gap-x-5 {
   -moz-column-gap: 1.25rem;
        column-gap: 1.25rem;
+}
+.gap-x-6 {
+  -moz-column-gap: 1.5rem;
+       column-gap: 1.5rem;
 }
 .gap-x-7 {
   -moz-column-gap: 1.75rem;
@@ -1432,6 +1439,26 @@ select {
 }
 .border-transparent {
   border-color: transparent;
+}
+.border-b-neutral-100 {
+  --tw-border-opacity: 1;
+  border-bottom-color: rgb(245 245 245 / var(--tw-border-opacity));
+}
+.border-l-blue-500 {
+  --tw-border-opacity: 1;
+  border-left-color: rgb(59 130 246 / var(--tw-border-opacity));
+}
+.border-l-green-500 {
+  --tw-border-opacity: 1;
+  border-left-color: rgb(34 197 94 / var(--tw-border-opacity));
+}
+.border-r-neutral-100 {
+  --tw-border-opacity: 1;
+  border-right-color: rgb(245 245 245 / var(--tw-border-opacity));
+}
+.border-t-neutral-100 {
+  --tw-border-opacity: 1;
+  border-top-color: rgb(245 245 245 / var(--tw-border-opacity));
 }
 .bg-\[\#eff3fb\] {
   --tw-bg-opacity: 1;
@@ -1818,6 +1845,9 @@ select {
 }
 .pt-8 {
   padding-top: 2rem;
+}
+.pt-\[120px\] {
+  padding-top: 120px;
 }
 .pt-\[77px\] {
   padding-top: 77px;
