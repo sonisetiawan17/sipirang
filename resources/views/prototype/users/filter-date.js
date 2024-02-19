@@ -73,3 +73,144 @@ if (matchingDateItems.length > 0) {
 } else {
     console.log("Ruangan, tanggal, atau keduanya tidak ditemukan dalam array.");
 }
+
+// Dashboard.blade.php
+function getValue() {
+    const radioButton = document.getElementsByName("jam_mulai");
+    const labelElement8 = document.getElementById("8-jam_mulai");
+    const labelElement9 = document.getElementById("9-jam_mulai");
+    const labelElement10 = document.getElementById("10-jam_mulai");
+    const labelElement11 = document.getElementById("11-jam_mulai");
+    const labelElement12 = document.getElementById("12-jam_mulai");
+    const labelElement13 = document.getElementById("13-jam_mulai");
+    const labelElement14 = document.getElementById("14-jam_mulai");
+    const labelElement15 = document.getElementById("15-jam_mulai");
+    const labelElement16 = document.getElementById("16-jam_mulai");
+
+    for (let i = 0; i < radioButton.length; i++) {
+        if (radioButton[i].checked) {
+            const selectedValue = radioButton[i].value;
+
+            console.log(selectedValue);
+
+            if (
+                selectedValue === "8" &&
+                labelElement8.classList.contains("cursor-pointer")
+            ) {
+                labelElement8.style.backgroundColor = "#99f6e4";
+                labelElement9.style.backgroundColor = "";
+                labelElement10.style.backgroundColor = "";
+                labelElement11.style.backgroundColor = "";
+                labelElement12.style.backgroundColor = "";
+                labelElement13.style.backgroundColor = "";
+                labelElement14.style.backgroundColor = "";
+                labelElement15.style.backgroundColor = "";
+                labelElement16.style.backgroundColor = "";
+            } else if (
+                selectedValue === "9" &&
+                labelElement9.classList.contains("cursor-pointer")
+            ) {
+                labelElement8.style.backgroundColor = "";
+                labelElement9.style.backgroundColor = "#99f6e4";
+                labelElement10.style.backgroundColor = "";
+                labelElement11.style.backgroundColor = "";
+                labelElement12.style.backgroundColor = "";
+                labelElement13.style.backgroundColor = "";
+                labelElement14.style.backgroundColor = "";
+                labelElement15.style.backgroundColor = "";
+                labelElement16.style.backgroundColor = "";
+            } else if (
+                selectedValue === "10" &&
+                labelElement10.classList.contains("cursor-pointer")
+            ) {
+                labelElement8.style.backgroundColor = "";
+                labelElement9.style.backgroundColor = "";
+                labelElement10.style.backgroundColor = "#99f6e4";
+                labelElement11.style.backgroundColor = "";
+                labelElement12.style.backgroundColor = "";
+                labelElement13.style.backgroundColor = "";
+                labelElement14.style.backgroundColor = "";
+                labelElement15.style.backgroundColor = "";
+                labelElement16.style.backgroundColor = "";
+            } else if (
+                selectedValue === "11" &&
+                labelElement11.classList.contains("cursor-pointer")
+            ) {
+                labelElement8.style.backgroundColor = "";
+                labelElement9.style.backgroundColor = "";
+                labelElement10.style.backgroundColor = "";
+                labelElement11.style.backgroundColor = "#99f6e4";
+                labelElement12.style.backgroundColor = "";
+                labelElement13.style.backgroundColor = "";
+                labelElement14.style.backgroundColor = "";
+                labelElement15.style.backgroundColor = "";
+                labelElement16.style.backgroundColor = "";
+            } else if (
+                selectedValue === "12" &&
+                labelElement12.classList.contains("cursor-pointer")
+            ) {
+                labelElement8.style.backgroundColor = "";
+                labelElement9.style.backgroundColor = "";
+                labelElement10.style.backgroundColor = "";
+                labelElement11.style.backgroundColor = "";
+                labelElement12.style.backgroundColor = "#99f6e4";
+                labelElement13.style.backgroundColor = "";
+                labelElement14.style.backgroundColor = "";
+                labelElement15.style.backgroundColor = "";
+                labelElement16.style.backgroundColor = "";
+            } else if (
+                selectedValue === "13" &&
+                labelElement13.classList.contains("cursor-pointer")
+            ) {
+                labelElement8.style.backgroundColor = "";
+                labelElement9.style.backgroundColor = "";
+                labelElement10.style.backgroundColor = "";
+                labelElement11.style.backgroundColor = "";
+                labelElement12.style.backgroundColor = "";
+                labelElement13.style.backgroundColor = "#99f6e4";
+                labelElement14.style.backgroundColor = "";
+                labelElement15.style.backgroundColor = "";
+                labelElement16.style.backgroundColor = "";
+            } else if (
+                selectedValue === "14" &&
+                labelElement14.classList.contains("cursor-pointer")
+            ) {
+                labelElement8.style.backgroundColor = "";
+                labelElement9.style.backgroundColor = "";
+                labelElement10.style.backgroundColor = "";
+                labelElement11.style.backgroundColor = "";
+                labelElement12.style.backgroundColor = "";
+                labelElement13.style.backgroundColor = "";
+                labelElement14.style.backgroundColor = "#99f6e4";
+                labelElement15.style.backgroundColor = "";
+                labelElement16.style.backgroundColor = "";
+            } else if (
+                selectedValue === "15" &&
+                labelElement15.classList.contains("cursor-pointer")
+            ) {
+                labelElement8.style.backgroundColor = "";
+                labelElement9.style.backgroundColor = "";
+                labelElement10.style.backgroundColor = "";
+                labelElement11.style.backgroundColor = "";
+                labelElement12.style.backgroundColor = "";
+                labelElement13.style.backgroundColor = "";
+                labelElement14.style.backgroundColor = "";
+                labelElement15.style.backgroundColor = "#99f6e4";
+                labelElement16.style.backgroundColor = "";
+            } else if (
+                selectedValue === "16" &&
+                labelElement16.classList.contains("cursor-pointer")
+            ) {
+                labelElement8.style.backgroundColor = "";
+                labelElement9.style.backgroundColor = "";
+                labelElement10.style.backgroundColor = "";
+                labelElement11.style.backgroundColor = "";
+                labelElement12.style.backgroundColor = "";
+                labelElement13.style.backgroundColor = "";
+                labelElement14.style.backgroundColor = "";
+                labelElement15.style.backgroundColor = "";
+                labelElement16.style.backgroundColor = "#99f6e4";
+            }
+        }
+    }
+}

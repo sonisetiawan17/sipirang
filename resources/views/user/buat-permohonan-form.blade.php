@@ -239,11 +239,11 @@
         <div class="bg-white rounded-xl mx-4 h-fit" style="box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;">
             <div class="h-44 w-full bg-cover bg-center rounded-t-xl" style="background-image: url('{{ asset('/assets/img/auth/multimedia.png') }}');"></div>
             <div class="p-4">
-                <h1 class="font-semibold text-lg border-b border-neutral-300 pb-4">Multimedia</h1>
+                <h1 class="font-semibold text-lg border-b border-neutral-300 pb-4">{{ $nama_fasilitas }}</h1>
                 <div class="pt-4 pb-2 text-neutral-500 font-medium">
                     <div class="flex flex-row items-center gap-x-2">
                         <img src="{{ asset('/assets/img/auth/kalendar.png') }}" class="h-4" />
-                        <p>Kam, 15 Feb 2024 - Kam, 15 Feb 2024</p>
+                        <p>{{ $start_day }}, {{ $tgl_mulai_convert }} - {{ $end_day }}, {{ $tgl_selesai_convert }}</p>
                     </div>
                     <div class="flex flex-row items-center gap-x-2 pt-2">
                         <img src="{{ asset('/assets/img/auth/jam.png') }}" class="h-4" />

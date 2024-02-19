@@ -114,12 +114,54 @@ class UserDashboardController extends Controller
 
     public function buatPermohonanForm(Request $request)
     {
+        // dd($request->id_fasilitas, $request->nama_fasilitas, $request->tgl_mulai, $request->jam_mulai, $request->tgl_selesai, $request->jam_selesai);
+
         $id_fasilitas = $request->id_fasilitas;
         $nama_fasilitas = $request->nama_fasilitas;
         $tgl_mulai = $request->tgl_mulai;
         $tgl_selesai = $request->tgl_selesai;
         $jam_mulai = $request->jam_mulai;
         $jam_selesai = $request->jam_selesai;
+
+        $tgl_mulai_convert = Carbon::createFromFormat('Y-m-d', $tgl_mulai)->format('d M Y');
+        $tgl_mulai_date_format = Carbon::createFromFormat('Y-m-d', $tgl_mulai);
+        $tgl_mulai_day = $tgl_mulai_date_format->format('D');
+        
+        $tgl_selesai_convert = Carbon::createFromFormat('Y-m-d', $tgl_selesai)->format('d M Y');
+        $tgl_selesai_date_format = Carbon::createFromFormat('Y-m-d', $tgl_selesai);
+        $tgl_selesai_day = $tgl_selesai_date_format->format('D');
+
+        if ($tgl_mulai_day === 'Mon') {
+            $start_day = 'Sen';
+        } elseif ($tgl_mulai_day === 'Tue') {
+            $start_day = 'Sel';
+        } elseif ($tgl_mulai_day === 'Wed') {
+            $start_day = 'Rab';
+        } elseif ($tgl_mulai_day === 'Thu') {
+            $start_day = 'Kam';
+        } elseif ($tgl_mulai_day === 'Fri') {
+            $start_day = 'Jum';
+        } elseif ($tgl_mulai_day === 'Sat') {
+            $start_day = 'Sab';
+        } elseif ($tgl_mulai_day === 'Sun') {
+            $start_day = 'Ming';
+        }
+
+        if ($tgl_selesai_day === 'Mon') {
+            $end_day = 'Sen';
+        } elseif ($tgl_selesai_day === 'Tue') {
+            $end_day = 'Sel';
+        } elseif ($tgl_selesai_day === 'Wed') {
+            $end_day = 'Rab';
+        } elseif ($tgl_selesai_day === 'Thu') {
+            $end_day = 'Kam';
+        } elseif ($tgl_selesai_day === 'Fri') {
+            $end_day = 'Jum';
+        } elseif ($tgl_selesai_day === 'Sat') {
+            $end_day = 'Sab';
+        } elseif ($tgl_selesai_day === 'Sun') {
+            $end_day = 'Ming';
+        }
 
         $bidang = BidangKegiatan::get();
         $instansi = Instansi::get();
@@ -131,7 +173,7 @@ class UserDashboardController extends Controller
 
         $jadwal = DB::table('jadwal')->join('permohonan', 'permohonan.id_permohonan', '=', 'jadwal.permohonan_id')->select('tgl_mulai', 'tgl_selesai', 'jam_mulai', 'jam_selesai', 'id_fasilitas', 'id_alat')->get();
 
-        return view('user.buat-permohonan-form', compact('bidang', 'instansi', 'fasilitas', 'alat', 'jadwal', 'blok', 'id_fasilitas', 'nama_fasilitas', 'tgl_mulai', 'tgl_selesai', 'jam_mulai', 'jam_selesai'));
+        return view('user.buat-permohonan-form', compact('bidang', 'instansi', 'fasilitas', 'alat', 'jadwal', 'blok', 'id_fasilitas', 'nama_fasilitas', 'tgl_mulai', 'tgl_selesai', 'tgl_mulai_day', 'tgl_mulai_convert', 'tgl_selesai_day', 'tgl_selesai_convert', 'jam_mulai', 'jam_selesai', 'start_day', 'end_day'));
     }
 
     public function editPermohonan($id_permohonan)

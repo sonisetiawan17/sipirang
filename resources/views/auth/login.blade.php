@@ -48,8 +48,8 @@
             </div>
 
             <div class="mt-8">
-                <button id="button" class="w-full py-2 bg-slate-900/10 text-black/50 rounded-md cursor-not-allowed"
-                    disabled>Log In
+                <button id="button" class="w-full px-3 py-2 bg-slate-900/10 text-black/50 cursor-not-allowed"
+                    disabled style="border-radius: 2px">Log In
                 </button>
             </div>
 

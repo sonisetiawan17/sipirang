@@ -8,15 +8,22 @@
 
 <main class="bg-[#f7f7f8]">
     <div class="pt-[77px] relative h-screen">
-        <div class="absolute z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[70%]">
-            <div>
-                <h1 class="font-bold text-6xl text-center">Sistem Informasi Peminjaman <span class="block pt-3 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-transparent bg-clip-text h-[85px]">Media Platform</span></h1>
-                <p class="pt-4 font-semibold text-lg text-center">87% Murid di Akademi berhasil melipatgandakan
-                    portofolionya <span class="block pt-2">dalam waktu 3 bulan menggunakan strategi kita.</span></p>
+        <div class="lg:absolute z-10 lg:top-1/2 lg:left-1/2 lg:transform lg:-translate-x-1/2 lg:-translate-y-1/2 lg:w-[70%]">
+            <div class="flex justify-center">
+                <span class="py-1.5 px-3 rounded-full text-xs font-medium bg-gray-200 text-gray-800 ">Sistem Informasi Peminjaman Ruangan</span>
+            </div>
+            {{-- <div class="mt-5 md:hidden">
+                <h1 class="font-bold text-6xl text-center">Booking Room Reservations <span class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-transparent bg-clip-text h-[85px]">Easily and Efficiently</span></h1>
+                <p class="pt-4 font-semibold text-lg text-center">SIPIRANG menawarkan berbagai manfaat, seperti menghemat waktu, <span class="block pt-2"> meningkatkan efisiensi, dan mengurangi risiko kesalahan.</span></p>
+            </div> --}}
+            <div class="mt-5 mx-4 lg:mx-0">
+                <h1 class="font-bold text-4xl lg:text-6xl text-center leading-snug lg:leading-none">Booking Room Reservations <span class="md:block md:pt-3 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-transparent bg-clip-text h-[85px]">Easily and Efficiently</span></h1>
+                <p class="pt-4 font-semibold text-lg text-center">SIPIRANG menawarkan berbagai manfaat, seperti menghemat waktu, <span class="block pt-2"> meningkatkan efisiensi, dan mengurangi risiko kesalahan.</span></p>
             </div>
 
-            <div class="mt-10 text-center">
-                <button class="bg-gradient-to-t from-primary to-blue-500 text-small rounded-lg px-4 text-white" style="padding: 8px 12px; box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;">Lihat Ruangan</button>
+            <div class="mt-10 text-center space-x-3">
+                <button class="bg-gradient-to-t from-primary to-blue-500 text-small rounded-lg w-[150px] text-white" style="padding: 8px 12px; box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;">Lihat Ruangan</button>
+                <button class="bg-gradient-to-t from-primary to-blue-500 text-small rounded-lg w-[150px] text-white" style="padding: 8px 12px; box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;">Cek Jadwal</button>
             </div>
         </div>
 
@@ -53,7 +60,7 @@
                         Helps you write and review essays 3x faster
                     </p>
                     <p class="mt-1 text-gray-600">
-                        Get essay feedback specific to your essays in seconds, anytime.
+                        Location: Mal Pelayanan Publik, Kota Cimahi, Lt. 4.
                     </p>
                 </div>
                 <img class="w-full h-auto rounded-xl image-border mt-4"
@@ -74,14 +81,14 @@
                         <form method="get" action="{{ route('user.buatPermohonanForm') }}">
                             @csrf
                             <div class="form-group m-b-15">
-                                <input type="hidden" class="form-control form-input text-small" name="id_fasilitas" id="id_fasilitas" disabled />
-                                <input type="hidden" class="form-control form-input text-small" name="nama_fasilitas" id="nama_fasilitas" disabled />
-                                <label class="col-form-label">Tanggal Mulai <sup class="text-red">*</sup></label>
+                                <input type="hidden" class="form-control form-input text-small" name="id_fasilitas" id="id_fasilitas" />
+                                <input type="hidden" class="form-control form-input text-small" name="nama_fasilitas" id="nama_fasilitas" />
+                                <label class="col-form-label">Tanggal Mulai <sup class="text-red-500">*</sup></label>
                                 <div class="block">
-                                    <input type="date" class="form-control form-input text-small" name="tgl_mulai" id="tgl_mulai" onchange="checkStartDate()" />
+                                    <input type="date" class="form-control form-input text-small" name="tgl_mulai" id="tgl_mulai" onchange="checkStartDate()" required />
                                 </div>
     
-                                <label class="col-form-label mt-3">Jam Mulai <sup class="text-red">*</sup></label>
+                                <label class="col-form-label mt-3">Jam Mulai <sup class="text-red-500">*</sup></label>
                                 <div class="block">
                                     {{-- <div class="btn-group btn-group-toggle" data-toggle="buttons" id="data-jam">
                                         <p class="tgl_info">*Silahkan pilih tanggal mulai terlebih dahulu.</p>
@@ -93,7 +100,7 @@
     
                                 <label class="col-form-label mt-3">Tanggal Selesai <sup class="text-red">*</sup></label>
                                 <div class="block">
-                                    <input type="date" class="form-control form-input text-small" name="tgl_selesai" id="tgl_selesai" onchange="checkEndDate()" />
+                                    <input type="date" class="form-control form-input text-small" name="tgl_selesai" id="tgl_selesai" onchange="checkEndDate()" required />
                                 </div>
     
                                 <label class="col-form-label mt-3">Jam Selesai <sup class="text-red">*</sup></label>
@@ -106,7 +113,7 @@
                     </div>
                     <div class="modal-footer font-semibold text-sm">
                         <a href="javascript:;" class="button-ghost" data-dismiss="modal">Tutup</a>
-                        <button type="submit" class="button-primary">Lanjutkan</button>
+                        <button type="submit" class="bg-slate-900/10 py-2 px-4 text-black/50 cursor-not-allowed" disabled>Lanjutkan</button>
                     </div>
                     </form>
                 </div>
@@ -162,14 +169,13 @@
             for (let i = 8; i <= 16; i++) {
                 const value = i.toString();
                 const isUsed = newArray.includes(value);
+                const labelClass = isUsed
+                    ? 'inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-red-500/20 disabled cursor-not-allowed text-red-800'
+                    : 'inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-teal-100 text-teal-800 cursor-pointer';
 
                 jam.innerHTML +=
-                    // `<label class="btn text-xs ${isUsed ? 'bg-red-500/20 disabled cursor-not-allowed' : 'btn-white'}" id="result">
-                    //     <input type="radio" name="jam_mulai" value="${value}" id="${value}" />
-                    //     ${value}:00
-                    // </label>`;
-                    `<label class="${isUsed ? 'inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-red-500/20 disabled cursor-not-allowed text-red-800' : 'inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-teal-100 text-teal-800 cursor-pointer'} mr-1" id="${value}">
-                        <input type="radio" name="jam_mulai" value="${value}" id="${value}" onclick="getValue()" />
+                    `<label class="${labelClass}" id="${value}-jam_mulai">
+                        <input type="radio" name="jam_mulai" value="${value}" id="${value}" onclick="getValue()" ${isUsed ? 'disabled' : ''} />
                         ${value}:00
                     </label>`;
             }
@@ -177,8 +183,7 @@
             for (let i = 8; i <= 16; i++) {
                 const value = i.toString();
                 jam.innerHTML +=
-                    // `<label class="btn text-xs btn-white" id="result"><input type="radio" name="jam_mulai" value="${value}" id="${value}" />${value}:00</label>`;
-                    `<label class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-teal-100 text-teal-800 cursor-pointer mr-1" id="${value}">
+                    `<label class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-teal-100 text-teal-800 cursor-pointer mr-1" id="${value}-jam_mulai">
                         <input type="radio" name="jam_mulai" value="${value}" id="${value}" onclick="getValue()" />
                         ${value}:00
                     </label>`;
@@ -188,115 +193,20 @@
 
     function getValue() {
         const radioButton = document.getElementsByName("jam_mulai");
-        const labelElement8 = document.getElementById('8');
-        const labelElement9 = document.getElementById('9');
-        const labelElement10 = document.getElementById('10');
-        const labelElement11 = document.getElementById('11');
-        const labelElement12 = document.getElementById('12');
-        const labelElement13 = document.getElementById('13');
-        const labelElement14 = document.getElementById('14');
-        const labelElement15 = document.getElementById('15');
-        const labelElement16 = document.getElementById('16');
 
-        for (let i = 0; i < radioButton.length; i++) {
-            if (radioButton[i].checked) {
-                const selectedValue = radioButton[i].value;
-                console.log(selectedValue);
+        for (let i = 8; i <= 16; i++) {
+            const value = i.toString();
+            const labelElement = document.getElementById(`${value}-jam_mulai`);
 
-                if (selectedValue === '8' && labelElement8.classList.contains('cursor-pointer')) {
-                    labelElement8.style.backgroundColor = '#99f6e4';
-                    labelElement9.style.backgroundColor = ''
-                    labelElement10.style.backgroundColor = ''
-                    labelElement11.style.backgroundColor = ''
-                    labelElement12.style.backgroundColor = ''
-                    labelElement13.style.backgroundColor = ''
-                    labelElement14.style.backgroundColor = ''
-                    labelElement15.style.backgroundColor = ''
-                    labelElement16.style.backgroundColor = ''
-                } else if (selectedValue === '9' && labelElement9.classList.contains('cursor-pointer')) {
-                    labelElement8.style.backgroundColor = '';
-                    labelElement9.style.backgroundColor = '#99f6e4'
-                    labelElement10.style.backgroundColor = ''
-                    labelElement11.style.backgroundColor = ''
-                    labelElement12.style.backgroundColor = ''
-                    labelElement13.style.backgroundColor = ''
-                    labelElement14.style.backgroundColor = ''
-                    labelElement15.style.backgroundColor = ''
-                    labelElement16.style.backgroundColor = ''
-                } else if (selectedValue === '10' && labelElement10.classList.contains('cursor-pointer')) {
-                    labelElement8.style.backgroundColor = '';
-                    labelElement9.style.backgroundColor = ''
-                    labelElement10.style.backgroundColor = '#99f6e4'
-                    labelElement11.style.backgroundColor = ''
-                    labelElement12.style.backgroundColor = ''
-                    labelElement13.style.backgroundColor = ''
-                    labelElement14.style.backgroundColor = ''
-                    labelElement15.style.backgroundColor = ''
-                    labelElement16.style.backgroundColor = ''
-                } else if (selectedValue === '11' && labelElement11.classList.contains('cursor-pointer')) {
-                    labelElement8.style.backgroundColor = '';
-                    labelElement9.style.backgroundColor = ''
-                    labelElement10.style.backgroundColor = ''
-                    labelElement11.style.backgroundColor = '#99f6e4'
-                    labelElement12.style.backgroundColor = ''
-                    labelElement13.style.backgroundColor = ''
-                    labelElement14.style.backgroundColor = ''
-                    labelElement15.style.backgroundColor = ''
-                    labelElement16.style.backgroundColor = ''
-                } else if (selectedValue === '12' && labelElement12.classList.contains('cursor-pointer')) {
-                    labelElement8.style.backgroundColor = '';
-                    labelElement9.style.backgroundColor = ''
-                    labelElement10.style.backgroundColor = ''
-                    labelElement11.style.backgroundColor = ''
-                    labelElement12.style.backgroundColor = '#99f6e4'
-                    labelElement13.style.backgroundColor = ''
-                    labelElement14.style.backgroundColor = ''
-                    labelElement15.style.backgroundColor = ''
-                    labelElement16.style.backgroundColor = ''
-                } else if (selectedValue === '13' && labelElement13.classList.contains('cursor-pointer')) {
-                    labelElement8.style.backgroundColor = '';
-                    labelElement9.style.backgroundColor = ''
-                    labelElement10.style.backgroundColor = ''
-                    labelElement11.style.backgroundColor = ''
-                    labelElement12.style.backgroundColor = ''
-                    labelElement13.style.backgroundColor = '#99f6e4'
-                    labelElement14.style.backgroundColor = ''
-                    labelElement15.style.backgroundColor = ''
-                    labelElement16.style.backgroundColor = ''
-                } else if (selectedValue === '14' && labelElement14.classList.contains('cursor-pointer')) {
-                    labelElement8.style.backgroundColor = '';
-                    labelElement9.style.backgroundColor = ''
-                    labelElement10.style.backgroundColor = ''
-                    labelElement11.style.backgroundColor = ''
-                    labelElement12.style.backgroundColor = ''
-                    labelElement13.style.backgroundColor = ''
-                    labelElement14.style.backgroundColor = '#99f6e4'
-                    labelElement15.style.backgroundColor = ''
-                    labelElement16.style.backgroundColor = ''
-                } else if (selectedValue === '15' && labelElement15.classList.contains('cursor-pointer')) {
-                    labelElement8.style.backgroundColor = '';
-                    labelElement9.style.backgroundColor = ''
-                    labelElement10.style.backgroundColor = ''
-                    labelElement11.style.backgroundColor = ''
-                    labelElement12.style.backgroundColor = ''
-                    labelElement13.style.backgroundColor = ''
-                    labelElement14.style.backgroundColor = ''
-                    labelElement15.style.backgroundColor = '#99f6e4'
-                    labelElement16.style.backgroundColor = ''
-                } else if (selectedValue === '16' && labelElement16.classList.contains('cursor-pointer')) {
-                    labelElement8.style.backgroundColor = '';
-                    labelElement9.style.backgroundColor = ''
-                    labelElement10.style.backgroundColor = ''
-                    labelElement11.style.backgroundColor = ''
-                    labelElement12.style.backgroundColor = ''
-                    labelElement13.style.backgroundColor = ''
-                    labelElement14.style.backgroundColor = ''
-                    labelElement15.style.backgroundColor = ''
-                    labelElement16.style.backgroundColor = '#99f6e4'
+            if (radioButton[i - 8].checked && labelElement.classList.contains('cursor-pointer')) {
+                for (let j = 8; j <= 16; j++) {
+                    const currentLabel = document.getElementById(`${j}-jam_mulai`);
+                    currentLabel.style.backgroundColor = (i === j) ? '#99f6e4' : '';
                 }
             }
         }
     }
+
 
     function checkEndDate() {
         const selectedDate = document.getElementById("tgl_selesai").value
@@ -332,10 +242,13 @@
             for (let i = 8; i <= 15; i++) {
                 const value = i.toString();
                 const isUsed = newArray.includes(value);
+                const labelClass = isUsed
+                    ? 'inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-red-500/20 disabled cursor-not-allowed text-red-800'
+                    : 'inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-teal-100 text-teal-800 cursor-pointer';
 
                 jam.innerHTML +=
-                    `<label class="${isUsed ? 'inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-red-500/20 disabled cursor-not-allowed text-red-800' : 'inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-teal-100 text-teal-800 cursor-pointer'} mr-1" id="${value}-jam_selesai">
-                        <input type="radio" name="jam_selesai" value="${value}" id="${value}-jam_selesai" onclick="getValueTwo()" />
+                    `<label class="${labelClass}" id="${value}-jam_selesai">
+                        <input type="radio" name="jam_selesai" value="${value}" id="${value}" onclick="getValueTwo()" ${isUsed ? 'disabled' : ''} />
                         ${value}:00
                     </label>`;
             }
@@ -344,7 +257,7 @@
                 const value = i.toString();
                 jam.innerHTML +=
                     `<label class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-teal-100 text-teal-800 cursor-pointer mr-1" id="${value}-jam_selesai">
-                        <input type="radio" name="jam_selesai" value="${value}" id="${value}-jam_selesai" onclick="getValueTwo()" />
+                        <input type="radio" name="jam_selesai" value="${value}" id="${value}" onclick="getValueTwo()" />
                         ${value}:00
                     </label>`;
             }
@@ -353,114 +266,21 @@
 
     function getValueTwo() {
         const radioButton = document.getElementsByName("jam_selesai");
-        const labelElement8 = document.getElementById('8-jam_selesai');
-        const labelElement9 = document.getElementById('9-jam_selesai');
-        const labelElement10 = document.getElementById('10-jam_selesai');
-        const labelElement11 = document.getElementById('11-jam_selesai');
-        const labelElement12 = document.getElementById('12-jam_selesai');
-        const labelElement13 = document.getElementById('13-jam_selesai');
-        const labelElement14 = document.getElementById('14-jam_selesai');
-        const labelElement15 = document.getElementById('15-jam_selesai');
-        const labelElement16 = document.getElementById('16-jam_selesai');
 
-        for (let i = 0; i < radioButton.length; i++) {
-            if (radioButton[i].checked) {
-                const selectedValue = radioButton[i].value;
+        for (let i = 8; i <= 16; i++) {
+            const value = i.toString();
+            const labelElement = document.getElementById(`${value}-jam_selesai`);
 
-                if (selectedValue === '8' && labelElement8.classList.contains('cursor-pointer')) {
-                    labelElement8.style.backgroundColor = '#99f6e4';
-                    labelElement9.style.backgroundColor = ''
-                    labelElement10.style.backgroundColor = ''
-                    labelElement11.style.backgroundColor = ''
-                    labelElement12.style.backgroundColor = ''
-                    labelElement13.style.backgroundColor = ''
-                    labelElement14.style.backgroundColor = ''
-                    labelElement15.style.backgroundColor = ''
-                    labelElement16.style.backgroundColor = ''
-                } else if (selectedValue === '9' && labelElement9.classList.contains('cursor-pointer')) {
-                    labelElement8.style.backgroundColor = '';
-                    labelElement9.style.backgroundColor = '#99f6e4'
-                    labelElement10.style.backgroundColor = ''
-                    labelElement11.style.backgroundColor = ''
-                    labelElement12.style.backgroundColor = ''
-                    labelElement13.style.backgroundColor = ''
-                    labelElement14.style.backgroundColor = ''
-                    labelElement15.style.backgroundColor = ''
-                    labelElement16.style.backgroundColor = ''
-                } else if (selectedValue === '10' && labelElement10.classList.contains('cursor-pointer')) {
-                    labelElement8.style.backgroundColor = '';
-                    labelElement9.style.backgroundColor = ''
-                    labelElement10.style.backgroundColor = '#99f6e4'
-                    labelElement11.style.backgroundColor = ''
-                    labelElement12.style.backgroundColor = ''
-                    labelElement13.style.backgroundColor = ''
-                    labelElement14.style.backgroundColor = ''
-                    labelElement15.style.backgroundColor = ''
-                    labelElement16.style.backgroundColor = ''
-                } else if (selectedValue === '11' && labelElement11.classList.contains('cursor-pointer')) {
-                    labelElement8.style.backgroundColor = '';
-                    labelElement9.style.backgroundColor = ''
-                    labelElement10.style.backgroundColor = ''
-                    labelElement11.style.backgroundColor = '#99f6e4'
-                    labelElement12.style.backgroundColor = ''
-                    labelElement13.style.backgroundColor = ''
-                    labelElement14.style.backgroundColor = ''
-                    labelElement15.style.backgroundColor = ''
-                    labelElement16.style.backgroundColor = ''
-                } else if (selectedValue === '12' && labelElement12.classList.contains('cursor-pointer')) {
-                    labelElement8.style.backgroundColor = '';
-                    labelElement9.style.backgroundColor = ''
-                    labelElement10.style.backgroundColor = ''
-                    labelElement11.style.backgroundColor = ''
-                    labelElement12.style.backgroundColor = '#99f6e4'
-                    labelElement13.style.backgroundColor = ''
-                    labelElement14.style.backgroundColor = ''
-                    labelElement15.style.backgroundColor = ''
-                    labelElement16.style.backgroundColor = ''
-                } else if (selectedValue === '13' && labelElement13.classList.contains('cursor-pointer')) {
-                    labelElement8.style.backgroundColor = '';
-                    labelElement9.style.backgroundColor = ''
-                    labelElement10.style.backgroundColor = ''
-                    labelElement11.style.backgroundColor = ''
-                    labelElement12.style.backgroundColor = ''
-                    labelElement13.style.backgroundColor = '#99f6e4'
-                    labelElement14.style.backgroundColor = ''
-                    labelElement15.style.backgroundColor = ''
-                    labelElement16.style.backgroundColor = ''
-                } else if (selectedValue === '14' && labelElement14.classList.contains('cursor-pointer')) {
-                    labelElement8.style.backgroundColor = '';
-                    labelElement9.style.backgroundColor = ''
-                    labelElement10.style.backgroundColor = ''
-                    labelElement11.style.backgroundColor = ''
-                    labelElement12.style.backgroundColor = ''
-                    labelElement13.style.backgroundColor = ''
-                    labelElement14.style.backgroundColor = '#99f6e4'
-                    labelElement15.style.backgroundColor = ''
-                    labelElement16.style.backgroundColor = ''
-                } else if (selectedValue === '15' && labelElement15.classList.contains('cursor-pointer')) {
-                    labelElement8.style.backgroundColor = '';
-                    labelElement9.style.backgroundColor = ''
-                    labelElement10.style.backgroundColor = ''
-                    labelElement11.style.backgroundColor = ''
-                    labelElement12.style.backgroundColor = ''
-                    labelElement13.style.backgroundColor = ''
-                    labelElement14.style.backgroundColor = ''
-                    labelElement15.style.backgroundColor = '#99f6e4'
-                    labelElement16.style.backgroundColor = ''
-                } else if (selectedValue === '16' && labelElement16.classList.contains('cursor-pointer')) {
-                    labelElement8.style.backgroundColor = '';
-                    labelElement9.style.backgroundColor = ''
-                    labelElement10.style.backgroundColor = ''
-                    labelElement11.style.backgroundColor = ''
-                    labelElement12.style.backgroundColor = ''
-                    labelElement13.style.backgroundColor = ''
-                    labelElement14.style.backgroundColor = ''
-                    labelElement15.style.backgroundColor = ''
-                    labelElement16.style.backgroundColor = '#99f6e4'
+            if (radioButton[i - 8].checked && labelElement.classList.contains('cursor-pointer')) {
+                for (let j = 8; j <= 16; j++) {
+                    const currentLabel = document.getElementById(`${j}-jam_selesai`);
+                    currentLabel.style.backgroundColor = (i === j) ? '#99f6e4' : '';
                 }
             }
         }
     }
+
+    
 </script>
 
 @endsection

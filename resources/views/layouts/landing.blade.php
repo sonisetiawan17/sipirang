@@ -27,13 +27,13 @@
 
 <body>
     <nav class="fixed bg-[#f7f7f8] z-10 w-full border-b border-neutral-200">
-        <div class="py-2 px-32">
+        <div class="py-2 lg:px-32">
             <div class="flex flex-row items-center justify-between">
                 <a href="/user/dashboard">
                     <img src="{{ asset('/assets/img/auth/logo.png') }}" class="h-[60px]" />
                 </a>
                 <div class="flex items-center gap-x-7">
-                    <form method="POST" action="{{ route('logout') }}">
+                    <form method="POST" action="{{ route('logout') }}" class="hidden md:inline-flex">
                         @csrf
                         <a :href="route('logout')" onclick="event.preventDefault(); this.closest('form').submit();"><p class="font-semibold cursor-pointer hover:text-[#0d34cd]">Log out</p></a>         
                     </form>
