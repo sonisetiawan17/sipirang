@@ -406,8 +406,35 @@ class UserDashboardController extends Controller
     {
         $currentDate = Carbon::now()->format('Y-m-d');
         $currentMonth = Carbon::now()->format('M');
+        $currentMonthFullName = Carbon::now()->format('F');
         $currentMonthNum = Carbon::now()->format('m');
         $currentYear = Carbon::now()->format('Y');
+
+        if ($currentMonthFullName === 'January') {
+            $month = 'Januari';
+        } elseif ($currentMonthFullName === 'February') {
+            $month = 'Februari';
+        } elseif ($currentMonthFullName === 'March') {
+            $month = 'Maret';
+        } elseif ($currentMonthFullName === 'April') {
+            $month = 'April';
+        } elseif ($currentMonthFullName === 'May') {
+            $month = 'Mei';
+        } elseif ($currentMonthFullName === 'June') {
+            $month = 'Juni';
+        } elseif ($currentMonthFullName === 'July') {
+            $month = 'Juli';
+        } elseif ($currentMonthFullName === 'August') {
+            $month = 'Agustus';
+        } elseif ($currentMonthFullName === 'September') {
+            $month = 'September';
+        } elseif ($currentMonthFullName === 'October') {
+            $month = 'Oktober';
+        } elseif ($currentMonthFullName === 'November') {
+            $month = 'November';
+        } elseif ($currentMonthFullName === 'December') {
+            $month = 'Desember';
+        }
 
         $jadwal = DB::table('permohonan')
                     ->join('jadwal', 'jadwal.permohonan_id', '=', 'permohonan.id_permohonan')
@@ -421,6 +448,102 @@ class UserDashboardController extends Controller
 
         $day = array_map('strval', range($startDate, $endDate));
 
-        return view('user.jadwals', compact('jadwal', 'day', 'currentMonth', 'currentMonthNum', 'currentYear'));
+        $currentJadwal = DB::table('permohonan')
+                            ->join('jadwal', 'jadwal.permohonan_id', '=', 'permohonan.id_permohonan')
+                            ->join('users', 'users.id', '=', 'permohonan.user_id')
+                            ->join('fasilitas', 'fasilitas.id_fasilitas', '=', 'permohonan.id_fasilitas')
+                            ->where('tgl_mulai', '=', $currentDate)
+                            ->get();
+
+        // =========================================== MULTIMEDIA ===========================================
+        $room = 'Multimedia';
+
+        $resultArray = $currentJadwal->map(function ($jadwal) {
+            return [
+                $jadwal->nama_fasilitas,
+                $jadwal->tgl_mulai,
+                $jadwal->tgl_selesai,
+                $jadwal->jam_mulai,
+                $jadwal->jam_selesai,
+            ];
+        })->toArray();
+                    
+        $matchingDateItems = collect($resultArray)->filter(function ($item) use ($room, $currentDate) {
+            return $item[0] === $room && ($item[1] === $currentDate || $item[2] === $currentDate);
+        });
+                    
+        $uniqueValues = collect();
+                    
+        if ($matchingDateItems->count() > 0) {
+            $matchingDateItems->each(function ($item) use ($currentDate, &$uniqueValues) {
+                $index1 = (int)$item[3];
+                $index2 = (int)$item[4];
+                    
+                if ($item[1] === $currentDate && $item[2] === $currentDate) {
+                    for ($i = $index1; $i <= $index2; $i++) {
+                        $uniqueValues->add(str_pad($i, 2, "0", STR_PAD_LEFT));
+                    }
+                } elseif ($item[1] === $currentDate) {
+                    for ($i = $index1; $i <= 17; $i++) {
+                        $uniqueValues->add(str_pad($i, 2, "0", STR_PAD_LEFT));
+                    }
+                } elseif ($item[2] === $currentDate) {
+                    for ($i = 8; $i <= $index2; $i++) {
+                        $uniqueValues->add(str_pad($i, 2, "0", STR_PAD_LEFT));
+                    }
+                }
+            });
+                    
+            $newArray = $uniqueValues->sort()->values()->toArray();
+        } else {
+            $newArray = [];
+        }
+        
+        // =========================================== AULA ===========================================
+        $roomAula = 'Aula';
+
+        $resultArrayAula = $currentJadwal->map(function ($jadwal) {
+            return [
+                $jadwal->nama_fasilitas,
+                $jadwal->tgl_mulai,
+                $jadwal->tgl_selesai,
+                $jadwal->jam_mulai,
+                $jadwal->jam_selesai,
+            ];
+        })->toArray();
+                    
+        $matchingDateItemsAula = collect($resultArrayAula)->filter(function ($item) use ($roomAula, $currentDate) {
+            return $item[0] === $roomAula && ($item[1] === $currentDate || $item[2] === $currentDate);
+        });
+                    
+        $uniqueValuesAula = collect();
+                    
+        if ($matchingDateItemsAula->count() > 0) {
+            $matchingDateItemsAula->each(function ($item) use ($currentDate, &$uniqueValuesAula) {
+                $index1Aula = (int)$item[3];
+                $index2Aula = (int)$item[4];
+                    
+                if ($item[1] === $currentDate && $item[2] === $currentDate) {
+                    for ($i = $index1Aula; $i <= $index2Aula; $i++) {
+                        $uniqueValuesAula->add(str_pad($i, 2, "0", STR_PAD_LEFT));
+                    }
+                } elseif ($item[1] === $currentDate) {
+                    for ($i = $index1Aula; $i <= 17; $i++) {
+                        $uniqueValuesAula->add(str_pad($i, 2, "0", STR_PAD_LEFT));
+                    }
+                } elseif ($item[2] === $currentDate) {
+                    for ($i = 8; $i <= $index2Aula; $i++) {
+                        $uniqueValuesAula->add(str_pad($i, 2, "0", STR_PAD_LEFT));
+                    }
+                }
+            });
+                    
+            $newArrayAula = $uniqueValuesAula->sort()->values()->toArray();
+        } else {
+            $newArrayAula = [];
+        }
+
+
+        return view('user.jadwals', compact('jadwal', 'day', 'month', 'currentMonth', 'currentMonthNum', 'currentYear', 'currentJadwal', 'newArray', 'newArrayAula'));
     }
 }

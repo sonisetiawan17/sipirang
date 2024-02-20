@@ -53,7 +53,7 @@
                         <div class="w-full">
                             <label class="col-form-label font-medium">SKPD / Non SKPD <sup class="text-red-500">*</sup></label>
                             <div class="block">
-                                <select class="w-full text-xs rounded-sm border border-gray-300" name="skpd">
+                                <select class="w-full text-xs rounded-sm border border-gray-300" name="skpd" required>
                                     <option disabled selected>-- Pilih Bidang SKPD --</option>
                                     <option value="skpd">SKPD</option>
                                     <option value="non_skpd">NON SKPD</option>
@@ -63,7 +63,7 @@
                         <div class="w-full">
                             <label class="col-form-label font-medium">Bidang Kegiatan<sup class="text-red-500">*</sup></label>
                             <div class="block">
-                                <select class="w-full text-xs rounded-sm border border-gray-300" name="bidang_id">
+                                <select class="w-full text-xs rounded-sm border border-gray-300" name="bidang_id" required>
                                     <option disabled selected>-- Pilih Bidang Kegiatan --</option>
                                     @foreach ($bidang as $b)
                                             <option value="{{ $b->id_bidang_kegiatan }}">{{ $b->nama_bidang }}
@@ -118,7 +118,7 @@
                         <div class="w-full">
                             <label class="col-form-label font-medium">Nama Instansi / Pribadi <sup class="text-red-500">*</sup></label>
                             <div class="block">
-                                <select class="w-full text-xs rounded-sm border border-gray-300" name="instansi_id">
+                                <select class="w-full text-xs rounded-sm border border-gray-300" name="instansi_id" required>
                                     <option disabled selected>-- Pilih Instansi --</option>
                                     @foreach ($instansi as $i)
                                             <option value="{{ $i->id_instansi }}">{{ $i->nama_instansi }}
@@ -130,19 +130,19 @@
                         <div class="w-full">
                             <label class="col-form-label font-medium">Status dalam Instansi / Pribadi<sup class="text-red-500">*</sup></label>
                             <div class="block">
-                                <input type="text" class="form-control form-input text-small" name="status_instansi" id="status_instansi" />
+                                <input type="text" class="form-control form-input text-small" name="status_instansi" id="status_instansi" required />
                             </div>
                         </div>
                         <div class="w-full mt-3">
                             <label class="col-form-label font-medium">Bidang Instansi / Pribadi<sup class="text-red-500">*</sup></label>
                             <div class="block">
-                                <input type="text" class="form-control form-input text-small" name="bidang_instansi" id="bidang_instansi" />
+                                <input type="text" class="form-control form-input text-small" name="bidang_instansi" id="bidang_instansi" required />
                             </div>
                         </div>
                         <div class="w-full mt-3">
                             <label class="col-form-label font-medium">Alamat Instansi / Pribadi<sup class="text-red-500">*</sup></label>
                             <div class="block">
-                                <input type="text" class="form-control form-input text-small" name="alamat_instansi" id="alamat_instansi" />
+                                <input type="text" class="form-control form-input text-small" name="alamat_instansi" id="alamat_instansi" required />
                             </div>
                         </div>
                     </div>
@@ -155,55 +155,55 @@
                         <div class="w-full hidden">
                             <label class="col-form-label font-medium">Tanggal Mulai<sup class="text-red-500">*</sup></label>
                             <div class="block">
-                                <input type="hidden" class="form-control form-input text-small" name="tgl_mulai" id="tgl_mulai" value="{{ $tgl_mulai }}" />
+                                <input type="hidden" class="form-control form-input text-small" name="tgl_mulai" id="tgl_mulai" value="{{ $tgl_mulai }}" required />
                             </div>
                         </div>
                         <div class="w-full hidden">
                             <label class="col-form-label font-medium">Jam Mulai<sup class="text-red-500">*</sup></label>
                             <div class="block">
-                                <input type="hidden" class="form-control form-input text-small" name="jam_mulai" id="jam_mulai" value="{{ $jam_mulai }}" />
+                                <input type="hidden" class="form-control form-input text-small" name="jam_mulai" id="jam_mulai" value="{{ $jam_mulai }}" required />
                             </div>
                         </div>
                         <div class="w-full hidden">
                             <label class="col-form-label font-medium">Tanggal Selesai<sup class="text-red-500">*</sup></label>
                             <div class="block">
-                                <input type="hidden" class="form-control form-input text-small" name="tgl_selesai" id="tgl_selesai" value="{{ $tgl_selesai }}" />
+                                <input type="hidden" class="form-control form-input text-small" name="tgl_selesai" id="tgl_selesai" value="{{ $tgl_selesai }}" required />
                             </div>
                         </div>
                         <div class="w-full hidden">
                             <label class="col-form-label font-medium">Jam Selesai<sup class="text-red-500">*</sup></label>
                             <div class="block">
-                                <input type="hidden" class="form-control form-input text-small" name="jam_selesai" id="jam_selesai" value="{{ $jam_selesai }}" />
+                                <input type="hidden" class="form-control form-input text-small" name="jam_selesai" id="jam_selesai" value="{{ $jam_selesai }}" required />
                             </div>
                         </div>
                         <div class="w-full">
                             <label class="col-form-label font-medium">Nama Acara / Kegiatan<sup class="text-red-500">*</sup></label>
                             <div class="block">
-                                <input type="text" class="form-control form-input text-small" name="nama_kegiatan" id="nama_kegiatan" />
+                                <input type="text" class="form-control form-input text-small" name="nama_kegiatan" id="nama_kegiatan" required />
                             </div>
                         </div>
                         <div class="w-full">
                             <label class="col-form-label font-medium">Jumlah Peserta<sup class="text-red-500">*</sup></label>
                             <div class="block">
-                                <input type="text" class="form-control form-input text-small" name="jumlah_peserta" id="jumlah_peserta" />
+                                <input type="text" class="form-control form-input text-small" name="jumlah_peserta" id="jumlah_peserta" required />
                             </div>
                         </div>
                         <div class="w-full mt-3">
                             <label class="col-form-label font-medium">Narasumber<sup class="text-red-500">*</sup></label>
                             <div class="block">
-                                <input type="text" class="form-control form-input text-small" name="narasumber" id="narasumber" />
+                                <input type="text" class="form-control form-input text-small" name="narasumber" id="narasumber" required />
                             </div>
                         </div>
                         <div class="w-full mt-3">
                             <label class="col-form-label font-medium">Surat Permohonan<sup class="text-red-500">*</sup></label>
                             <div class="block">
-                                <input type="file" class="block w-full border border-gray-200 text-small focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none file:bg-gray-50 file:border-0 file:me-4 file:py-2 file:px-4" name="surat_permohonan" id="surat_permohonan" style="font-size: 11.5px" />
+                                <input type="file" class="block w-full border border-gray-200 text-small focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none file:bg-gray-50 file:border-0 file:me-4 file:py-2 file:px-4" name="surat_permohonan" id="surat_permohonan" style="font-size: 11.5px" required />
                             </div>
                         </div>
                         <div class="w-full mt-3">
                             <label class="col-form-label font-medium">Rundown Acara<sup class="text-red-500">*</sup></label>
                             <div class="block">
-                                <input type="file" class="block w-full border border-gray-200 text-small focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none file:bg-gray-50 file:border-0 file:me-4 file:py-2 file:px-4" name="rundown_acara" id="rundown_acara" style="font-size: 11.5px" />
+                                <input type="file" class="block w-full border border-gray-200 text-small focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none file:bg-gray-50 file:border-0 file:me-4 file:py-2 file:px-4" name="rundown_acara" id="rundown_acara" style="font-size: 11.5px" required />
                             </div>
                         </div>
                         <div class="w-full mt-3">
@@ -224,7 +224,7 @@
                     <div class="w-full">
                         <label class="col-form-label font-medium">Ringkasan Acara / Kegiatan<sup class="text-red-500">*</sup></label>
                         <div class="block">
-                            <textarea class="border-gray-200 border-2 focus:border-primary focus:ring-primary focus:ring-opacity-50 rounded-md w-full" name="ringkasan" style="font-size: 13px"></textarea>
+                            <textarea class="border-gray-200 border-2 focus:border-primary focus:ring-primary focus:ring-opacity-50 rounded-md w-full" name="ringkasan" style="font-size: 13px" required></textarea>
                         </div>
                     </div>
                 </div>
@@ -241,6 +241,9 @@
                                 </div>
                                 @endforeach
                             </div>
+                        </div>
+                        <div class="block">
+                            <input type="hidden" class="form-control form-input text-small" name="id_fasilitas" id="{{ $id_fasilitas }}" value="{{ $id_fasilitas }}" />
                         </div>
                     </div>
                 </div>

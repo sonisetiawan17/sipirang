@@ -260,7 +260,6 @@
         document.getElementById('schedulePage').classList.add('hide');
         document.getElementById('historyPage').classList.add('hide');
 
-        // Remove "active" class from all tabs
         Array.from(document.getElementById('tabList').getElementsByTagName('li')).forEach(item => {
             item.classList.remove('active');
         });
