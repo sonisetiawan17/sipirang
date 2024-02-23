@@ -29,7 +29,7 @@
 </head>
 
 <body>
-    <nav class="fixed bg-[#f7f7f8] z-10 w-full border-b border-neutral-200">
+    <nav class="fixed bg-[#f7f7f8] z-50 w-full border-b border-neutral-200">
         <div class="py-2 lg:px-32">
             <div class="flex flex-row items-center justify-between">
                 <a href="/user/dashboard">

@@ -38,6 +38,9 @@ Route::middleware(['auth', 'role:user'])
         Route::delete('/destroy/{id_permohonan}', [UserDashboardController::class, 'destroy'])->name('hapusPermohonan');
 
         Route::get('/test', [UserDashboardController::class, 'test'])->name('test');
+        Route::post('ubah-users', [UserDashboardController::class, 'ubahProfileSaya'])->name('ubahProfileSaya');
+        Route::post('ubah-personal-information', [UserDashboardController::class, 'ubahPersonalInformation'])->name('ubahPersonalInformation');
+        Route::post('ubah-instansi', [UserDashboardController::class, 'ubahInstansi'])->name('ubahInstansi');
 
         Route::post('/cekJadwal', [UserDashboardController::class, 'cekJadwal'])->name('cekJadwal');
     });

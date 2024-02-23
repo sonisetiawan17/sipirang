@@ -23,7 +23,7 @@
 
             <div class="mt-10 text-center space-x-3">
                 <button class="bg-gradient-to-t from-primary to-blue-500 text-small rounded-lg w-[150px] text-white" style="padding: 8px 12px; box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;">Lihat Ruangan</button>
-                <button class="bg-gradient-to-t from-primary to-blue-500 text-small rounded-lg w-[150px] text-white" style="padding: 8px 12px; box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;">Cek Jadwal</button>
+                <button class="bg-gradient-to-t from-gray-100 to-white text-small rounded-lg w-[150px] text-black" style="padding: 8px 12px; box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;">Cek Jadwal</button>
             </div>
         </div>
 
@@ -239,7 +239,7 @@
         jam.innerHTML = '';
 
         if (isDateInCurrentDate) {
-            for (let i = 8; i <= 15; i++) {
+            for (let i = 8; i <= 16; i++) {
                 const value = i.toString();
                 const isUsed = newArray.includes(value);
                 const labelClass = isUsed
@@ -253,7 +253,7 @@
                     </label>`;
             }
         } else {
-            for (let i = 8; i <= 15; i++) {
+            for (let i = 8; i <= 16; i++) {
                 const value = i.toString();
                 jam.innerHTML +=
                     `<label class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-teal-100 text-teal-800 cursor-pointer mr-1" id="${value}-jam_selesai">

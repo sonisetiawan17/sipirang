@@ -10,6 +10,7 @@ use App\Models\Instansi;
 use App\Models\Jadwal;
 use App\Models\Jam;
 use App\Models\Permohonan;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
@@ -180,13 +181,16 @@ class UserDashboardController extends Controller
     {
         $fasilitas = DB::table('fasilitas')->get();
         $alat = DB::table('alat_pendukung')->get();
+        $bidang = DB::table('bidang_kegiatan')->get();
+        $instansi = DB::table('instansi')->get();
+
         $user_id = Auth::user()->id;
 
         $data = Permohonan::find($id_permohonan);
 
         $permohonan = DB::table('permohonan')->join('users', 'users.id', '=', 'permohonan.user_id')->join('jadwal', 'jadwal.permohonan_id', '=', 'permohonan.id_permohonan')->join('instansi', 'instansi.id_instansi', '=', 'permohonan.instansi_id')->join('fasilitas', 'fasilitas.id_fasilitas', '=', 'permohonan.id_fasilitas')->join('alat_pendukung', 'alat_pendukung.id_alat_pendukung', '=', 'permohonan.id_alat')->where('users.id', '=', $user_id)->where('permohonan.id_permohonan', '=', $id_permohonan)->first();
 
-        return view('user.edit-permohonan', compact('permohonan', 'fasilitas', 'alat', 'data'));
+        return view('user.edit-permohonan', compact('permohonan', 'fasilitas', 'alat', 'data', 'bidang', 'instansi'));
     }
 
     public function updatePermohonan(Request $request, $id_permohonan)
@@ -399,7 +403,97 @@ class UserDashboardController extends Controller
 
     public function test() 
     {
-        return view('user.test');
+        $currentMonth = Carbon::now()->format('m');
+        $user_id = Auth::user()->id;
+        $instansi = Instansi::get();
+
+        $status_diterima = DB::table('permohonan')
+                             ->join('jadwal', 'jadwal.permohonan_id', '=', 'permohonan.id_permohonan')
+                             ->where('status_permohonan', 'Diterima')
+                             ->where('permohonan.user_id', $user_id)
+                             ->count();
+        
+        $status_menunggu = DB::table('permohonan')
+                            ->join('jadwal', 'jadwal.permohonan_id', '=', 'permohonan.id_permohonan')
+                            ->where('status_permohonan', 'Menunggu')
+                            ->where('permohonan.user_id', $user_id)
+                            ->count();
+            
+        $status_ditolak = DB::table('permohonan')
+                            ->join('jadwal', 'jadwal.permohonan_id', '=', 'permohonan.id_permohonan')
+                            ->where('status_permohonan', 'Ditolak')
+                            ->where('permohonan.user_id', $user_id)
+                            ->count();
+        
+        $permohonan = DB::table('permohonan')
+                          ->join('users', 'users.id', '=', 'permohonan.user_id')
+                          ->join('bidang_kegiatan', 'bidang_kegiatan.id_bidang_kegiatan', '=', 'permohonan.bidang_id')
+                          ->join('instansi', 'instansi.id_instansi', '=', 'permohonan.instansi_id')
+                          ->join('jadwal', 'jadwal.permohonan_id', '=', 'permohonan.id_permohonan')
+                          ->join('fasilitas', 'fasilitas.id_fasilitas', '=', 'permohonan.id_fasilitas')
+                          ->join('alat_pendukung', 'alat_pendukung.id_alat_pendukung', '=', 'permohonan.id_alat')
+                          ->where('users.id', '=', $user_id)
+                          ->get();
+        
+        $semua_permohonan = DB::table('permohonan')
+                                ->join('users', 'users.id', '=', 'permohonan.user_id')
+                                ->join('bidang_kegiatan', 'bidang_kegiatan.id_bidang_kegiatan', '=', 'permohonan.bidang_id')
+                                ->join('instansi', 'instansi.id_instansi', '=', 'permohonan.instansi_id')
+                                ->join('jadwal', 'jadwal.permohonan_id', '=', 'permohonan.id_permohonan')
+                                ->join('fasilitas', 'fasilitas.id_fasilitas', '=', 'permohonan.id_fasilitas')
+                                ->join('alat_pendukung', 'alat_pendukung.id_alat_pendukung', '=', 'permohonan.id_alat')
+                                ->where('users.id', '=', $user_id)
+                                ->count();
+        
+        $permohonan_bulan_ini = DB::table('permohonan')
+                                    ->join('users', 'users.id', '=', 'permohonan.user_id')
+                                    ->join('bidang_kegiatan', 'bidang_kegiatan.id_bidang_kegiatan', '=', 'permohonan.bidang_id')
+                                    ->join('instansi', 'instansi.id_instansi', '=', 'permohonan.instansi_id')
+                                    ->join('jadwal', 'jadwal.permohonan_id', '=', 'permohonan.id_permohonan')
+                                    ->join('fasilitas', 'fasilitas.id_fasilitas', '=', 'permohonan.id_fasilitas')
+                                    ->join('alat_pendukung', 'alat_pendukung.id_alat_pendukung', '=', 'permohonan.id_alat')
+                                    ->whereMonth('permohonan.created_at', '=', $currentMonth)
+                                    ->count();
+        
+        return view('user.test', compact('permohonan', 'permohonan_bulan_ini', 'semua_permohonan', 'status_diterima', 'status_menunggu', 'status_ditolak', 'instansi'));
+    }
+
+    public function ubahProfileSaya(Request $request)
+    {
+        $id = $request->id;
+        $data = User::find($id);
+
+        $data->name = $request->name;
+        $data->instansi_id = $request->instansi_id;
+        $data->update();
+
+        return back()->with('sukses', 'Data Berhasil diubah!');
+    }
+
+    public function ubahPersonalInformation(Request $request)
+    {
+        $id = $request->id;
+        $data = User::find($id);
+
+        $data->name = $request->name;
+        $data->email = $request->email;
+        $data->no_telp = $request->no_telp;
+        $data->alamat = $request->alamat;
+        $data->update();
+
+        return back()->with('sukses', 'Data Berhasil diubah!');
+    }
+
+    public function ubahInstansi(Request $request)
+    {
+        $id = $request->id;
+        $data = User::find($id);
+
+        $data->instansi_id = $request->instansi_id;
+        $data->nama_organisasi = $request->nama_organisasi;
+        $data->update();
+
+        return back()->with('sukses', 'Data berhasil diubah!');
     }
 
     public function lihatJadwals()

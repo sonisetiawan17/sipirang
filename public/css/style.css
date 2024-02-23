@@ -168,3 +168,15 @@ body {
     height: 100%;
     object-fit: cover;
 }
+
+@media screen and (max-width: 480px) {
+    .swiper-slide {
+        justify-content: start;
+    }
+}
+
+@media screen and (min-width: 1025px) {
+    .jadwal-content {
+        padding-left: 48px;
+    }
+}
