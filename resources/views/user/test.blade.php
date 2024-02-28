@@ -413,11 +413,18 @@
                                                         </a>
                                                         @endif 
 
-                                                        <form action="{{ route('user.hapusPermohonan', $data->id_permohonan) }}" method="POST">
+                                                        @if ($data->status_permohonan === 'Diterima')
+                                                        <a href="{{ route('user.cetakPermohonan', $data->id_permohonan) }}" target="_blank">
+                                                            <button class="py-2 px-[10px] border border-gray-500 rounded bg-green-500 text-white"><i class="fa-solid fa-print text-white mr-2"></i>Cetak</button>
+                                                        </a>
+                                                        @endif 
+
+                                                        {{-- <form action="{{ route('user.hapusPermohonan', $data->id_permohonan) }}" method="POST">
                                                             @csrf 
                                                             @method("DELETE")
                                                             <button type="submit" class="py-2 px-[10px] border border-gray-500 rounded" onclick="return confirm('Apakah anda yakin ingin menghapus data ini?')"><i class="fa-solid fa-trash text-red-500"></i></button>
-                                                        </form>
+                                                        </form> --}}
+
                                                     </div>
                                                 </td>                           
                                             </tr>

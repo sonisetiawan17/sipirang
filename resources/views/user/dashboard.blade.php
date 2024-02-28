@@ -23,7 +23,9 @@
 
             <div class="mt-10 text-center space-x-3">
                 <button class="bg-gradient-to-t from-primary to-blue-500 text-small rounded-lg w-[150px] text-white" style="padding: 8px 12px; box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;">Lihat Ruangan</button>
-                <button class="bg-gradient-to-t from-gray-100 to-white text-small rounded-lg w-[150px] text-black" style="padding: 8px 12px; box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;">Cek Jadwal</button>
+                <a href="{{ route('user.jadwals') }}">
+                    <button class="bg-gradient-to-t from-gray-100 to-white text-small rounded-lg w-[150px] text-black" style="padding: 8px 12px; box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;">Cek Jadwal</button>
+                </a>
             </div>
         </div>
 
@@ -31,7 +33,7 @@
         </div>            
     </div>
 
-    <div class="bg-[#eff3fb]">
+    <div class="bg-[#eff3fb] px-32">
         {{-- <div class="flex flex-row items-center justify-between gap-3">
             <div class="w-[40%] h-[2px] bg-neutral-400/20"></div>
             <h1 class="text-xl uppercase font-medium tracking-widest bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-transparent bg-clip-text">Pilih Ruangan</h1>
@@ -46,9 +48,9 @@
             <h1 class="text-xl uppercase font-semibold tracking-widest bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-transparent bg-clip-text">Pilih Ruangan</h1>
         </div>
 
-        <div class="mt-12 flex items-start justify-center gap-5">
+        <div class="mt-12 grid grid-cols-3 gap-5">
             @foreach ($fasilitas as $item)
-            <div id="modal_show" type="button" data-toggle="modal" data-target="#isimodal" data-id_fasilitas="{{ $item->id_fasilitas }}" data-nama_fasilitas="{{ $item->nama_fasilitas }}" class="bg-[#f2f5fa] border shadow-sm rounded-xl w-[35%] mt-3 cursor-pointer transition-all duration-300 hover:transform hover:-translate-y-4 hover:transition-all hover:duration-300" style="padding: 12px">
+            <div id="modal_show" type="button" data-toggle="modal" data-target="#isimodal" data-id_fasilitas="{{ $item->id_fasilitas }}" data-nama_fasilitas="{{ $item->nama_fasilitas }}" data-file="{{ $item->file }}" class="bg-[#f2f5fa] border shadow-sm rounded-xl w-full mt-3 cursor-pointer transition-all duration-300 hover:transform hover:-translate-y-4 hover:transition-all hover:duration-300" style="padding: 12px">
                 <div class="card-content text-center">
                     <div class="flex items-center justify-center gap-3">
                         <img src="{{ asset('/assets/img/auth/room.png') }}" class="h-7" />
@@ -56,15 +58,15 @@
                             {{ $item->nama_fasilitas }}
                         </h3>
                     </div>
-                    <p class="mt-3 font-semibold" style="font-size: 19px">
-                        Helps you write and review essays 3x faster
+                    <p class="mt-4 text-gray-600">
+                        Location: Mal Pelayanan Publik, Kota Cimahi, {{ $item->lokasi }}.
                     </p>
                     <p class="mt-1 text-gray-600">
-                        Location: Mal Pelayanan Publik, Kota Cimahi, Lt. 4.
+                        Room Capacity: {{ $item->kapasitas }} orang.
                     </p>
                 </div>
-                <img class="w-full h-auto rounded-xl image-border mt-4"
-                    src="https://images.unsplash.com/photo-1680868543815-b8666dba60f7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2532&q=80"
+                <img class="w-full h-[250px] bg-cover bg-center rounded-xl image-border mt-2"
+                    src="/foto_fasilitas/{{ $item->file }}"
                     alt="Image Description">
             </div>
             @endforeach
@@ -83,6 +85,7 @@
                             <div class="form-group m-b-15">
                                 <input type="hidden" class="form-control form-input text-small" name="id_fasilitas" id="id_fasilitas" />
                                 <input type="hidden" class="form-control form-input text-small" name="nama_fasilitas" id="nama_fasilitas" />
+                                <input type="hidden" class="form-control form-input text-small" name="file" id="file" />
                                 <label class="col-form-label">Tanggal Mulai <sup class="text-red-500">*</sup></label>
                                 <div class="block">
                                     <input type="date" class="form-control form-input text-small" name="tgl_mulai" id="tgl_mulai" onchange="checkStartDate()" required />
@@ -128,9 +131,11 @@
     $(document).on("click", "#modal_show", function() {
         var id_fasilitas = $(this).data('id_fasilitas');
         var nama_fasilitas = $(this).data('nama_fasilitas');
+        var file = $(this).data('file');
 
         $("#tampil_modal #id_fasilitas").val(id_fasilitas);
         $("#tampil_modal #nama_fasilitas").val(nama_fasilitas);
+        $("#tampil_modal #file").val(file);
     })
 </script>
 

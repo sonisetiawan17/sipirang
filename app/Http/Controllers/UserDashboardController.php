@@ -17,6 +17,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use PDF;
 
 class UserDashboardController extends Controller
 {
@@ -81,6 +82,12 @@ class UserDashboardController extends Controller
         //     $currDate = [];
         // }
 
+        $jadwal = DB::table('permohonan')
+                    ->join('jadwal', 'jadwal.permohonan_id', '=', 'permohonan.id_permohonan')
+                    ->join('users', 'users.id', '=', 'permohonan.user_id')
+                    ->join('fasilitas', 'fasilitas.id_fasilitas', '=', 'permohonan.id_fasilitas')
+                    ->get();
+
         $jam_selesai = DB::table('jadwal')->select('jam_selesai')->get();
         $jam_selesai_arr = [];
 
@@ -95,7 +102,7 @@ class UserDashboardController extends Controller
             $currDateSelesai[] = $tanggal->tgl_selesai;
         }
 
-        return view('user.dashboard', compact('date', 'jadwalArray', 'fasilitas'));
+        return view('user.dashboard', compact('date', 'jadwalArray', 'fasilitas', 'jadwal'));
     }
 
     public function buatPermohonan()
@@ -119,6 +126,7 @@ class UserDashboardController extends Controller
 
         $id_fasilitas = $request->id_fasilitas;
         $nama_fasilitas = $request->nama_fasilitas;
+        $file = $request->file;
         $tgl_mulai = $request->tgl_mulai;
         $tgl_selesai = $request->tgl_selesai;
         $jam_mulai = $request->jam_mulai;
@@ -174,7 +182,7 @@ class UserDashboardController extends Controller
 
         $jadwal = DB::table('jadwal')->join('permohonan', 'permohonan.id_permohonan', '=', 'jadwal.permohonan_id')->select('tgl_mulai', 'tgl_selesai', 'jam_mulai', 'jam_selesai', 'id_fasilitas', 'id_alat')->get();
 
-        return view('user.buat-permohonan-form', compact('bidang', 'instansi', 'fasilitas', 'alat', 'jadwal', 'blok', 'id_fasilitas', 'nama_fasilitas', 'tgl_mulai', 'tgl_selesai', 'tgl_mulai_day', 'tgl_mulai_convert', 'tgl_selesai_day', 'tgl_selesai_convert', 'jam_mulai', 'jam_selesai', 'start_day', 'end_day'));
+        return view('user.buat-permohonan-form', compact('bidang', 'instansi', 'fasilitas', 'alat', 'jadwal', 'blok', 'id_fasilitas', 'nama_fasilitas', 'tgl_mulai', 'tgl_selesai', 'tgl_mulai_day', 'tgl_mulai_convert', 'tgl_selesai_day', 'tgl_selesai_convert', 'jam_mulai', 'jam_selesai', 'start_day', 'end_day', 'file'));
     }
 
     public function editPermohonan($id_permohonan)
@@ -183,6 +191,7 @@ class UserDashboardController extends Controller
         $alat = DB::table('alat_pendukung')->get();
         $bidang = DB::table('bidang_kegiatan')->get();
         $instansi = DB::table('instansi')->get();
+        $jadwal = DB::table('jadwal')->where('permohonan_id', $id_permohonan)->get();
 
         $user_id = Auth::user()->id;
 
@@ -250,7 +259,9 @@ class UserDashboardController extends Controller
                     ];
                 }
 
-                $jadwal = Jadwal::find($cekData['permohonan_id']);
+                // dd($request->tgl_mulai, $request->tgl_selesai, $request->jam_mulai, $request->jam_selesai, $user_id, $cekData['permohonan_id']);
+
+                $jadwal = Jadwal::find($request->id_jadwal);
                 $jadwal->user_id = $user_id;
                 $jadwal->permohonan_id = $cekData['permohonan_id'];
                 $jadwal->tgl_mulai = $request->tgl_mulai;
@@ -344,10 +355,33 @@ class UserDashboardController extends Controller
 
     public function lihatPermohonan($id_permohonan)
     {
+        $currentMonth = Carbon::now()->format('m');
+        $user_id = Auth::user()->id;
+
+        $permohonan_bulan_ini = DB::table('permohonan')
+                                    ->join('users', 'users.id', '=', 'permohonan.user_id')
+                                    ->join('bidang_kegiatan', 'bidang_kegiatan.id_bidang_kegiatan', '=', 'permohonan.bidang_id')
+                                    ->join('instansi', 'instansi.id_instansi', '=', 'permohonan.instansi_id')
+                                    ->join('jadwal', 'jadwal.permohonan_id', '=', 'permohonan.id_permohonan')
+                                    ->join('fasilitas', 'fasilitas.id_fasilitas', '=', 'permohonan.id_fasilitas')
+                                    ->join('alat_pendukung', 'alat_pendukung.id_alat_pendukung', '=', 'permohonan.id_alat')
+                                    ->whereMonth('permohonan.created_at', '=', $currentMonth)
+                                    ->count();
+        
+        $semua_permohonan = DB::table('permohonan')
+                                    ->join('users', 'users.id', '=', 'permohonan.user_id')
+                                    ->join('bidang_kegiatan', 'bidang_kegiatan.id_bidang_kegiatan', '=', 'permohonan.bidang_id')
+                                    ->join('instansi', 'instansi.id_instansi', '=', 'permohonan.instansi_id')
+                                    ->join('jadwal', 'jadwal.permohonan_id', '=', 'permohonan.id_permohonan')
+                                    ->join('fasilitas', 'fasilitas.id_fasilitas', '=', 'permohonan.id_fasilitas')
+                                    ->join('alat_pendukung', 'alat_pendukung.id_alat_pendukung', '=', 'permohonan.id_alat')
+                                    ->where('users.id', '=', $user_id)
+                                    ->count();
+
         $permohonan = Permohonan::find($id_permohonan);
         $data = DB::table('permohonan')->join('jadwal', 'jadwal.permohonan_id', '=', 'permohonan.id_permohonan')->join('alat_pendukung', 'alat_pendukung.id_alat_pendukung', '=', 'permohonan.id_alat')->where('permohonan.id_permohonan', '=', $id_permohonan)->first();
 
-        return view('user.lihat-permohonan', compact('permohonan', 'data'));
+        return view('user.lihat-permohonan', compact('permohonan', 'data', 'permohonan_bulan_ini', 'semua_permohonan'));
     }
 
     public function historiPermohonan()
@@ -407,6 +441,7 @@ class UserDashboardController extends Controller
         $user_id = Auth::user()->id;
         $instansi = Instansi::get();
 
+        // dd($user_id);
         $status_diterima = DB::table('permohonan')
                              ->join('jadwal', 'jadwal.permohonan_id', '=', 'permohonan.id_permohonan')
                              ->where('status_permohonan', 'Diterima')
@@ -454,6 +489,8 @@ class UserDashboardController extends Controller
                                     ->join('alat_pendukung', 'alat_pendukung.id_alat_pendukung', '=', 'permohonan.id_alat')
                                     ->whereMonth('permohonan.created_at', '=', $currentMonth)
                                     ->count();
+
+                                
         
         return view('user.test', compact('permohonan', 'permohonan_bulan_ini', 'semua_permohonan', 'status_diterima', 'status_menunggu', 'status_ditolak', 'instansi'));
     }
@@ -639,5 +676,35 @@ class UserDashboardController extends Controller
 
 
         return view('user.jadwals', compact('jadwal', 'day', 'month', 'currentMonth', 'currentMonthNum', 'currentYear', 'currentJadwal', 'newArray', 'newArrayAula'));
+    }
+
+    public function cetakPermohonan($id_permohonan){
+        
+        $id_permohonan = $id_permohonan;
+        $data = DB::table('permohonan')
+                          ->join('users', 'users.id', '=', 'permohonan.user_id')
+                          ->join('bidang_kegiatan', 'bidang_kegiatan.id_bidang_kegiatan', '=', 'permohonan.bidang_id')
+                          ->join('instansi', 'instansi.id_instansi', '=', 'permohonan.instansi_id')
+                          ->join('jadwal', 'jadwal.permohonan_id', '=', 'permohonan.id_permohonan')
+                          ->join('fasilitas', 'fasilitas.id_fasilitas', '=', 'permohonan.id_fasilitas')
+                          ->join('alat_pendukung', 'alat_pendukung.id_alat_pendukung', '=', 'permohonan.id_alat')
+                          ->where('permohonan.id_permohonan', '=', $id_permohonan)
+                          ->first();
+                        //   dd($data);
+        $nama = Auth::user()->name;
+        $tgl = Carbon::now()->format('dmy');
+        $id = Permohonan::count('id_permohonan');
+        if($id == 0){
+            $no = 1;
+        } else {
+            $no = $id;
+        }
+        $kodeBooking = "SP".$no.$tgl;
+        
+        // dd($kodeBooking);
+        
+        $pdf = PDF::loadview('user.cetak-bukti',['data' => $data,'kodeBooking' => $kodeBooking]);
+        return $pdf->download('Bukti Permohonan - '.$nama.'.pdf');
+
     }
 }

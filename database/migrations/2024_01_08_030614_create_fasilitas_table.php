@@ -16,6 +16,8 @@ class CreateFasilitasTable extends Migration
         Schema::create('fasilitas', function (Blueprint $table) {
             $table->increments('id_fasilitas');
             $table->string('nama_fasilitas');
+            $table->integer('kapasitas');
+            $table->string('lokasi');
             $table->text('file')->nullable();
             $table->string('nama')->nullable();
             $table->string('extension')->nullable();

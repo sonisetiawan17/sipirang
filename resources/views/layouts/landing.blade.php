@@ -35,14 +35,32 @@
                 <a href="/user/dashboard">
                     <img src="{{ asset('/assets/img/auth/logo.png') }}" class="h-[60px]" />
                 </a>
-                <div class="flex items-center gap-x-7">
-                    <form method="POST" action="{{ route('logout') }}" class="hidden md:inline-flex">
+                <div class="relative">
+                    {{-- <form method="POST" action="{{ route('logout') }}" class="hidden md:inline-flex">
                         @csrf
                         <a :href="route('logout')" onclick="event.preventDefault(); this.closest('form').submit();"><p class="font-semibold cursor-pointer hover:text-[#0d34cd]">Log out</p></a>         
                     </form>
                     <a href="{{ route('user.test') }}">
                         <button class="button-primary text-small rounded-lg px-4">Dashboard</button>
-                    </a>
+                    </a> --}}
+                    <div class="flex items-center gap-x-3 cursor-pointer">
+                        <p>{{ Auth::user()->name }}</p>
+                        <div class="border-2 border-lime-500 rounded-full">
+                            <img src="{{ asset('/assets/img/auth/profile.png') }}" alt="user icon" class="h-8"  />
+                        </div>
+                        <img src="{{ asset('/assets/img/auth/down-arrow.png') }}" alt="arrow down" class="h-4" />
+                    </div>
+                    <div class="absolute right-0 mt-3 bg-white rounded-lg p-3" style="box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;">
+                        <ul class="font-medium space-y-3">
+                            <a href="{{ route('user.test') }}">
+                                <li class="flex items-center cursor-pointer"><i class="fa-solid fa-house mr-3"></i>Dashboard</li>
+                            </a>
+                            <form method="POST" action="{{ route('logout') }}" class="hidden md:inline-flex">
+                                @csrf
+                                <a :href="route('logout')" onclick="event.preventDefault(); this.closest('form').submit();"><li class="flex items-center text-red-500 ml-[2px] cursor-pointer"><i class="fa-solid fa-right-from-bracket mr-3"></i>Log out</li></a>         
+                            </form>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>

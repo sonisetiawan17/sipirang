@@ -41,11 +41,8 @@
     </nav>
 
     <div class="row mt-4">
-        <!-- begin col-112 -->
         <div class="col-xl-12">
-            <!-- begin panel -->
             <div class="panel panel-inverse">
-                <!-- begin panel-heading -->
                 <div class="flex flex-row items-center justify-between">
                     <div class="panel-heading" style="background-color: #ffffff;">
                         <h4 class="panel-title text-black"><i class="fa fa-user mr-2"></i>Data Alat Pendukung</h4>
@@ -55,9 +52,7 @@
                                 class="fa fa-plus"></i> Tambah Data</a>
                     </div>
                 </div>
-                <!-- end panel-heading -->
 
-                <!-- begin panel-body -->
                 <div class="panel-body">
                     <table id="data-table-select" class="table table-striped table-bordered table-td-valign-middle"
                         width="100%">
@@ -96,14 +91,10 @@
                         </tbody>
                     </table>
                 </div>
-                <!-- end panel-body -->
             </div>
-            <!-- end panel -->
         </div>
-        <!-- end col-10 -->
     </div>
-    <!-- end row -->
-    <!-- #modal-dialog -->
+
     <div class="modal fade" id="modal-dialog">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -115,8 +106,8 @@
                     <form method="post" action="{{ route('superadmin.simpan_alat') }}">
                         @csrf
                         <div class="form-group row m-b-15">
-                            <label class="col-md-5 col-form-label">Nama Alat Pendukung</label>
-                            <div class="col-md-7">
+                            <label class="col-md-4 col-form-label">Nama Alat <sup class="text-red">*</sup></label>
+                            <div class="col-md-8">
                                 <input required name="nama_alat" type="text" class="form-control form-input text-small"
                                     placeholder="" />
                             </div>
@@ -130,10 +121,7 @@
             </div>
         </div>
     </div>
-    <!-- end modal -->
 
-
-    <!-- #modal-dialog edit -->
     <div class="modal fade" id="isimodal">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -146,8 +134,8 @@
                         @csrf
                         <div class="form-group row m-b-15">
                             <input type="hidden" id="id_alat_pendukung" name="id_alat_pendukung">
-                            <label class="col-md-5 col-form-label">Nama Alat</label>
-                            <div class="col-md-7">
+                            <label class="col-md-4 col-form-label">Nama Alat <sup class="text-red">*</sup></label>
+                            <div class="col-md-8">
                                 <input required name="nama_alat" id="nama_alat" type="text"
                                     class="form-control form-input text-small" />
                             </div>
@@ -161,7 +149,6 @@
             </div>
         </div>
     </div>
-    <!-- end modal -->
 
 @endsection
 

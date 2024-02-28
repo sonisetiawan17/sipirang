@@ -66,6 +66,7 @@
                                 <th width="1%">No</th>
                                 <th class="text-nowrap">Nama Fasilitas</th>
                                 <th class="text-nowrap">Foto</th>
+                                <th class="text-nowrap">Kapasitas</th>
                                 <th class="text-nowrap">Keterangan</th>
                                 <th class="text-nowrap" width="10%">Aksi</th>
                             </tr>
@@ -86,6 +87,7 @@
                                             </a>
                                         </div>
                                     </td>
+                                    <td>{{ $f->kapasitas }} orang</td>
                                     <td style="font-size: 12px" class="space-y-1">
                                         <p class="font-semibold text-neutral-500">Nama :
                                             <span class="font-normal">{{ $f->nama }}</span>
@@ -99,12 +101,12 @@
                                     </td>
                                     <td>
                                         <div class="btn-group">
-                                            <!-- <button class="btn btn-white"><i class="fa fa-search-plus text-black"></i></button> -->
                                             <a id="modal_show" href="#" type="button" 
                                                 data-toggle="modal"
                                                 data-target="#isimodal" 
                                                 data-id_fasilitas="{{ $f->id_fasilitas }}"
                                                 data-nama_fasilitas="{{ $f->nama_fasilitas }}"
+                                                data-kapasitas="{{ $f->kapasitas }}"
                                                 data-file="{{ $f->file }}" class="btn btn-white">
                                                 <i class="fa fa-edit text-blue"></i>
                                             </a>
@@ -127,8 +129,7 @@
             </div>
         </div>
     </div>
-    <!-- end row -->
-    <!-- #modal-dialog -->
+
     <div class="modal fade" id="modal-dialog">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -141,14 +142,21 @@
                         enctype="multipart/form-data">
                         @csrf
                         <div class="form-group row m-b-15">
-                            <label class="col-md-5 col-form-label">Nama Fasilitas/Ruangan</label>
+                            <label class="col-md-5 col-form-label">Nama Fasilitas/Ruangan <sup class="text-red">*</sup></label>
                             <div class="col-md-7">
-                                <input type="text" name="nama_fasilitas" class="form-control form-input text-small" />
+                                <input type="text" name="nama_fasilitas" class="form-control form-input text-small" required />
                             </div>
-                            <label class="col-md-5 col-form-label mt-3">Foto</label>
-                            <div class="col-md-7">
-                                <input class="form-control ml-0 pl-0 mt-3" style="border:0" type="file"
-                                    id="file" name="file" required>
+                            <label class="col-md-5 col-form-label mt-3">Foto <sup class="text-red">*</sup></label>
+                            <div class="col-md-7 mt-3">
+                                <input type="file" class="block w-full border border-gray-200 text-small focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none file:bg-gray-50 file:border-0 file:me-4 file:py-2 file:px-4" name="file" id="file" style="font-size: 11.5px" required />
+                            </div>
+                            <label class="col-md-5 col-form-label mt-3">Kapasitas Ruangan <sup class="text-red">*</sup></label>
+                            <div class="col-md-7 mt-3">
+                                <input type="number" name="kapasitas" class="form-control form-input text-small" required />
+                            </div>
+                            <label class="col-md-5 col-form-label mt-3">Lokasi <sup class="text-red">*</sup></label>
+                            <div class="col-md-7 mt-3">
+                                <input type="text" name="lokasi" class="form-control form-input text-small" placeholder="Contoh: Lt.4" required />
                             </div>
                         </div>
                 </div>
@@ -160,9 +168,7 @@
         </div>
     </div>
     </form>
-    <!-- end modal -->
 
-    <!-- #modal-dialog edit -->
     <div class="modal fade" id="isimodal">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -180,10 +186,17 @@
                                 <input required id="nama_fasilitas" name="nama_fasilitas" type="text"
                                     class="form-control form-input text-small" />
                             </div>
-                            <label class="col-md-5 col-form-label mt-3">Foto</label>
-                            <div class="col-md-7">
-                                <input class="form-input text-small mt-4 -ml-9" style="border:0" type="file"
-                                    id="file" name="file" required>
+                            <label class="col-md-4 col-form-label mt-3">Foto <sup class="text-red">*</sup></label>
+                            <div class="col-md-8 mt-3">
+                                <input type="file" class="block w-full border border-gray-200 text-small focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none file:bg-gray-50 file:border-0 file:me-4 file:py-2 file:px-4" name="file" id="file" style="font-size: 11.5px" required />
+                            </div>
+                            <label class="col-md-4 col-form-label mt-3">Kapasitas <sup class="text-red">*</sup></label>
+                            <div class="col-md-8 mt-3">
+                                <input type="number" id="kapasitas" name="kapasitas" class="form-control form-input text-small" required />
+                            </div>
+                            <label class="col-md-4 col-form-label mt-3">Lokasi <sup class="text-red">*</sup></label>
+                            <div class="col-md-8 mt-3">
+                                <input type="text" id="lokasi" name="lokasi" class="form-control form-input text-small" required placeholder="Contoh: Lt.4" />
                             </div>
                         </div>
                 </div>
@@ -203,9 +216,11 @@
         $(document).on("click", "#modal_show", function() {
             var id_fasilitas = $(this).data('id_fasilitas');
             var nama_fasilitas = $(this).data('nama_fasilitas');
+            var kapasitas = $(this).data('kapasitas');
 
             $("#tampil_modal #id_fasilitas").val(id_fasilitas);
             $("#tampil_modal #nama_fasilitas").val(nama_fasilitas);
+            $("#tampil_modal #kapasitas").val(kapasitas);
         })
     </script>
 

@@ -41,28 +41,14 @@
         </ol>
     </nav>
 
-    <!-- begin row -->
     <div class="row mt-4">
-        <!-- begin col-112 -->
         <div class="col-xl-12">
-            <!-- begin panel -->
             <div class="panel panel-inverse">
-                <!-- begin panel-heading -->
                 <div class="panel-heading" style="background-color: #ffffff;">
                     <h4 class="panel-title text-black"><i class="fa fa-user mr-2"></i>Data Users</h4>
                 </div>
 
-                <!-- end panel-heading -->
-                <!-- begin panel-body -->
                 <div class="panel-body">
-
-                    @if (session('sukses'))
-                        <div class="alert alert-success fade show">
-                            <span class="close" data-dismiss="alert">×</span>
-
-                            {{ session('sukses') }}
-                        </div>
-                    @endif
                     <table id="data-table-select" class="table table-striped table-bordered table-td-valign-middle"
                         width="100%">
                         <thead>
@@ -92,7 +78,7 @@
                                                     class="fa fa-eye text-gray"></i></a>
 
                                             <a id="modal_show" href="#" type="button" data-toggle="modal"
-                                                data-target="#isimodal" data-name="{{ $i->name }}"
+                                                data-target="#isimodal" data-id="{{ $i->id }}" data-name="{{ $i->name }}"
                                                 data-email="{{ $i->email }}" data-instansi_id="{{ $i->instansi_id }}"
                                                 data-nik="{{ $i->nik }}" data-no_telp="{{ $i->no_telp }}"
                                                 data-alamat="{{ $i->alamat }}"
@@ -113,13 +99,9 @@
                         </tbody>
                     </table>
                 </div>
-                <!-- end panel-body -->
             </div>
-            <!-- end panel -->
         </div>
-        <!-- end col-10 -->
     </div>
-    <!-- end row -->
 
     <!-- #modal-dialog edit -->
     <div class="modal fade" id="isimodal">
@@ -142,22 +124,17 @@
 
                             <label class="col-md-4 col-form-label mt-3">Instansi <sup class="text-red">*</sup></label>
                             <div class="col-md-8 mt-3">
-                                <select class="form-input w-full text-small" id="instansi_id" name="instansi_id">
-                                    <option value="1">Instansi 1</option>
-                                    <option value="2">Instansi 2</option>
-                                    <option value="3">Instansi 3</option>
+                                <select class="form-input w-full text-small" id="instansi_id" name="instansi_id" required>
+                                    <option value="" disabled selected>-- Pilih Instansi --</option>
+                                    @foreach ($instansi as $data)
+                                        <option value="{{ $data->id_instansi }}">{{ $data->nama_instansi }}</option>
+                                    @endforeach
                                 </select>
                             </div>
 
                             <label class="col-md-4 col-form-label mt-3">Email <sup class="text-red">*</sup></label>
                             <div class="col-md-8 mt-3">
                                 <input required id="email" name="email" type="text"
-                                    class="form-control form-input text-small" />
-                            </div>
-
-                            <label class="col-md-4 col-form-label mt-3">Password <sup class="text-red">*</sup></label>
-                            <div class="col-md-8 mt-3">
-                                <input required name="password" type="password"
                                     class="form-control form-input text-small" />
                             </div>
 
@@ -202,6 +179,7 @@
 @push('scripts')
     <script type="text/javascript">
         $(document).on("click", "#modal_show", function() {
+            var id = $(this).data('id');
             var name = $(this).data('name');
             var email = $(this).data('email');
             var instansi_id = $(this).data('instansi_id');
@@ -210,6 +188,7 @@
             var alamat = $(this).data('alamat');
             var nama_organisasi = $(this).data('nama_organisasi');
 
+            $("#tampil_modal #id").val(id);
             $("#tampil_modal #name").val(name);
             $("#tampil_modal #email").val(email);
             $("#tampil_modal #instansi_id").val(instansi_id);

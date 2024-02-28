@@ -262,7 +262,7 @@
             </div>
         </form>
         <div class="bg-white rounded-xl mx-4 h-fit mt-[60px]" style="box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;">
-            <div class="h-44 w-full bg-cover bg-center rounded-t-xl" style="background-image: url('{{ asset('/assets/img/auth/multimedia.png') }}');"></div>
+            <div class="h-44 w-full bg-cover bg-center rounded-t-xl" style="background-image: url('/foto_fasilitas/{{ $file }}');"></div>
             <div class="p-4">
                 <h1 class="font-semibold text-lg border-b border-neutral-300 pb-4">{{ $nama_fasilitas }}</h1>
                 <div class="pt-4 pb-2 text-neutral-500 font-medium">

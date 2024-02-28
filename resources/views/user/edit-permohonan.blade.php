@@ -8,7 +8,7 @@
             <div class="border-b border-b-gray-300 pb-3">
                 <h1 class="font-medium text-lg">Edit Permohonan</h1>
             </div>
-            <form enctype="multipart/form-data" class="permohonan-form">
+            <form action="{{ route('user.updatePermohonan', $permohonan->id_permohonan) }}" method="post" enctype="multipart/form-data" class="permohonan-form">
                 @csrf 
                 <div class="form-section">
                     <h1 class="pt-3 font-semibold text-center">Detail Pemohon</h1>
@@ -127,6 +127,7 @@
                                 <label class="col-form-label font-medium">Tanggal Mulai<sup class="text-red-500">*</sup></label>
                                 <div class="block">
                                     <input type="hidden" class="form-control form-input text-small" name="tgl_mulai" id="tgl_mulai" value="{{ old('tgl_mulai', $permohonan->tgl_mulai) }}" required />
+                                    <input type="hidden" class="form-control form-input text-small" name="id_jadwal" id="id_jadwal" value="{{ old('id_jadwal', $permohonan->id_jadwal) }}" required />
                                 </div>
                             </div>
                             <div class="w-full hidden">
@@ -150,7 +151,7 @@
                             <div class="w-full">
                                 <label class="col-form-label font-medium">Nama Acara / Kegiatan<sup class="text-red-500">*</sup></label>
                                 <div class="block">
-                                    <input type="text" class="form-control form-input text-small" name="nama_kegiatan" id="nama_kegiatan" value="{{ old('tgl_mulai', $permohonan->tgl_mulai) }}" required />
+                                    <input type="text" class="form-control form-input text-small" name="nama_kegiatan" id="nama_kegiatan" value="{{ old('nama_kegiatan', $permohonan->nama_kegiatan) }}" required />
                                 </div>
                             </div>
                             <div class="w-full">
@@ -195,7 +196,7 @@
                         <div class="w-full">
                             <label class="col-form-label font-medium">Ringkasan Acara / Kegiatan<sup class="text-red-500">*</sup></label>
                             <div class="block">
-                                <textarea class="border-gray-200 border-2 focus:border-primary focus:ring-primary focus:ring-opacity-50 rounded-md w-full" name="ringkasan" id="ringkasan" value="{{ old('ringkasan', $permohonan->ringkasan) }}" style="font-size: 13px" required></textarea>
+                                <textarea class="border-gray-200 border-2 focus:border-primary focus:ring-primary focus:ring-opacity-50 rounded-md w-full" name="ringkasan" id="ringkasan" style="font-size: 13px" required>{{ old('ringkasan', $permohonan->ringkasan) }}</textarea>
                             </div>
                         </div>
                     </div>
@@ -207,11 +208,14 @@
                                     @foreach ($alat as $item)
                                     <div class="flex">
                                       <input type="checkbox" class="shrink-0 mt-0.5 border-gray-200 rounded text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none" name="id_alat[]" value="{{ $item->id_alat_pendukung }}"
-                                      id="alat_pendukung">
+                                      id="alat_pendukung" {{ old('id_alat', $permohonan->id_alat) ? 'checked' : '' }}>
                                       <label for="hs-checkbox-group-1" class="text-sm text-gray-500 ms-3">{{ $item->nama_alat }}</label>
                                     </div>
                                     @endforeach
                                 </div>
+                            </div>
+                            <div class="block">
+                                <input type="hidden" class="form-control form-input text-small" name="id_fasilitas" id="id_fasilitas" value="{{ old('id_fasilitas', $permohonan->id_fasilitas) }}" required />
                             </div>
                         </div>
                     </div>
@@ -221,7 +225,7 @@
                     <button type="button" class="button-ghost text-small rounded-lg px-4 previous">Kembali</button>
                     <button type="button" id="btn-next" class="button-primary text-small rounded-lg px-4 next">Lanjutkan</button>
                     <button type="button" id="btn-step-one" class="button-primary text-small rounded-lg px-4 next-step">Lanjutkan</button>
-                    <button type="submit" id="btn-submit" class="button-primary text-small rounded-lg px-4">Submit</button>
+                    <button type="submit" id="btn-submit" class="bg-slate-900/10 text-black/50 cursor-not-allowed py-2 text-small rounded-lg px-4" disabled>Submit</button>
                 </div>
             </form>
         </div>
@@ -402,8 +406,6 @@
     const ringkasan = document.getElementById("ringkasan");
     const alatPendukung = document.getElementById("alat_pendukung");
     const buttonSubmit = document.getElementById("btn-submit");
-
-    console.log(suratPermohonan.value);
     
     function stepThreeValidation(userNamaKegiatan, userJumlahPeserta, userNarasumber, userSuratPermohonan, userRundownAcara, userRingkasan, userAlatPendukung) {
         const isKegiatanValid = userNamaKegiatan.length > 0
@@ -429,7 +431,6 @@
             buttonSubmit.style.backgroundColor = "#072ac8";
             });
         } else {
-            buttonSubmit.setAttribute("disabled", true);
             buttonSubmit.style.backgroundColor = "rgba(44, 62, 80, 0.1)";
             buttonSubmit.style.color = "rgba(0, 0, 0, 0.5)";
             buttonSubmit.style.cursor = "not-allowed";
