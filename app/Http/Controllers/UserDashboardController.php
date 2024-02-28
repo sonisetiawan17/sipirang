@@ -575,9 +575,16 @@ class UserDashboardController extends Controller
                     ->get();
 
         $startDate = Carbon::now()->format('d');
+        $startMonth = Carbon::now()->format('m');
         $endDate = Carbon::now()->endOfMonth()->format('d');
-
         $day = array_map('strval', range($startDate, $endDate));
+
+        $startDateNextMonth = Carbon::now()->addMonths(1)->startOfMonth()->format('d');
+        $endDateNextMonth = Carbon::now()->addMonths(1)->endOfMonth()->format('d');
+        $dayNextMonth = array_map('strval', range($startDateNextMonth, $endDateNextMonth));
+
+        $dayMerge = array_merge($day, $dayNextMonth);
+        // dd($startMonth);
 
         $currentJadwal = DB::table('permohonan')
                             ->join('jadwal', 'jadwal.permohonan_id', '=', 'permohonan.id_permohonan')
@@ -675,7 +682,7 @@ class UserDashboardController extends Controller
         }
 
 
-        return view('user.jadwals', compact('jadwal', 'day', 'month', 'currentMonth', 'currentMonthNum', 'currentYear', 'currentJadwal', 'newArray', 'newArrayAula'));
+        return view('user.jadwals', compact('jadwal', 'day', 'dayMerge', 'month', 'currentMonth', 'currentMonthNum', 'currentYear', 'currentJadwal', 'newArray', 'newArrayAula'));
     }
 
     public function cetakPermohonan($id_permohonan){
