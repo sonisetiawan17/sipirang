@@ -64,12 +64,12 @@
             <div class="bg-white shadow-sm px-[20px] py-[20px] rounded-sm">
                 <p class="text-neutral-500">Data permohonan</p>
                 <div class="flex flex-row items-end gap-x-5 pt-3">
-                    <div class="px-[16px] py-[12px] rounded-full bg-green-300">
-                        <i class="fa fa-check text-xl text-black"></i>
+                    <div class="px-[18px] py-[12px] rounded-full bg-violet-300">
+                        <i class="fa fa-clipboard-check text-xl text-black"></i>
                     </div>
                     <div class="flex flex-col items-center">
-                        <p class="font-semibold" style="font-size: 18px">1</p>
-                        <p style="font-size: 13px">Disetujui</p>
+                        <p class="font-semibold" style="font-size: 18px">{{ $jumlah_permohonan > 0 ? $jumlah_permohonan : 0 }}</p>
+                        <p style="font-size: 13px">Bulan Ini</p>
                     </div>
                 </div>
             </div>
@@ -81,7 +81,7 @@
                         <i class="fa fa-spinner text-xl text-black"></i>
                     </div>
                     <div class="flex flex-col items-center">
-                        <p class="font-semibold" style="font-size: 18px">1</p>
+                        <p class="font-semibold" style="font-size: 18px">{{ $status_menunggu }}</p>
                         <p style="font-size: 13px">Dalam Proses</p>
                     </div>
                 </div>
@@ -94,7 +94,7 @@
                         <i class="fa fa-ban text-xl text-black"></i>
                     </div>
                     <div class="flex flex-col items-center">
-                        <p class="font-semibold" style="font-size: 18px">1</p>
+                        <p class="font-semibold" style="font-size: 18px">{{ $status_ditolak }}</p>
                         <p style="font-size: 13px">Ditolak</p>
                     </div>
                 </div>
@@ -103,12 +103,12 @@
             <div class="bg-white shadow-sm px-[20px] py-[20px] rounded-sm">
                 <p class="text-neutral-500">Data permohonan</p>
                 <div class="flex flex-row items-end gap-x-5 pt-3">
-                    <div class="px-[18px] py-[12px] rounded-full bg-violet-300">
-                        <i class="fa fa-clipboard-check text-xl text-black"></i>
+                    <div class="px-[16px] py-[12px] rounded-full bg-green-300">
+                        <i class="fa fa-check text-xl text-black"></i>
                     </div>
                     <div class="flex flex-col items-center">
-                        <p class="font-semibold" style="font-size: 18px">1</p>
-                        <p style="font-size: 13px">Selesai</p>
+                        <p class="font-semibold" style="font-size: 18px">{{ $status_diterima }}</p>
+                        <p style="font-size: 13px">Disetujui</p>
                     </div>
                 </div>
             </div>

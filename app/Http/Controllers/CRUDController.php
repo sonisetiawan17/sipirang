@@ -8,6 +8,7 @@ use App\Models\BlokRuangan;
 use App\Models\Fasilitas;
 use App\Models\Instansi;
 use App\Models\Permohonan;
+use App\Models\Student;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -20,7 +21,21 @@ class CRUDController extends Controller
 {
     public function index_jadwal()
     {
-        return view('super-admin.data-jadwal');
+        $students = Student::all();
+        
+        return view('super-admin.data-jadwal', compact('students'));
+    }
+
+    public function filter(Request $request)
+    {
+        $start_date = $request->start_date;
+        $end_date = $request->end_date;
+
+        $students = Student::whereDate('created_at', '>=', $start_date)
+                            ->whereDate('created_at', '<=', $end_date)
+                            ->get();
+        
+        return view('super-admin.data-jadwal', compact('students'));
     }
 
     // ============= FASILITAS =============
@@ -58,10 +73,14 @@ class CRUDController extends Controller
             $mime = $file->getClientMimeType();
             $filesize = $file->getSize();
             $nama_fasilitas = $request->nama_fasilitas;
+            $kapasitas = $request->kapasitas;
+            $lokasi = $request->lokasi;
 
             if ($file->move($uploadPath, $rename)) {
                 $media = new Fasilitas();
                 $media->nama_fasilitas = $nama_fasilitas;
+                $media->kapasitas = $kapasitas;
+                $media->lokasi = $lokasi;
                 $media->nama = $originalName;
                 $media->file = $rename;
                 $media->extension = $extension;
@@ -105,11 +124,15 @@ class CRUDController extends Controller
             $mime = $file->getClientMimeType();
             $filesize = $file->getSize();
             $nama_fasilitas = $request->nama_fasilitas;
+            $kapasitas = $request->kapasitas;
+            $lokasi = $request->lokasi;
 
             if ($file->move($uploadPath, $rename)) {
                 $id_fasilitas = $request->id_fasilitas;
                 $fasilitas = Fasilitas::find($id_fasilitas);
                 $fasilitas->nama_fasilitas = $nama_fasilitas;
+                $fasilitas->kapasitas = $kapasitas;
+                $fasilitas->lokasi = $lokasi;
                 $fasilitas->nama = $originalName;
                 $fasilitas->file = $rename;
                 $fasilitas->extension = $extension;
@@ -119,7 +142,7 @@ class CRUDController extends Controller
 
                 return redirect()
                     ->back()
-                    ->with('sukses', 'Berhasil, file telah di upload');
+                    ->with('sukses', 'Data berhasil diubah');
             }
             
             return redirect()
@@ -222,6 +245,7 @@ class CRUDController extends Controller
     // ============= USERS =============
     public function index_users()
     {
+        $instansi = Instansi::get();
         $users = User::whereNotIn('name', ['Admin', 'Super Admin'])
             ->latest()
             ->paginate(10);
@@ -229,22 +253,59 @@ class CRUDController extends Controller
         $user = auth::user()->name;
 
         if ($user == 'Admin') {
-            return view('admin.data-users', compact('users'));
+            return view('admin.data-users', compact('users', 'instansi'));
         } elseif ($user == 'Super Admin') {
-            return view('super-admin.data-users', compact('users'));
+            return view('super-admin.data-users', compact('users', 'instansi'));
         }
     }
 
     public function lihat_users($id)
     {
+        
         $user = User::find($id);
+        $user_id = $user->id;
 
         $role = auth::user()->name;
 
+        $status_diterima = DB::table('permohonan')
+                             ->join('jadwal', 'jadwal.permohonan_id', '=', 'permohonan.id_permohonan')
+                             ->where('status_permohonan', 'Diterima')
+                             ->where('permohonan.user_id', $user_id)
+                             ->count();
+        
+        $status_menunggu = DB::table('permohonan')
+                            ->join('jadwal', 'jadwal.permohonan_id', '=', 'permohonan.id_permohonan')
+                            ->where('status_permohonan', 'Menunggu')
+                            ->where('permohonan.user_id', $user_id)
+                            ->count();
+            
+        $status_ditolak = DB::table('permohonan')
+                            ->join('jadwal', 'jadwal.permohonan_id', '=', 'permohonan.id_permohonan')
+                            ->where('status_permohonan', 'Ditolak')
+                            ->where('permohonan.user_id', $user_id)
+                            ->count();
+        
+        $permohonan = DB::table('permohonan')
+                            ->join('jadwal', 'jadwal.permohonan_id', '=', 'permohonan.id_permohonan')
+                            ->where('jadwal.user_id', $user_id)
+                            ->selectRaw('DATE_FORMAT(permohonan.created_at, "%b") as bulan, COUNT(*) as jumlah_permohonan')
+                            ->groupBy('bulan')
+                            ->get();
+        
+        $jumlah_permohonan = '';
+
+        if ($permohonan) {
+            foreach ($permohonan as $data) {
+                $jumlah_permohonan = $data->jumlah_permohonan;
+            }
+        } else {
+            $jumlah_permohonan = 0;
+        }
+
         if ($role == 'Admin') {
-            return view('admin.lihat-users', compact('user'));
+            return view('admin.lihat-users', compact('user', 'status_diterima', 'status_menunggu', 'status_ditolak', 'jumlah_permohonan'));
         } elseif ($role == 'Super Admin') {
-            return view('super-admin.lihat-users', compact('user'));
+            return view('super-admin.lihat-users', compact('user', 'status_diterima', 'status_menunggu', 'status_ditolak', 'jumlah_permohonan'));
         }
     }
 
@@ -261,20 +322,21 @@ class CRUDController extends Controller
         }
     }
 
-    public function ubah_users(Request $request, $id)
+    public function ubah_users(Request $request)
     {
-        $data = User::find($id);
-        $user = auth::user()->name;
+        $user_id = $request->id;
+        $data = User::find($user_id);
+        $user = Auth::user()->name;
 
+        $data->id = $user_id;
         $data->name = $request->name;
         $data->email = $request->email;
-        $data->password = Hash::make($request->password);
         $data->instansi_id = $request->instansi_id;
         $data->nik = $request->nik;
         $data->no_telp = $request->no_telp;
         $data->alamat = $request->alamat;
         $data->nama_organisasi = $request->nama_organisasi;
-        $simpan = $data->update();
+        $data->update();
 
         if ($user == 'Admin') {
             return redirect('admin/users')->with('sukses', 'Data Berhasil diubah!');
@@ -332,12 +394,12 @@ class CRUDController extends Controller
         $data = Instansi::find($id_instansi);
         $data->nama_instansi = $request->nama_instansi;
         $data->alamat_instansi = $request->alamat_instansi;
-        $simpan = $data->update();
+        $data->update();
 
         if ($user == 'Admin') {
-            return redirect('admin/instansi')->with('sukses', 'Data Berhasil dihapus!');
+            return redirect('admin/instansi')->with('sukses', 'Data Berhasil diubah!');
         } elseif ($user == 'Super Admin') {
-            return redirect('superadmin/instansi')->with('sukses', 'Data Berhasil dihapus!');
+            return redirect('superadmin/instansi')->with('sukses', 'Data Berhasil diubah!');
         }
     }
 
@@ -375,9 +437,9 @@ class CRUDController extends Controller
         $data->delete();
 
         if ($user == 'Admin') {
-            return redirect('admin/alat-pendukung')->with('sukses', 'Data Berhasil ditambahkan!');
+            return redirect('admin/alat-pendukung')->with('sukses', 'Data Berhasil dihapus!');
         } elseif ($user == 'Super Admin') {
-            return redirect('superadmin/alat-pendukung')->with('sukses', 'Data Berhasil ditambahkan!');
+            return redirect('superadmin/alat-pendukung')->with('sukses', 'Data Berhasil dihapus!');
         }
     }
 
@@ -387,12 +449,12 @@ class CRUDController extends Controller
         $user = auth::user()->name;
         $data = AlatPendukung::find($id_alat_pendukung);
         $data->nama_alat = $request->nama_alat;
-        $simpan = $data->update();
+        $data->update();
 
         if ($user == 'Admin') {
-            return redirect('admin/alat-pendukung')->with('sukses', 'Data Berhasil ditambahkan!');
+            return redirect('admin/alat-pendukung')->with('sukses', 'Data Berhasil diubah!');
         } elseif ($user == 'Super Admin') {
-            return redirect('superadmin/alat-pendukung')->with('sukses', 'Data Berhasil ditambahkan!');
+            return redirect('superadmin/alat-pendukung')->with('sukses', 'Data Berhasil diubah!');
         }
     }
 
@@ -491,9 +553,9 @@ class CRUDController extends Controller
         $data->delete();
 
         if ($user == 'Admin') {
-            return redirect('admin/bidang-kegiatan')->with('sukses', 'Data Berhasil ditambahkan!');
+            return redirect('admin/bidang-kegiatan')->with('sukses', 'Data Berhasil dihapus!');
         } elseif ($user == 'Super Admin') {
-            return redirect('superadmin/bidang-kegiatan')->with('sukses', 'Data Berhasil ditambahkan!');
+            return redirect('superadmin/bidang-kegiatan')->with('sukses', 'Data Berhasil dihapus!');
         }
     }
 
@@ -506,9 +568,9 @@ class CRUDController extends Controller
         $simpan = $data->update();
 
         if ($user == 'Admin') {
-            return redirect('admin/bidang-kegiatan')->with('sukses', 'Data Berhasil ditambahkan!');
+            return redirect('admin/bidang-kegiatan')->with('sukses', 'Data Berhasil diubah!');
         } elseif ($user == 'Super Admin') {
-            return redirect('superadmin/bidang-kegiatan')->with('sukses', 'Data Berhasil ditambahkan!');
+            return redirect('superadmin/bidang-kegiatan')->with('sukses', 'Data Berhasil diubah!');
         }
     }
 

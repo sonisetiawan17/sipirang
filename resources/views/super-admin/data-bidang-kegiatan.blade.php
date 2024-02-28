@@ -41,11 +41,8 @@
     </nav>
 
     <div class="row mt-4">
-        <!-- begin col-112 -->
         <div class="col-xl-12">
-            <!-- begin panel -->
             <div class="panel panel-inverse">
-                <!-- begin panel-heading -->
                 <div class="flex flex-row items-center justify-between">
                     <div class="panel-heading" style="background-color: #ffffff;">
                         <h4 class="panel-title text-black"><i class="fa fa-user mr-2"></i>Data Bidang Kegiatan</h4>
@@ -56,8 +53,6 @@
                     </div>
                 </div>
 
-                <!-- end panel-heading -->
-                <!-- begin panel-body -->
                 <div class="panel-body">
                     <table id="data-table-select" class="table table-striped table-bordered table-td-valign-middle"
                         width="100%">
@@ -97,14 +92,10 @@
                         </tbody>
                     </table>
                 </div>
-                <!-- end panel-body -->
             </div>
-            <!-- end panel -->
         </div>
-        <!-- end col-10 -->
     </div>
-    <!-- end row -->
-    <!-- #modal-dialog -->
+
     <div class="modal fade" id="modal-dialog">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -116,7 +107,7 @@
                     <form method="post" action="{{ route('superadmin.simpan_bidang') }}">
                         @csrf
                         <div class="form-group row m-b-15">
-                            <label class="col-md-5 col-form-label">Nama Bidang Kegiatan</label>
+                            <label class="col-md-5 col-form-label">Nama Bidang Kegiatan <sup class="text-red">*</sup></label>
                             <div class="col-md-7">
                                 <input required name="nama_bidang" type="text"
                                     class="form-control form-input text-small" />
@@ -131,10 +122,7 @@
             </div>
         </div>
     </div>
-    <!-- end modal -->
 
-
-    <!-- #modal-dialog edit -->
     <div class="modal fade" id="isimodal">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -146,7 +134,7 @@
                     <form method="post" action="{{ route('superadmin.ubah_bidang') }}">
                         @csrf
                         <div class="form-group row m-b-15">
-                            <label class="col-md-5 col-form-label">Nama Bidang</label>
+                            <label class="col-md-5 col-form-label">Nama Bidang <sup class="text-red">*</sup></label>
                             <div class="col-md-7">
                                 <input type="hidden" id="id_bidang_kegiatan" name="id_bidang_kegiatan">
                                 <input required name="nama_bidang" id="nama_bidang" type="text"
@@ -162,7 +150,6 @@
             </div>
         </div>
     </div>
-    <!-- end modal -->
 
 @endsection
 

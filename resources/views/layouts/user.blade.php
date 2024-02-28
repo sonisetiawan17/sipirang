@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}">
 <head>
-	<script src="./node_modules/preline/dist/preline.js"></script>
-
 	@include('includes.head')
 </head>
 @php
