@@ -3,7 +3,7 @@
 @section('content')
 
 @php 
-    $arr = [['2024-02-01', '10', '13'], ['2024-02-02', '9', '11']];
+    $schedule = $jadwal;
 @endphp
 
 <main class="bg-[#f7f7f8]">
@@ -142,49 +142,84 @@
 <script>
     function checkStartDate() {
         const selectedDate = document.getElementById("tgl_mulai").value
-        const currentDate = @json($arr);
+        const room = document.getElementById('nama_fasilitas').value
+        const dataJadwal = @json($schedule);
 
-        const matchingDateItem = currentDate.find(item => item[0] === selectedDate);
-        const emptyArr = [];
-        const newArray = [];
+        const transformedData = dataJadwal.map(item => [
+            item.nama_fasilitas,
+            item.tgl_mulai,
+            item.tgl_selesai,
+            item.jam_mulai,
+            item.jam_selesai
+        ]);
 
-        if (matchingDateItem) {
-            const index1 = matchingDateItem[1];
-            const index2 = matchingDateItem[2];
-            emptyArr.push(index1, index2)
+        console.log(transformedData);
+
+        const matchingDateItems = transformedData.filter(
+            (item) =>
+                item[0] === room &&
+                (item[1] === selectedDate || item[2] === selectedDate)
+        );
+
+        console.log(matchingDateItems);
+
+        const uniqueValues = new Set();
+
+        if (matchingDateItems.length > 0) {
+            matchingDateItems.forEach((item) => {
+                const index1 = parseInt(item[3]);
+                const index2 = parseInt(item[4]);
+
+                if (item[1] === selectedDate && item[2] === selectedDate) {
+                    for (let i = index1; i <= index2; i++) {
+                        uniqueValues.add(i.toString().padStart(1, "0"));
+                    }
+                } else if (item[1] === selectedDate) {
+                    for (let i = index1; i <= 17; i++) {
+                        uniqueValues.add(i.toString().padStart(1, "0"));
+                    }
+                } else if (item[2] === selectedDate) {
+                    for (let i = 8; i <= index2; i++) {
+                        uniqueValues.add(i.toString().padStart(1, "0"));
+                    }
+                }
+            });
+
+            const newArray = Array.from(uniqueValues).sort(
+                (a, b) => parseInt(a) - parseInt(b)
+            );
+            console.log(newArray);
+
+            const jam = document.getElementById("data-jam-mulai");
+
+            const isDateInCurrentDate = transformedData.some(item => item[1] === selectedDate || item[2] === selectedDate);
+            console.log(isDateInCurrentDate)
+
+            jam.innerHTML = '';
+
+            if (isDateInCurrentDate) {
+                for (let i = 8; i <= 16; i++) {
+                    const value = i.toString();
+                    const isUsed = newArray.includes(value);
+                    const labelClass = isUsed
+                        ? 'inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-red-500/20 disabled cursor-not-allowed text-red-800'
+                        : 'inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-teal-100 text-teal-800 cursor-pointer';
+
+                    jam.innerHTML +=
+                        `<label class="${labelClass} mr-1" id="${value}-jam_mulai">
+                            <input type="radio" name="jam_mulai" value="${value}" id="${value}" onclick="getValue()" ${isUsed ? 'disabled' : ''} required />
+                            ${value}:00
+                        </label>`;
+                }
+            } 
         } else {
-            console.log("Tanggal tidak ditemukan dalam array.");
-        }
+            const jam = document.getElementById("data-jam-mulai");
 
-        for (let i = parseInt(emptyArr[0]); i <= parseInt(emptyArr[1]); i++) {
-            newArray.push(i.toString().padStart(1, '0'));
-        }
+            const isDateInCurrentDate = transformedData.some(item => item[1] === selectedDate || item[2] === selectedDate);
+            console.log(isDateInCurrentDate)
 
-        console.log(newArray);
+            jam.innerHTML = '';
 
-        // ===================================================================
-
-        const jam = document.getElementById("data-jam-mulai");
-
-        const isDateInCurrentDate = currentDate.some(item => item[0] === selectedDate);
-
-        jam.innerHTML = '';
-
-        if (isDateInCurrentDate) {
-            for (let i = 8; i <= 16; i++) {
-                const value = i.toString();
-                const isUsed = newArray.includes(value);
-                const labelClass = isUsed
-                    ? 'inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-red-500/20 disabled cursor-not-allowed text-red-800'
-                    : 'inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-teal-100 text-teal-800 cursor-pointer';
-
-                jam.innerHTML +=
-                    `<label class="${labelClass}" id="${value}-jam_mulai">
-                        <input type="radio" name="jam_mulai" value="${value}" id="${value}" onclick="getValue()" ${isUsed ? 'disabled' : ''} required />
-                        ${value}:00
-                    </label>`;
-            }
-        } else {
             for (let i = 8; i <= 16; i++) {
                 const value = i.toString();
                 jam.innerHTML +=
@@ -194,6 +229,8 @@
                     </label>`;
             }
         }
+
+        // ===================================================================
     }
 
     function getValue() {
@@ -212,64 +249,102 @@
         }
     }
 
+    // ===============================================================================
 
     function checkEndDate() {
         const selectedDate = document.getElementById("tgl_selesai").value
-        const currentDate = @json($arr);
+        const room = document.getElementById('nama_fasilitas').value
+        const dataJadwal = @json($schedule);
 
-        const matchingDateItem = currentDate.find(item => item[0] === selectedDate);
-        const emptyArr = [];
-        const newArray = [];
+        const transformedData = dataJadwal.map(item => [
+            item.nama_fasilitas,
+            item.tgl_mulai,
+            item.tgl_selesai,
+            item.jam_mulai,
+            item.jam_selesai
+        ]);
 
-        if (matchingDateItem) {
-            const index1 = matchingDateItem[1];
-            const index2 = matchingDateItem[2];
-            emptyArr.push(index1, index2)
+        console.log(transformedData);
+
+        const matchingDateItems = transformedData.filter(
+            (item) =>
+                item[0] === room &&
+                (item[1] === selectedDate || item[2] === selectedDate)
+        );
+
+        console.log(matchingDateItems);
+
+        const uniqueValues = new Set();
+
+        if (matchingDateItems.length > 0) {
+            matchingDateItems.forEach((item) => {
+                const index1 = parseInt(item[3]);
+                const index2 = parseInt(item[4]);
+
+                if (item[1] === selectedDate && item[2] === selectedDate) {
+                    for (let i = index1; i <= index2; i++) {
+                        uniqueValues.add(i.toString().padStart(1, "0"));
+                    }
+                } else if (item[1] === selectedDate) {
+                    for (let i = index1; i <= 17; i++) {
+                        uniqueValues.add(i.toString().padStart(1, "0"));
+                    }
+                } else if (item[2] === selectedDate) {
+                    for (let i = 8; i <= index2; i++) {
+                        uniqueValues.add(i.toString().padStart(1, "0"));
+                    }
+                }
+            });
+
+            const newArray = Array.from(uniqueValues).sort(
+                (a, b) => parseInt(a) - parseInt(b)
+            );
+            console.log(newArray);
+
+            const jam = document.getElementById("data-jam-selesai");
+
+            const isDateInCurrentDate = transformedData.some(item => item[1] === selectedDate || item[2] === selectedDate);
+            console.log(isDateInCurrentDate)
+
+            jam.innerHTML = '';
+
+            if (isDateInCurrentDate) {
+                for (let i = 8; i <= 16; i++) {
+                    const value = i.toString();
+                    const isUsed = newArray.includes(value);
+                    const labelClass = isUsed
+                        ? 'inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-red-500/20 disabled cursor-not-allowed text-red-800'
+                        : 'inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-teal-100 text-teal-800 cursor-pointer';
+
+                    jam.innerHTML +=
+                        `<label class="${labelClass} mr-1" id="${value}-jam_selesai">
+                            <input type="radio" name="jam_selesai" value="${value}" id="${value}" onclick="getValueSelesai()" ${isUsed ? 'disabled' : ''} required />
+                            ${value}:00
+                        </label>`;
+                }
+            } 
         } else {
-            console.log("Tanggal tidak ditemukan dalam array.");
-        }
+            const jam = document.getElementById("data-jam-selesai");
 
-        for (let i = parseInt(emptyArr[0]); i <= parseInt(emptyArr[1]); i++) {
-            newArray.push(i.toString().padStart(1, '0'));
-        }
+            const isDateInCurrentDate = transformedData.some(item => item[1] === selectedDate || item[2] === selectedDate);
+            console.log(isDateInCurrentDate)
 
-        console.log(newArray);
+            jam.innerHTML = '';
 
-        // ===================================================================
-
-        const jam = document.getElementById("data-jam-selesai");
-
-        const isDateInCurrentDate = currentDate.some(item => item[0] === selectedDate);
-
-        jam.innerHTML = '';
-
-        if (isDateInCurrentDate) {
-            for (let i = 8; i <= 16; i++) {
-                const value = i.toString();
-                const isUsed = newArray.includes(value);
-                const labelClass = isUsed
-                    ? 'inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-red-500/20 disabled cursor-not-allowed text-red-800'
-                    : 'inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-teal-100 text-teal-800 cursor-pointer';
-
-                jam.innerHTML +=
-                    `<label class="${labelClass}" id="${value}-jam_selesai">
-                        <input type="radio" name="jam_selesai" value="${value}" id="${value}" onclick="getValueTwo()" ${isUsed ? 'disabled' : ''} required />
-                        ${value}:00
-                    </label>`;
-            }
-        } else {
             for (let i = 8; i <= 16; i++) {
                 const value = i.toString();
                 jam.innerHTML +=
                     `<label class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-teal-100 text-teal-800 cursor-pointer mr-1" id="${value}-jam_selesai">
-                        <input type="radio" name="jam_selesai" value="${value}" id="${value}" onclick="getValueTwo()" required />
+                        <input type="radio" name="jam_selesai" value="${value}" id="${value}" onclick="getValueSelesai()" required />
                         ${value}:00
                     </label>`;
             }
         }
+
+        // ===================================================================
     }
 
-    function getValueTwo() {
+    function getValueSelesai() {
         const radioButton = document.getElementsByName("jam_selesai");
 
         for (let i = 8; i <= 16; i++) {
@@ -284,6 +359,7 @@
             }
         }
     }
+    
 
     const tgl_mulai = document.getElementById('tgl_mulai');
     const tgl_selesai = document.getElementById('tgl_selesai');
